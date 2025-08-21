@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../styles/globals.css";
+import "./globals.css";
 import { Source_Sans_3, Roboto } from "next/font/google";
 
 const sans = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans" });
@@ -19,5 +19,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		</html>
 	);
 }
-
-

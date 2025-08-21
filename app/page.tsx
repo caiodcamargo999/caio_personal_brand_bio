@@ -59,8 +59,8 @@ export default function HomePage() {
 
 			{/* Buttons/cards section comes directly after header on mobile */}
 			<section className="mb-10">
-				<motion.div variants={listVariants} initial="hidden" animate="show" className="space-y-6 sm:space-y-8 md:space-y-10">
-				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30">
+				<motion.div variants={listVariants} initial="hidden" animate="show" className="space-y-1.5 sm:space-y-2 md:space-y-2.5">
+				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/15 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30">
 					<motion.div variants={itemVariants}>
 					<a href="https://rarityagency.io" target="_blank" rel="noopener noreferrer" className="block px-4 py-6 sm:px-6 sm:py-7">
 						<CardContent className="p-0">
@@ -74,7 +74,7 @@ export default function HomePage() {
 
 				<Dialog>
 					<DialogTrigger asChild>
-						<Card className="group cursor-pointer overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/60">
+						<Card className="group cursor-pointer overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/20 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/60">
 							<motion.div className="px-4 py-6 sm:px-6 sm:py-7" variants={itemVariants}>
 								<CardContent className="p-0">
 									<h2 className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">Exclusive Real Estate Opportunities</h2>
@@ -112,11 +112,11 @@ export default function HomePage() {
 					</DialogContent>
 				</Dialog>
 
-				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30">
+				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/15 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30">
 					<motion.div variants={itemVariants}>
 					<a href="https://calendly.com/caiodcamargo/caiodecamargo_privatecall" target="_blank" rel="noopener noreferrer" className="block px-4 py-6 sm:px-6 sm:py-7">
 						<CardContent className="p-0">
-							<h2 className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">Strategy & Consulting</h2>
+							<h2 className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">Strategy &amp; Consulting</h2>
 							<p className="mt-2 sm:mt-1.5 text-sm text-muted leading-relaxed">Personal and strategic consulting to unlock your business growth.</p>
 							<span className="mt-4 inline-block font-medium text-muted group-hover:text-white transition-colors">Learn More →</span>
 						</CardContent>
@@ -124,12 +124,12 @@ export default function HomePage() {
 					</motion.div>
 				</Card>
 
-				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40">
+				<Card className="group overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/15 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40">
 					<motion.div variants={itemVariants}>
 					<a href="https://www.linkedin.com/in/caiodecamargo/" target="_blank" rel="noopener noreferrer" className="block px-4 py-6 sm:px-6 sm:py-7">
 						<CardContent className="p-0">
 							<h2 className="text-lg sm:text-xl font-semibold tracking-[-0.02em]">Connect on LinkedIn</h2>
-							<p className="mt-2 sm:mt-1.5 text-sm text-muted leading-relaxed">Let's connect and explore professional opportunities on LinkedIn.</p>
+							<p className="mt-2 sm:mt-1.5 text-sm text-muted leading-relaxed">Let&#39;s connect and explore professional opportunities on LinkedIn.</p>
 							<span className="mt-4 inline-block font-medium text-muted group-hover:text-white transition-colors">Connect Now →</span>
 						</CardContent>
 					</a>

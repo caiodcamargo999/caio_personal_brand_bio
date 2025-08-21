@@ -1,0 +1,54 @@
+{
+	"profile": {
+		"name": "Caio de Camargo",
+		"tagline": "Ajudando você a crescer com IA, Estratégia, Oportunidades de Investimento Imobiliário em Todo o Mundo & Negócios."
+	},
+	"cards": {
+		"rarityAgency": {
+			"title": "Rarity Agency",
+			"description": "Agência de marketing e IA para escalar sua marca e automatizar operações.",
+			"cta": "Visitar Agência →"
+		},
+		"realEstate": {
+			"title": "Oportunidades Exclusivas de Investimento Imobiliário",
+			"description": "Descubra oportunidades de investimento de alto retorno em mercados emergentes. Vagas limitadas para investidores sérios.",
+			"cta": "Explorar Investimentos →"
+		},
+		"consulting": {
+			"title": "Estratégia & Consultoria",
+			"description": "Consultoria pessoal e estratégica para desbloquear o crescimento do seu negócio.",
+			"cta": "Saiba Mais →"
+		},
+		"linkedin": {
+			"title": "Conectar no LinkedIn",
+			"description": "Vamos nos conectar e explorar oportunidades profissionais no LinkedIn.",
+			"cta": "Conectar Agora →"
+		}
+	},
+	"realEstateModal": {
+		"title": "Oportunidades de Investimento Imobiliário",
+		"subtitle": "Selecione seu destino de investimento preferido para explorar oportunidades exclusivas",
+		"countries": {
+			"indonesia": {
+				"name": "Indonésia",
+				"description": "Mercado emergente com alto potencial de crescimento e rendimentos atrativos"
+			},
+			"dubai": {
+				"name": "Dubai",
+				"description": "Hub de imóveis de luxo com vantagens fiscais e infraestrutura de classe mundial"
+			},
+			"brazil": {
+				"name": "Brasil",
+				"description": "Oportunidades de mercado diversificadas com fundamentos sólidos e perspectivas de crescimento"
+			}
+		}
+	},
+	"valueProp": {
+		"title": "Como posso ajudar",
+		"description": "Minha missão é fornecer a alavanca estratégica que você precisa para alcançar seus objetivos.",
+		"cta": "Agendar uma chamada"
+	},
+	"footer": {
+		"copyright": "© 2025 Caio de Camargo. Todos os Direitos Reservados."
+	}
+}

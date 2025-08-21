@@ -1,0 +1,54 @@
+{
+	"profile": {
+		"name": "Caio de Camargo",
+		"tagline": "Helping you grow with AI, Strategy, Real Estate Investment Opportunities Worldwide & Business."
+	},
+	"cards": {
+		"rarityAgency": {
+			"title": "Rarity Agency",
+			"description": "Marketing and AI agency to scale your brand and automate operations.",
+			"cta": "Visit Agency →"
+		},
+		"realEstate": {
+			"title": "Exclusive Real Estate Opportunities",
+			"description": "Discover high-yield investment opportunities in emerging markets. Limited spots available for serious investors.",
+			"cta": "Explore Investments →"
+		},
+		"consulting": {
+			"title": "Strategy & Consulting",
+			"description": "Personal and strategic consulting to unlock your business growth.",
+			"cta": "Learn More →"
+		},
+		"linkedin": {
+			"title": "Connect on LinkedIn",
+			"description": "Let's connect and explore professional opportunities on LinkedIn.",
+			"cta": "Connect Now →"
+		}
+	},
+	"realEstateModal": {
+		"title": "Real Estate Investment Opportunities",
+		"subtitle": "Select your preferred investment destination to explore exclusive opportunities",
+		"countries": {
+			"indonesia": {
+				"name": "Indonesia",
+				"description": "Emerging market with high growth potential and attractive yields"
+			},
+			"dubai": {
+				"name": "Dubai",
+				"description": "Luxury real estate hub with tax advantages and world-class infrastructure"
+			},
+			"brazil": {
+				"name": "Brazil",
+				"description": "Diverse market opportunities with strong fundamentals and growth prospects"
+			}
+		}
+	},
+	"valueProp": {
+		"title": "How I can help",
+		"description": "My mission is to provide the strategic leverage you need to achieve your goals.",
+		"cta": "Book a call"
+	},
+	"footer": {
+		"copyright": "© 2025 Caio de Camargo. All Rights Reserved."
+	}
+}

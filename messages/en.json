@@ -1,0 +1,228 @@
+{
+  "hero": {
+    "title": "Caio de Camargo",
+    "subtitle": "Helping you scale with AI, marketing, strategy & real estate investment opportunities."
+  },
+  "cards": {
+    "strategyConsultation": {
+      "title": "Strategy & Consultation",
+      "description": "Get personalized AI, automation, and business scaling strategies. Book a strategy call to unlock your business potential.",
+      "cta": "Book Strategy Call →"
+    },
+    "rarityAgency": {
+      "title": "Rarity Agency",
+      "description": "Marketing and AI agency to scale your brand and automate operations.",
+      "cta": "Visit Agency →"
+    },
+    "realEstate": {
+      "title": "Exclusive Real Estate Opportunities",
+      "description": "Discover high-yield investment opportunities in emerging markets. Limited spots available for serious investors.",
+      "cta": "Explore Investments →"
+    },
+    "consulting": {
+      "title": "Strategy & Consulting",
+      "description": "Personal and strategic consulting to unlock your business growth.",
+      "cta": "Learn More →"
+    },
+    "linkedin": {
+      "title": "Connect on LinkedIn",
+      "description": "Let's connect and explore professional opportunities on LinkedIn.",
+      "cta": "Connect Now →"
+    }
+  },
+  "realEstate": {
+    "dialogTitle": "Real Estate Investment Opportunities",
+    "dialogDescription": "Select your preferred investment destination to explore exclusive opportunities",
+    "countries": {
+      "indonesia": {
+        "name": "Indonesia",
+        "description": "Emerging market with high growth potential and attractive yields"
+      },
+      "dubai": {
+        "name": "Dubai",
+        "description": "Luxury real estate hub with tax advantages and world-class infrastructure"
+      },
+      "brazil": {
+        "name": "Brazil",
+        "description": "Diverse market opportunities with strong fundamentals and growth prospects"
+      }
+    }
+  },
+  "valueProposition": {
+    "title": "How I can help",
+    "description": "My mission is to provide the strategic leverage you need to achieve your goals.",
+    "cta": "Book a call"
+  },
+  "footer": {
+    "copyright": "© 2025 Caio de Camargo. All Rights Reserved."
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "pt": "Portuguese",
+    "es": "Spanish"
+  },
+  "leadCapture": {
+    "intro": {
+      "title": "Strategy & Consultation",
+      "message": "Me and my team can help you with Automation, AI, and Software implementation, as well as scaling your company's marketing and sales processes. But before we jump on a video call, I need to know a few things from you.",
+      "nextButton": "Next"
+    },
+    "steps": {
+      "name": {
+        "title": "What's your name?",
+        "placeholder": "Enter your full name"
+      },
+      "whatsapp": {
+        "title": "What's your WhatsApp?",
+        "placeholder": "+1 (555) 123-4567"
+      },
+      "email": {
+        "title": "What's your email?",
+        "placeholder": "Enter your email address"
+      },
+      "instagram": {
+        "title": "What's your @ on Instagram?",
+        "placeholder": "@username"
+      },
+      "industry": {
+        "title": "What is your industry/business?",
+        "placeholder": "Describe your industry or business"
+      },
+      "struggle": {
+        "title": "What do you most struggle to achieve?",
+        "placeholder": "Describe your main challenge or goal"
+      },
+      "budget": {
+        "title": "Are you able to invest money to achieve your business goals?",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "budgetAmount": {
+        "title": "What's your budget range?",
+        "placeholder": "Enter amount in USD",
+        "description": "This helps me prepare the right strategy for your investment level"
+      },
+      "calendar": {
+        "title": "Choose the best day and time in my schedule, and see you there!",
+        "timezoneLabel": "Your timezone",
+        "dateSelection": "Select a Date",
+        "timeSlots": "Available Time Slots",
+        "noSlots": "No available slots for this date. Please select another date."
+      }
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next",
+      "scheduleCall": "Schedule Call"
+    },
+    "form": {
+      "stepCounter": "Step {current} of {total}",
+      "selectOption": "Select an option"
+    },
+    "timezones": {
+      "europeMadrid": "Europe/Madrid",
+      "americaNewYork": "America/New_York",
+      "americaSaoPaulo": "America/Sao_Paulo",
+      "europeLondon": "Europe/London",
+      "asiaTokyo": "Asia/Tokyo",
+      "australiaSydney": "Australia/Sydney"
+    },
+    "success": {
+      "title": "Perfect! 🎉",
+      "message": "Your strategy call has been scheduled successfully. You'll receive a confirmation email with all the details.",
+      "scheduleAnother": "Schedule Another Call",
+      "close": "Close"
+    },
+    "emails": {
+      "confirmation": {
+        "subject": "🎯 Strategy Call Confirmed - Let's Scale Your Business",
+        "title": "You're Booked! 🚀",
+        "greeting": "Hi {name},",
+        "mainMessage": "Congratulations! Your Strategy & Consultation call has been confirmed. This is where we'll unlock the growth potential of your business through AI, automation, and strategic marketing.",
+        "callDetails": "Call Details",
+        "when": "When",
+        "where": "Where",
+        "duration": "Duration",
+        "timezone": "Timezone",
+        "platform": "Google Meet (link in calendar invite)",
+        "durationValue": "60 minutes",
+        "preparation": "What to Prepare",
+        "prepItems": [
+          "Your main goal for the next 90 days",
+          "Top 1-2 bottlenecks holding you back",
+          "Current tools and sales process overview",
+          "Specific results you want to achieve"
+        ],
+        "valueProposition": "What You'll Get",
+        "valueItems": [
+          "Custom AI & automation strategy for your business",
+          "Marketing & sales process optimization plan",
+          "90-day roadmap with clear milestones",
+          "Implementation priorities and next steps"
+        ],
+        "reminders": "We'll send reminders 24h and 2h before the call. Need to reschedule? Just reply to this email.",
+        "signature": "— Caio de Camargo",
+        "tagline": "Strategic Growth Partner | AI & Automation Expert"
+      },
+      "preCall": {
+        "subject": "🚀 Your Strategy Call is Tomorrow - Here's What to Expect",
+        "title": "Your Strategy Call is Tomorrow!",
+        "greeting": "Hi {name},",
+        "mainMessage": "I'm excited for our strategy session tomorrow! I've been reviewing your business details and have some powerful insights ready to share.",
+        "callReminder": "Call Reminder",
+        "when": "When",
+        "where": "Where",
+        "preparation": "Final Preparation",
+        "prepMessage": "To make the most of our time together, please have ready:",
+        "prepItems": [
+          "Your biggest current challenge",
+          "Specific growth goals",
+          "Questions about AI implementation",
+          "Any recent wins or setbacks"
+        ],
+        "whatToExpect": "What to Expect",
+        "expectItems": [
+          "Deep dive into your business model",
+          "AI & automation opportunities",
+          "Marketing strategy optimization",
+          "90-day action plan"
+        ],
+        "signature": "— Caio de Camargo",
+        "tagline": "Strategic Growth Partner | AI & Automation Expert"
+      },
+      "followUp": {
+        "subject": "📈 Your 90-Day Growth Plan is Ready",
+        "title": "Your Growth Plan is Ready!",
+        "greeting": "Hi {name},",
+        "mainMessage": "It was great connecting with you yesterday! I've put together your personalized 90-day growth roadmap based on our strategy session.",
+        "nextSteps": "Your Next Steps",
+        "step1": "Review the action plan I've attached",
+        "step2": "Schedule your first implementation call",
+        "step3": "Join our exclusive growth community",
+        "resources": "Additional Resources",
+        "resourceItems": [
+          "AI implementation checklist",
+          "Marketing automation templates",
+          "Sales process optimization guide",
+          "Weekly progress tracking sheet"
+        ],
+        "support": "I'm here to support your growth journey. Questions? Just reply to this email.",
+        "signature": "— Caio de Camargo",
+        "tagline": "Strategic Growth Partner | AI & Automation Expert"
+      }
+    },
+    "validation": {
+      "nameRequired": "Name must be at least 2 characters",
+      "whatsappRequired": "Please include country code, e.g. +34911122334, +1 (555) 123-4567",
+      "emailRequired": "Please enter a valid email address",
+      "instagramRequired": "Instagram handle is required",
+      "industryRequired": "Please describe your industry/business",
+      "struggleRequired": "Please describe your main struggle",
+      "budgetRequired": "Please select whether you can invest",
+      "budgetAmountRequired": "Please enter a number",
+      "budgetAmountNumber": "Please enter a valid number",
+      "budgetAmountPositive": "Amount must be greater than 0"
+    }
+  }
+}

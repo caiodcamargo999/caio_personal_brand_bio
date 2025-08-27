@@ -23,6 +23,10 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Google API credentials
+google-credentials.json
+google-credentials-*.json
+
 # Misc
 .vercel/
 .vscode/

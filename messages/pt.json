@@ -1,0 +1,228 @@
+{
+  "hero": {
+    "title": "Caio de Camargo",
+    "subtitle": "Ajudando você a escalar com IA, marketing, estratégia & oportunidades de investimento imobiliário."
+  },
+  "cards": {
+    "strategyConsultation": {
+      "title": "Estratégia & Consultoria",
+      "description": "Obtenha estratégias personalizadas de IA, automação e escalabilidade de negócios. Agende uma chamada de estratégia para desbloquear o potencial do seu negócio.",
+      "cta": "Agendar Chamada de Estratégia →"
+    },
+    "rarityAgency": {
+      "title": "Rarity Agency",
+      "description": "Agência de marketing e IA para escalar sua marca e automatizar operações.",
+      "cta": "Visitar Agência →"
+    },
+    "realEstate": {
+      "title": "Oportunidades Exclusivas de Investimento Imobiliário",
+      "description": "Descubra oportunidades de investimento de alto retorno em mercados emergentes. Vagas limitadas para investidores sérios.",
+      "cta": "Explorar Investimentos →"
+    },
+    "consulting": {
+      "title": "Estratégia & Consultoria",
+      "description": "Consultoria pessoal e estratégica para desbloquear o crescimento do seu negócio.",
+      "cta": "Saiba Mais →"
+    },
+    "linkedin": {
+      "title": "Conecte-se no LinkedIn",
+      "description": "Vamos nos conectar e explorar oportunidades profissionais no LinkedIn.",
+      "cta": "Conectar Agora →"
+    }
+  },
+  "realEstate": {
+    "dialogTitle": "Oportunidades de Investimento Imobiliário",
+    "dialogDescription": "Selecione seu destino de investimento preferido para explorar oportunidades exclusivas",
+    "countries": {
+      "indonesia": {
+        "name": "Indonésia",
+        "description": "Mercado emergente com alto potencial de crescimento e rendimentos atrativos"
+      },
+      "dubai": {
+        "name": "Dubai",
+        "description": "Hub de imóveis de luxo com vantagens fiscais e infraestrutura de classe mundial"
+      },
+      "brazil": {
+        "name": "Brasil",
+        "description": "Oportunidades de mercado diversificadas com fundamentos sólidos e perspectivas de crescimento"
+      }
+    }
+  },
+  "valueProposition": {
+    "title": "Como posso ajudar",
+    "description": "Minha missão é fornecer a alavancagem estratégica que você precisa para alcançar seus objetivos.",
+    "cta": "Agendar uma chamada"
+  },
+  "footer": {
+    "copyright": "© 2025 Caio de Camargo. Todos os Direitos Reservados."
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "en": "English",
+    "pt": "Português",
+    "es": "Español"
+  },
+  "leadCapture": {
+    "intro": {
+      "title": "Estratégia & Consultoria",
+      "message": "Eu e minha equipe podemos ajudá-lo com implementação de Automação, IA e Software, além de escalar os processos de marketing e vendas da sua empresa. Mas antes de fazermos uma videoconferência, preciso saber algumas coisas sobre você.",
+      "nextButton": "Próximo"
+    },
+    "steps": {
+      "name": {
+        "title": "Qual é o seu nome?",
+        "placeholder": "Digite seu nome completo"
+      },
+      "whatsapp": {
+        "title": "Qual é o seu WhatsApp?",
+        "placeholder": "+55 (11) 99999-9999"
+      },
+      "email": {
+        "title": "Qual é o seu email?",
+        "placeholder": "Digite seu endereço de email"
+      },
+      "instagram": {
+        "title": "Qual é o seu @ no Instagram?",
+        "placeholder": "@usuario"
+      },
+      "industry": {
+        "title": "Qual é a sua indústria/negócio?",
+        "placeholder": "Descreva sua indústria ou negócio"
+      },
+      "struggle": {
+        "title": "O que você mais tem dificuldade para alcançar?",
+        "placeholder": "Descreva seu principal desafio ou objetivo"
+      },
+      "budget": {
+        "title": "Você consegue investir dinheiro para alcançar seus objetivos de negócio?",
+        "yes": "Sim",
+        "no": "Não"
+      },
+      "budgetAmount": {
+        "title": "Qual é a sua faixa de orçamento?",
+        "placeholder": "Digite o valor em Reais",
+        "description": "Isso me ajuda a preparar a estratégia certa para o seu nível de investimento"
+      },
+      "calendar": {
+        "title": "Escolha o melhor dia e horário na minha agenda, e nos vemos lá!",
+        "timezoneLabel": "Seu fuso horário",
+        "dateSelection": "Selecionar uma Data",
+        "timeSlots": "Horários Disponíveis",
+        "noSlots": "Nenhum horário disponível para esta data. Por favor, selecione outra data."
+      }
+    },
+    "navigation": {
+      "back": "Voltar",
+      "next": "Próximo",
+      "scheduleCall": "Agendar Chamada"
+    },
+    "form": {
+      "stepCounter": "Passo {current} de {total}",
+      "selectOption": "Selecione uma opção"
+    },
+    "timezones": {
+      "europeMadrid": "Europa/Madri",
+      "americaNewYork": "América/Nova_York",
+      "americaSaoPaulo": "América/São_Paulo",
+      "europeLondon": "Europa/Londres",
+      "asiaTokyo": "Ásia/Tóquio",
+      "australiaSydney": "Austrália/Sydney"
+    },
+    "success": {
+      "title": "Perfeito! 🎉",
+      "message": "Sua chamada de estratégia foi agendada com sucesso. Você receberá um email de confirmação com todos os detalhes.",
+      "scheduleAnother": "Agendar Outra Chamada",
+      "close": "Fechar"
+    },
+    "emails": {
+      "confirmation": {
+        "subject": "🎯 Chamada de Estratégia Confirmada - Vamos Escalar Seu Negócio",
+        "title": "Você Está Agendado! 🚀",
+        "greeting": "Olá {name},",
+        "mainMessage": "Parabéns! Sua chamada de Estratégia & Consultoria foi confirmada. É aqui que vamos desbloquear o potencial de crescimento do seu negócio através de IA, automação e marketing estratégico.",
+        "callDetails": "Detalhes da Chamada",
+        "when": "Quando",
+        "where": "Onde",
+        "duration": "Duração",
+        "timezone": "Fuso Horário",
+        "platform": "Google Meet (link no convite do calendário)",
+        "durationValue": "60 minutos",
+        "preparation": "O Que Preparar",
+        "prepItems": [
+          "Seu principal objetivo para os próximos 90 dias",
+          "Top 1-2 gargalos que estão te segurando",
+          "Visão geral das ferramentas e processo de vendas atuais",
+          "Resultados específicos que você quer alcançar"
+        ],
+        "valueProposition": "O Que Você Vai Receber",
+        "valueItems": [
+          "Estratégia personalizada de IA e automação para seu negócio",
+          "Plano de otimização de marketing e processo de vendas",
+          "Roteiro de 90 dias com marcos claros",
+          "Prioridades de implementação e próximos passos"
+        ],
+        "reminders": "Enviaremos lembretes 24h e 2h antes da chamada. Precisa reagendar? Apenas responda este email.",
+        "signature": "— Caio de Camargo",
+        "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
+      },
+      "preCall": {
+        "subject": "🚀 Sua Chamada de Estratégia é Amanhã - Aqui Está o Que Esperar",
+        "title": "Sua Chamada de Estratégia é Amanhã!",
+        "greeting": "Olá {name},",
+        "mainMessage": "Estou animado para nossa sessão de estratégia amanhã! Revisei os detalhes do seu negócio e tenho algumas percepções poderosas prontas para compartilhar.",
+        "callReminder": "Lembrete da Chamada",
+        "when": "Quando",
+        "where": "Onde",
+        "preparation": "Preparação Final",
+        "prepMessage": "Para aproveitar ao máximo nosso tempo juntos, por favor tenha pronto:",
+        "prepItems": [
+          "Seu maior desafio atual",
+          "Metas específicas de crescimento",
+          "Perguntas sobre implementação de IA",
+          "Qualquer vitória ou contratempo recente"
+        ],
+        "whatToExpect": "O Que Esperar",
+        "expectItems": [
+          "Mergulho profundo no seu modelo de negócio",
+          "Oportunidades de IA e automação",
+          "Otimização de estratégia de marketing",
+          "Plano de ação de 90 dias"
+        ],
+        "signature": "— Caio de Camargo",
+        "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
+      },
+      "followUp": {
+        "subject": "📈 Seu Plano de Crescimento de 90 Dias Está Pronto",
+        "title": "Seu Plano de Crescimento Está Pronto!",
+        "greeting": "Olá {name},",
+        "mainMessage": "Foi ótimo conectar com você ontem! Preparei seu roteiro personalizado de crescimento de 90 dias baseado em nossa sessão de estratégia.",
+        "nextSteps": "Seus Próximos Passos",
+        "step1": "Revise o plano de ação que anexei",
+        "step2": "Agende sua primeira chamada de implementação",
+        "step3": "Junte-se à nossa comunidade exclusiva de crescimento",
+        "resources": "Recursos Adicionais",
+        "resourceItems": [
+          "Lista de verificação de implementação de IA",
+          "Modelos de automação de marketing",
+          "Guia de otimização de processo de vendas",
+          "Planilha de acompanhamento semanal de progresso"
+        ],
+        "support": "Estou aqui para apoiar sua jornada de crescimento. Perguntas? Apenas responda este email.",
+        "signature": "— Caio de Camargo",
+        "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
+      }
+    },
+    "validation": {
+      "nameRequired": "Nome deve ter pelo menos 2 caracteres",
+      "whatsappRequired": "Por favor, inclua o código do país, ex: +5511999999999, +55 (11) 99999-9999",
+      "emailRequired": "Por favor, digite um endereço de email válido",
+      "instagramRequired": "Handle do Instagram é obrigatório",
+      "industryRequired": "Por favor, descreva sua indústria/negócio",
+      "struggleRequired": "Por favor, descreva sua principal dificuldade",
+      "budgetRequired": "Por favor, selecione se você pode investir",
+      "budgetAmountRequired": "Por favor, digite um número",
+      "budgetAmountNumber": "Por favor, insira um número válido",
+      "budgetAmountPositive": "Valor deve ser maior que 0"
+    }
+  }
+}

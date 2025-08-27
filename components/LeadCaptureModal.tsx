@@ -60,13 +60,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
     
-    // Special validation for budget amount step
-    if (currentStep === 8 && watchedValues.budget === 'yes') {
-      if (!budgetAmount || budgetAmount <= 0) {
-        return; // Don't proceed if no valid budget amount
-      }
-    }
-    
     // Regular field validation
     if (currentField) {
       const isValid = await trigger(currentField);
@@ -299,9 +292,9 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                   {currentStepData.type === 'number' && watchedValues.budget === 'yes' && (
                     <div className="space-y-2">
                       <input
-                        type="number"
-                        min="1"
-                        step="1"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         value={budgetAmount || ''}
                         onChange={(e) => {
                           const value = e.target.value;

@@ -59,6 +59,15 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
+    
+    // Special validation for budget amount step
+    if (currentStep === 8 && watchedValues.budget === 'yes') {
+      if (!budgetAmount || budgetAmount <= 0) {
+        return; // Don't proceed if no valid budget amount
+      }
+    }
+    
+    // Regular field validation
     if (currentField) {
       const isValid = await trigger(currentField);
       if (!isValid) {
@@ -294,11 +303,31 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         min="1"
                         step="1"
                         value={budgetAmount || ''}
-                        onChange={(e) => setBudgetAmount(e.target.valueAsNumber)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value === '') {
+                            setBudgetAmount(undefined);
+                          } else {
+                            const numValue = parseFloat(value);
+                            if (!isNaN(numValue) && numValue > 0) {
+                              setBudgetAmount(numValue);
+                            }
+                          }
+                        }}
                         placeholder={currentStepData.placeholder}
-                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 transition-colors"
+                        className={`w-full px-4 py-3 bg-card/50 border rounded-lg text-white placeholder-muted focus:outline-none transition-colors ${
+                          budgetAmount && budgetAmount > 0 
+                            ? 'border-green-500 focus:border-green-400' 
+                            : 'border-cardBorder focus:border-primary/50'
+                        }`}
                       />
                       <p className="text-sm text-muted">{t('leadCapture.steps.budgetAmount.description')}</p>
+                      {budgetAmount && budgetAmount > 0 && (
+                        <p className="text-sm text-green-400">✓ Valid budget amount</p>
+                      )}
+                      {budgetAmount !== undefined && budgetAmount <= 0 && (
+                        <p className="text-sm text-red-400">Please enter a valid amount greater than 0</p>
+                      )}
                     </div>
                   )}
 

@@ -3,7 +3,7 @@ export function reportWebVitals(metric: any) {
   if (metric.label === 'web-vital') {
     // Send to analytics service
     console.log('Web Vital:', metric);
-    
+
     // You can send to Google Analytics, Vercel Analytics, or any other service
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', metric.name, {
@@ -28,13 +28,12 @@ export const webVitalsThresholds = {
 // Performance monitoring
 export function monitorPerformance() {
   if (typeof window !== 'undefined') {
-    // Monitor Core Web Vitals
-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-      getCLS(reportWebVitals);
-      getFID(reportWebVitals);
-      getFCP(reportWebVitals);
-      getLCP(reportWebVitals);
-      getTTFB(reportWebVitals);
+    // Monitor Core Web Vitals - Updated for web-vitals v5
+    import('web-vitals').then(({ onCLS, onFCP, onLCP, onTTFB }) => {
+      onCLS(reportWebVitals);
+      onFCP(reportWebVitals);
+      onLCP(reportWebVitals);
+      onTTFB(reportWebVitals);
     });
   }
 }

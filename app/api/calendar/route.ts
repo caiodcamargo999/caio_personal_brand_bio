@@ -87,11 +87,23 @@ export async function POST(request: NextRequest) {
 
     // Try live Google Calendar event creation
     try {
+      console.log('Attempting to create calendar event with data:', {
+        startTime,
+        name: body.name,
+        email: body.email,
+        budget: body.budget,
+        budgetAmount: body.budgetAmount
+      });
+      
       const auth = await getGoogleAuth();
+      console.log('Google Auth initialized successfully');
+      
       const calendar = new GoogleCalendarService(auth);
+      console.log('Google Calendar service initialized');
+      
       const event = await calendar.createEvent(body as any, startTime);
       
-      // Check if the event was created successfully and has a Google Meet link
+      // Check if the event was created successfully
       if (event && event.id) {
         const hangoutLink = event.hangoutLink || event.conferenceData?.entryPoints?.[0]?.uri;
         
@@ -118,10 +130,21 @@ export async function POST(request: NextRequest) {
       }
     } catch (liveErr: any) {
       console.error('Live Google Calendar event creation failed:', liveErr);
+      
+      // Log detailed error information for debugging
+      if (liveErr.response) {
+        console.error('Error response:', {
+          status: liveErr.response.status,
+          data: liveErr.response.data,
+          headers: liveErr.response.headers
+        });
+      }
+      
       return NextResponse.json({ 
         success: false, 
         message: 'Failed to create calendar event', 
-        error: liveErr.message 
+        error: liveErr.message,
+        details: liveErr.response?.data || 'No additional details available'
       }, { status: 500 });
     }
 

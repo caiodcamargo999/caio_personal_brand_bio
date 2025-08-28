@@ -11,13 +11,31 @@ const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID || '';
 const SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Sheet1';
 const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'caiorarity@gmail.com';
 
+// Debug environment variables
+console.log('Google API Environment Variables:', {
+  SPREADSHEET_ID: SPREADSHEET_ID ? 'SET' : 'NOT SET',
+  CALENDAR_ID: CALENDAR_ID,
+  CREDENTIALS_PATH: process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'SET' : 'NOT SET'
+});
+
 // Initialize Google Auth
 export const getGoogleAuth = async () => {
   try {
+    console.log('Initializing Google Auth with:', {
+      keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+      scopes: SCOPES
+    });
+    
+    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable is not set');
+    }
+    
     const auth = new google.auth.GoogleAuth({
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES,
     });
+    
+    console.log('Google Auth initialized successfully');
     return auth;
   } catch (error) {
     console.error('Error initializing Google Auth:', error);
@@ -126,6 +144,13 @@ export class GoogleCalendarService {
 
   async createEvent(data: LeadFormData, startTime: string) {
     try {
+      console.log('Creating calendar event with data:', {
+        name: data.name,
+        email: data.email,
+        startTime,
+        calendarId: CALENDAR_ID
+      });
+      
       const calendar = google.calendar({ version: 'v3', auth: this.auth });
       
       // Format budget for calendar display
@@ -170,10 +195,12 @@ export class GoogleCalendarService {
           dateTime: endDateTime.toISOString(),
           timeZone: 'Europe/Madrid',
         },
-        attendees: [
-          { email: 'caiorarity@gmail.com' },
-          { email: data.email }, // Add the lead's email as attendee
-        ],
+        // Note: Service accounts cannot add attendees without domain-wide delegation
+        // The event will be created in the calendar but attendees won't be automatically added
+        // attendees: [
+        //   { email: 'caiorarity@gmail.com' },
+        //   { email: data.email },
+        // ],
         reminders: {
           useDefault: false,
           overrides: [
@@ -193,6 +220,13 @@ export class GoogleCalendarService {
         visibility: 'default',
       };
 
+      console.log('Attempting to insert calendar event with config:', {
+        calendarId: CALENDAR_ID,
+        sendUpdates: 'all',
+        conferenceDataVersion: 1,
+        supportsAttachments: false
+      });
+      
       const response = await calendar.events.insert({
         calendarId: CALENDAR_ID,
         requestBody: event,

@@ -8,7 +8,7 @@ import { createLeadFormSchema, LeadFormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 
 interface LeadCaptureModalProps {
@@ -36,10 +36,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     { id: 'industry', title: t('leadCapture.steps.industry.title'), field: 'industry' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.industry.placeholder'), required: true },
     { id: 'struggle', title: t('leadCapture.steps.struggle.title'), field: 'struggle' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.struggle.placeholder'), required: true },
     { id: 'budget', title: t('leadCapture.steps.budget.title'), field: 'budget' as keyof LeadFormData, type: 'select' as const, options: [{ value: 'yes', label: t('leadCapture.steps.budget.yes') }, { value: 'no', label: t('leadCapture.steps.budget.no') }], required: true },
-    
-        { id: 'budgetAmount', title: t('leadCapture.steps.budgetAmount.title'), field: null, type: 'number' as const, placeholder: t('leadCapture.steps.budgetAmount.placeholder'), required: false },
+    { id: 'budgetAmount', title: t('leadCapture.steps.budgetAmount.title'), field: null, type: 'number' as const, placeholder: t('leadCapture.steps.budgetAmount.placeholder'), required: false },
     { id: 'calendar', title: t('leadCapture.steps.calendar.title'), field: null, type: 'calendar' as const, required: false },
   ];
+
+
 
   const schema = createLeadFormSchema(t);
 
@@ -68,10 +69,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
       }
     }
     
-    // Skip budget amount step if budget is "no"
-    if (currentStep === 7 && watchedValues.budget === 'no') {
-      setCurrentStep(currentStep + 2); // Skip directly to calendar step
-    } else if (currentStep < formSteps.length - 1) {
+
+    
+    // Regular next step logic
+    if (currentStep < formSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -81,11 +82,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
       setCurrentStep(currentStep - 1);
     }
   };
-  
-
-  
-
-  
 
   const onSubmit = async (data: LeadFormData) => {
     setIsSubmitting(true);
@@ -194,42 +190,57 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl flex flex-col mx-4 sm:mx-auto">
-        <DialogHeader>
-          <DialogTitle className="sr-only">{t('leadCapture.intro.title')}</DialogTitle>
+      <DialogContent className="max-w-[520px] p-0 border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl overflow-hidden">
+        <DialogHeader className="sr-only">
+          <DialogTitle>{t('leadCapture.intro.title')}</DialogTitle>
         </DialogHeader>
-        {/* Progress Bar */}
-        <div className="w-full bg-card/20 rounded-full h-2 mb-4 sm:mb-6">
-          <motion.div
-            className="bg-primary h-2 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.3 }}
-          />
+        {/* Header with Progress */}
+        <div className="p-6 pb-4 border-b border-primary/20">
+          {/* Progress Bar */}
+          <div className="w-full bg-card/20 rounded-full h-2 mb-4">
+            <motion.div
+              className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full shadow-lg"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            />
+          </div>
+
+          {/* Step Counter and Title */}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-muted font-medium">
+              {t('leadCapture.form.stepCounter').replace('{current}', String(currentStep + 1)).replace('{total}', String(formSteps.length))}
+            </span>
+            <span className="text-xs text-primary font-medium">
+              {Math.round(progress)}% Complete
+            </span>
+          </div>
+
+          {/* Current Step Title */}
+          <h2 className="text-lg font-semibold text-center bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">
+            {currentStepData.title}
+          </h2>
         </div>
 
-        {/* Step Counter */}
-        <div className="text-center mb-4 sm:mb-6">
-          <span className="text-xs sm:text-sm text-muted">
-            {t('leadCapture.form.stepCounter').replace('{current}', String(currentStep + 1)).replace('{total}', String(formSteps.length))}
-          </span>
-        </div>
-
-        {/* Form Content - Make scrollable */}
-        <div className="space-y-4 sm:space-y-6 flex-1 overflow-y-auto pr-1 sm:pr-2">
+        {/* Form Content */}
+        <div className="p-6 pt-4 max-h-[60vh] overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="space-y-6"
             >
               {/* Intro Step */}
               {currentStep === 0 && (
-                <div className="text-center space-y-6">
-                  <h2 className="text-2xl font-bold">{t('leadCapture.intro.title')}</h2>
-                  <p className="text-muted leading-relaxed">
+                <div className="text-center space-y-6 py-4">
+                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calendar className="w-10 h-10 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold">{t('leadCapture.intro.title')}</h3>
+                  <p className="text-muted leading-relaxed text-sm">
                     {t('leadCapture.intro.message')}
                   </p>
                 </div>
@@ -238,127 +249,201 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               {/* Form Steps */}
               {currentStep > 0 && currentStep < formSteps.length - 1 && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold">{currentStepData.title}</h2>
-                  
                   {currentStepData.type === 'text' && (
-                    <input
-                      {...register(currentStepData.field!)}
-                      type={currentStepData.field === 'whatsapp' ? 'tel' : 'text'}
-                      inputMode={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
-                      autoComplete={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
-                      pattern={currentStepData.field === 'whatsapp' ? "^[+0-9()\\-\\s]*$" : undefined}
-                      placeholder={currentStepData.placeholder}
-                      className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 transition-colors"
-                      
-                    />
+                    <div className="space-y-2">
+                      <input
+                        {...register(currentStepData.field!)}
+                        type={currentStepData.field === 'whatsapp' ? 'tel' : 'text'}
+                        inputMode={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
+                        autoComplete={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
+                        pattern={currentStepData.field === 'whatsapp' ? "^[+0-9()\\s\\-]*$" : undefined}
+                        placeholder={currentStepData.placeholder}
+                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                      />
+                      {errors[currentStepData.field as keyof LeadFormData] && (
+                        <p className="text-red-400 text-sm flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          {errors[currentStepData.field as keyof LeadFormData]?.message}
+                        </p>
+                      )}
+                    </div>
                   )}
 
                   {currentStepData.type === 'email' && (
-                    <input
-                      {...register(currentStepData.field!)}
-                      type="email"
-                      placeholder={currentStepData.placeholder}
-                      className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 transition-colors"
-                      
-                    />
+                    <div className="space-y-2">
+                      <input
+                        {...register(currentStepData.field!)}
+                        type="email"
+                        placeholder={currentStepData.placeholder}
+                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                      />
+                      {errors[currentStepData.field as keyof LeadFormData] && (
+                        <p className="text-red-400 text-sm flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          {errors[currentStepData.field as keyof LeadFormData]?.message}
+                        </p>
+                      )}
+                    </div>
                   )}
 
                   {currentStepData.type === 'textarea' && (
-                    <textarea
-                      {...register(currentStepData.field!)}
-                      placeholder={currentStepData.placeholder}
-                      rows={4}
-                      className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                      
-                    />
+                    <div className="space-y-2">
+                      <textarea
+                        {...register(currentStepData.field!)}
+                        placeholder={currentStepData.placeholder}
+                        rows={4}
+                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 resize-none"
+                      />
+                      {errors[currentStepData.field as keyof LeadFormData] && (
+                        <p className="text-red-400 text-sm flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          {errors[currentStepData.field as keyof LeadFormData]?.message}
+                        </p>
+                      )}
+                    </div>
                   )}
 
                   {currentStepData.type === 'select' && (
-                    <div className="flex items-center space-x-4 p-4 bg-card/50 rounded-lg border-2 border-cardBorder">
-                      <Switch
-                        id="budget-toggle"
-                        checked={watchedValues[currentStepData.field!] === 'yes'}
-                        onCheckedChange={(checked) => {
-                          const value = checked ? 'yes' : 'no';
-                          setValue(currentStepData.field!, value);
-                        }}
-                      />
-                      <label htmlFor="budget-toggle" className="font-medium text-white">
-                        {t('leadCapture.steps.budget.yes')}
-                      </label>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-4 p-4 bg-card/50 rounded-lg border-2 border-cardBorder hover:border-primary/30 transition-colors">
+                        <Switch
+                          id="budget-toggle"
+                          checked={watchedValues[currentStepData.field!] === 'yes'}
+                          onCheckedChange={(checked) => {
+                            const value = checked ? 'yes' : 'no';
+                            setValue(currentStepData.field!, value);
+                          }}
+                        />
+                        <label htmlFor="budget-toggle" className="font-medium text-white cursor-pointer">
+                          {t('leadCapture.steps.budget.yes')}
+                        </label>
+                      </div>
+                      {watchedValues[currentStepData.field!] === 'no' && (
+                        <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                          <p className="text-sm text-yellow-400 text-center">
+                            No problem! We&apos;ll redirect you to resources that don&apos;t require investment.
+                          </p>
+                          <div className="mt-3 text-center">
+                            <Button 
+                              onClick={async () => {
+                                // Save the lead data first
+                                try {
+                                  const leadData = {
+                                    name: watchedValues.name,
+                                    whatsapp: watchedValues.whatsapp,
+                                    email: watchedValues.email,
+                                    instagram: watchedValues.instagram,
+                                    industry: watchedValues.industry,
+                                    struggle: watchedValues.struggle,
+                                    budget: 'no',
+                                    budgetAmount: undefined
+                                  };
+                                  
+                                  await fetch('/api/leads', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(leadData),
+                                  });
+                                  
+                                  // Redirect to WhatsApp with appropriate message based on language
+                                  const messages = {
+                                    en: "Hey Caio, I filled the form but I don't have budget to invest.",
+                                    pt: "Oi Caio, preenchi o formulário mas não tenho orçamento para investir.",
+                                    es: "Hola Caio, completé el formulario pero no tengo presupuesto para invertir."
+                                  };
+                                  
+                                  const whatsappMessage = messages[locale as keyof typeof messages] || messages.en;
+                                  const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
+                                  
+                                  // Open WhatsApp in new tab
+                                  window.open(whatsappUrl, '_blank');
+                                  
+                                  // Close the modal
+                                  onClose();
+                                } catch (error) {
+                                  console.error('Error saving lead data:', error);
+                                  // Still redirect to WhatsApp even if saving fails
+                                  const messages = {
+                                    en: "Hey Caio, I filled the form but I don't have budget to invest.",
+                                    pt: "Oi Caio, preenchi o formulário mas não tenho orçamento para investir.",
+                                    es: "Hola Caio, completé el formulario pero no tengo presupuesto para invertir."
+                                  };
+                                  
+                                  const whatsappMessage = messages[locale as keyof typeof messages] || messages.en;
+                                  const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
+                                  window.open(whatsappUrl, '_blank');
+                                  onClose();
+                                }
+                              }}
+                              className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
+                            >
+                              Continue to WhatsApp
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
                   {currentStepData.type === 'number' && watchedValues.budget === 'yes' && (
-                    <div className="space-y-2">
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        value={budgetAmount || ''}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value === '') {
-                            setBudgetAmount(undefined);
-                          } else {
-                            const numValue = parseFloat(value);
-                            if (!isNaN(numValue) && numValue > 0) {
-                              setBudgetAmount(numValue);
-                            }
-                          }
-                        }}
-                        placeholder={currentStepData.placeholder}
-                        className={`w-full px-4 py-3 bg-card/50 border rounded-lg text-white placeholder-muted focus:outline-none transition-colors ${
-                          budgetAmount && budgetAmount > 0 
-                            ? 'border-green-500 focus:border-green-400' 
-                            : 'border-cardBorder focus:border-primary/50'
-                        }`}
-                      />
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted">$</span>
+                        <input
+                          type="number"
+                          value={budgetAmount || ''}
+                          onChange={(e) => setBudgetAmount(parseFloat(e.target.value) || undefined)}
+                          placeholder="Enter amount"
+                          className="w-full pl-8 pr-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                          min="0"
+                          step="100"
+                        />
+                      </div>
                       <p className="text-sm text-muted">{t('leadCapture.steps.budgetAmount.description')}</p>
                       {budgetAmount && budgetAmount > 0 && (
-                        <p className="text-sm text-green-400">✓ Valid budget amount</p>
+                        <div className="flex items-center gap-2 text-sm text-green-400">
+                          <Check className="w-4 h-4" />
+                          Valid budget amount
+                        </div>
                       )}
                       {budgetAmount !== undefined && budgetAmount <= 0 && (
-                        <p className="text-sm text-red-400">Please enter a valid amount greater than 0</p>
+                        <div className="flex items-center gap-2 text-sm text-red-400">
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          Please enter a valid amount greater than 0
+                        </div>
                       )}
                     </div>
-                  )}
-
-                  {/* Error Display */}
-                  {errors[currentStepData.field as keyof LeadFormData] && (
-                    <p className="text-red-400 text-sm">
-                      {errors[currentStepData.field as keyof LeadFormData]?.message}
-                    </p>
                   )}
                 </div>
               )}
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="space-y-4 sm:space-y-6">
-                  <h2 className="text-lg sm:text-xl font-semibold text-center sm:text-left">{t('leadCapture.steps.calendar.title')}</h2>
-                  
-                  {/* Timezone Selection - Mobile Optimized */}
-                  <div className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:space-x-3">
-                    <label className="block text-sm font-medium text-center sm:text-left">{t('leadCapture.steps.calendar.timezoneLabel')}</label>
-                    <select
-                      value={userTimeZone}
-                      onChange={(e) => setUserTimeZone(e.target.value)}
-                      className="w-full sm:w-auto px-3 py-2 bg-card/50 border border-cardBorder rounded-md text-white focus:outline-none focus:border-primary/50 transition-colors text-center sm:text-left"
-                    >
-                      <option value="Europe/Madrid">{t('leadCapture.timezones.europeMadrid')}</option>
-                      <option value="America/New_York">{t('leadCapture.timezones.americaNewYork')}</option>
-                      <option value="America/Sao_Paulo">{t('leadCapture.timezones.americaSaoPaulo')}</option>
-                      <option value="Europe/London">{t('leadCapture.timezones.europeLondon')}</option>
-                      <option value="Asia/Tokyo">{t('leadCapture.timezones.asiaTokyo')}</option>
-                      <option value="Australia/Sydney">{t('leadCapture.timezones.australiaSydney')}</option>
-                    </select>
+                <div className="space-y-6">
+                  {/* Timezone Selection */}
+                  <div className="space-y-3">
+                    <label className="block text-sm font-medium text-center">{t('leadCapture.steps.calendar.timezoneLabel')}</label>
+                    <div className="flex items-center gap-2 p-3 bg-card/50 rounded-lg border border-cardBorder">
+                      <MapPin className="w-4 h-4 text-muted" />
+                      <select
+                        value={userTimeZone}
+                        onChange={(e) => setUserTimeZone(e.target.value)}
+                        className="flex-1 bg-transparent text-white focus:outline-none text-center"
+                      >
+                        <option value="Europe/Madrid">{t('leadCapture.timezones.europeMadrid')}</option>
+                        <option value="America/New_York">{t('leadCapture.timezones.americaNewYork')}</option>
+                        <option value="America/Sao_Paulo">{t('leadCapture.timezones.americaSaoPaulo')}</option>
+                        <option value="Europe/London">{t('leadCapture.timezones.europeLondon')}</option>
+                        <option value="Asia/Tokyo">{t('leadCapture.timezones.asiaTokyo')}</option>
+                        <option value="Australia/Sydney">{t('leadCapture.timezones.australiaSydney')}</option>
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Date Selection - Mobile Optimized */}
-                  <div className="space-y-3 sm:space-y-4">
-                    <h3 className="font-medium text-center sm:text-left">{t('leadCapture.steps.calendar.dateSelection')}</h3>
-                    <div className="grid grid-cols-4 sm:grid-cols-7 gap-1 sm:gap-2">
+                  {/* Date Selection */}
+                  <div className="space-y-3">
+                    <h3 className="font-medium text-center">{t('leadCapture.steps.calendar.dateSelection')}</h3>
+                    <div className="grid grid-cols-7 gap-2">
                       {Array.from({ length: 14 }, (_, i) => {
                         const date = new Date();
                         date.setDate(date.getDate() + i);
@@ -370,16 +455,16 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                             key={i}
                             type="button"
                             onClick={() => handleCalendarDateSelect(date)}
-                            className={`p-2 sm:p-3 rounded-lg border transition-all text-center ${
+                            className={`p-2 rounded-lg border transition-all text-center hover:scale-105 ${
                               isSelected
-                                ? 'border-primary bg-primary/20 text-white'
-                                : 'border-cardBorder hover:border-primary/50 bg-card/50'
+                                ? 'border-primary bg-primary text-white shadow-lg'
+                                : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70'
                             } ${isToday ? 'ring-2 ring-primary/50' : ''}`}
                           >
-                            <div className="text-xs font-medium">
+                            <div className="text-xs font-medium opacity-80">
                               {date.toLocaleDateString(locale, { weekday: 'short' })}
                             </div>
-                            <div className="text-base sm:text-lg font-bold">
+                            <div className="text-base font-bold">
                               {date.getDate()}
                             </div>
                           </button>
@@ -388,12 +473,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                     </div>
                   </div>
 
-                  {/* Time Slots - Mobile Optimized */}
+                  {/* Time Slots */}
                   {selectedDate && (
-                    <div className="space-y-3 sm:space-y-4">
-                      <h3 className="font-medium text-center sm:text-left">{t('leadCapture.steps.calendar.timeSlots')}</h3>
+                    <div className="space-y-3">
+                      <h3 className="font-medium text-center">{t('leadCapture.steps.calendar.timeSlots')}</h3>
                       {availableSlots.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                        <div className="grid grid-cols-3 gap-2">
                           {availableSlots.map((slot) => {
                             const isSelected = slot.iso === selectedTime;
                             
@@ -402,10 +487,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                                 key={slot.iso}
                                 type="button"
                                 onClick={() => handleTimeSlotSelect(slot.iso)}
-                                className={`p-3 sm:p-4 rounded-lg border transition-all text-sm sm:text-base ${
+                                className={`p-3 rounded-lg border transition-all text-sm hover:scale-105 ${
                                   isSelected
-                                    ? 'border-primary bg-primary text-white'
-                                    : 'border-cardBorder hover:border-primary/50 bg-card/50'
+                                    ? 'border-primary bg-primary text-white shadow-lg'
+                                    : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70'
                                 }`}
                               >
                                 {slot.display}
@@ -416,42 +501,52 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                       ) : (
                         <div className="text-center py-6">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
-                          <p className="text-muted text-sm sm:text-base">Loading available time slots...</p>
+                          <p className="text-muted text-sm">Loading available time slots...</p>
                         </div>
                       )}
                     </div>
                   )}
 
-                  {/* Selection Status - Mobile Optimized */}
+                  {/* Selection Status */}
                   {selectedDate && selectedTime && (
-                    <div className="p-3 sm:p-4 bg-primary/10 border border-primary/30 rounded-lg">
-                      <p className="text-xs sm:text-sm text-center">
-                        <span className="font-medium">Selected:</span> {selectedDate.toLocaleDateString(locale, { 
-                          weekday: 'long', 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })} at {new Date(selectedTime).toLocaleTimeString(locale, { 
-                          hour: '2-digit', 
-                          minute: '2-digit',
-                          timeZone: userTimeZone 
-                        })}
-                      </p>
+                    <div className="p-4 bg-primary/10 border border-primary/30 rounded-lg">
+                      <div className="flex items-center gap-3 text-center">
+                        <Calendar className="w-5 h-5 text-primary" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">
+                            {selectedDate.toLocaleDateString(locale, { 
+                              weekday: 'long', 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
+                          </p>
+                          <p className="text-xs text-muted">
+                            at {new Date(selectedTime).toLocaleTimeString(locale, { 
+                              hour: '2-digit', 
+                              minute: '2-digit',
+                              timeZone: userTimeZone 
+                            })}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
               )}
             </motion.div>
           </AnimatePresence>
+        </div>
 
-          {/* Navigation Buttons */}
-          <div className="flex justify-between pt-4 mt-6 border-t border-cardBorder/30">
+        {/* Navigation Footer */}
+        <div className="p-6 pt-4 border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent">
+          <div className="flex justify-between items-center">
             <Button
               type="button"
               onClick={handleBack}
               disabled={currentStep === 0}
               variant="outline"
-              className="flex items-center space-x-2"
+              className="flex items-center gap-2 border-cardBorder hover:border-primary/50 hover:bg-primary/10 transition-all duration-200"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">{t('leadCapture.navigation.back')}</span>
@@ -461,16 +556,25 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               <Button
                 onClick={handleSubmit(onSubmit)}
                 disabled={isSubmitting || !selectedTime}
-                className="flex items-center space-x-2 bg-primary hover:bg-primary/90"
-                title={`isSubmitting: ${isSubmitting}, selectedTime: ${selectedTime || 'none'}`}
+                className="flex items-center gap-2 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
               >
-                <span>{t('leadCapture.navigation.scheduleCall')}</span>
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Scheduling...</span>
+                  </>
+                ) : (
+                  <>
+                    <Calendar className="w-4 h-4" />
+                    <span>{t('leadCapture.navigation.scheduleCall')}</span>
+                  </>
+                )}
               </Button>
             ) : (
               <Button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center space-x-2 bg-primary hover:bg-primary/90"
+                className="flex items-center gap-2 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 <span>{t('leadCapture.navigation.next')}</span>
                 <ArrowRight className="w-4 h-4" />

@@ -56,6 +56,22 @@
   "footer": {
     "copyright": "© 2025 Caio de Camargo. Todos los Derechos Reservados."
   },
+  "bio": {
+    "tagline": "Ayudándote a escalar con IA, marketing, estrategia y oportunidades de inversión inmobiliaria.",
+    "strategy": {
+      "title": "Estrategia y Consultoría",
+      "description": "Obtén estrategias personalizadas de IA, automatización y escalado de negocios. Reserva una llamada estratégica para desbloquear el potencial de tu negocio.",
+      "cta": "Reservar Llamada Estratégica"
+    },
+    "realEstate": {
+      "title": "Oportunidades Exclusivas de Inversión Inmobiliaria",
+      "description": "Descubre oportunidades de inversión de alto rendimiento en mercados emergentes. Plazas limitadas para inversores serios.",
+      "cta": "Explorar Inversiones"
+    },
+    "contact": {
+      "text": "Conectémonos y exploremos oportunidades juntos"
+    }
+  },
   "languageSwitcher": {
     "label": "Idioma",
     "en": "English",

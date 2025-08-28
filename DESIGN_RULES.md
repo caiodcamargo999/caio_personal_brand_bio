@@ -186,7 +186,13 @@ This document defines the complete visual identity system for Caio de Camargo's 
 
 ## 🚫 **Design Constraints**
 
+### **CRITICAL RULE - NEVER BREAK THIS**
+**NEVER, I SAY, NEVER CHANGE ANYTHING IN DESIGN AND STRUCTURE IF I DON'T ASK TO!!!**
+
 ### **What NOT to Do**
+- **NEVER** change design without explicit request
+- **NEVER** modify structure without permission
+- **NEVER** add/remove components without asking
 - Don't use colors outside the defined palette
 - Don't change the gradient background system
 - Don't modify the primary purple (#8b5cf6) without updating the entire system

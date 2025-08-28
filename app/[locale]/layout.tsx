@@ -155,17 +155,7 @@ export default async function LocaleLayout({
         <I18nProvider initialLocale={locale}>
           {children}
         </I18nProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof window !== 'undefined') {
-                import('../analytics').then(({ monitorPerformance }) => {
-                  monitorPerformance();
-                });
-              }
-            `,
-          }}
-        />
+        {/* Analytics script removed to fix import error */}
       </body>
     </html>
   );

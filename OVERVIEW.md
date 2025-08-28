@@ -101,6 +101,15 @@ The design emphasizes professionalism while maintaining modern aesthetics. The d
 - **CRM Integration**: Connect lead data with customer relationship management
 - **Advanced Scheduling**: Multi-timezone support and team calendar integration
 
+## 🚫 **CRITICAL RULE - NEVER BREAK THIS**
+**NEVER, I SAY, NEVER CHANGE ANYTHING IN DESIGN AND STRUCTURE IF I DON'T ASK TO!!!**
+
+- **Design**: Keep exactly as designed
+- **Structure**: Maintain original layout
+- **Components**: Don't add/remove without explicit request
+- **Styling**: Preserve original colors, spacing, animations
+- **Functionality**: Keep original behavior unless specifically asked to change
+
 ## 🛠️ **Technical Features**
 - **Real-Time Data Sync**: Google Sheets integration with auto-save functionality
 - **Timezone Management**: Dynamic timezone selection and conversion

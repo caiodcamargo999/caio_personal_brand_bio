@@ -62,6 +62,22 @@
     "pt": "Portuguese",
     "es": "Spanish"
   },
+  "bio": {
+    "tagline": "Helping you scale with AI, marketing, strategy & real estate investment opportunities.",
+    "strategy": {
+      "title": "Strategy & Consultation",
+      "description": "Get personalized AI, automation, and business scaling strategies. Book a strategy call to unlock your business potential.",
+      "cta": "Book Strategy Call"
+    },
+    "realEstate": {
+      "title": "Exclusive Real Estate Opportunities",
+      "description": "Discover high-yield investment opportunities in emerging markets. Limited spots available for serious investors.",
+      "cta": "Explore Investments"
+    },
+    "contact": {
+      "text": "Let's connect and explore opportunities together"
+    }
+  },
   "leadCapture": {
     "intro": {
       "title": "Strategy & Consultation",

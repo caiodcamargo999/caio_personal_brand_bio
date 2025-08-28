@@ -15,8 +15,14 @@ export default async function middleware(request: NextRequest) {
   // Get locale based on IP address
   const locale = await getLocale(request);
   
-  // Special case: redirect root to /bio with detected locale
+  // Special case 1: redirect root to /bio
   if (pathname === '/') {
+    const newUrl = new URL('/bio', request.url);
+    return NextResponse.redirect(newUrl);
+  }
+  
+  // Special case 2: redirect /bio to locale-specific /bio
+  if (pathname === '/bio') {
     const newUrl = new URL(`/${locale}/bio`, request.url);
     return NextResponse.redirect(newUrl);
   }

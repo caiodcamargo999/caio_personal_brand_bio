@@ -14,6 +14,7 @@ export async function getLocale(request: NextRequest): Promise<string> {
     if (data.countryCode) {
       // Map country codes to supported languages
       const countryToLanguage: { [key: string]: string } = {
+        // Portuguese-speaking countries
         'BR': 'pt', // Brazil
         'PT': 'pt', // Portugal
         'AO': 'pt', // Angola
@@ -22,6 +23,8 @@ export async function getLocale(request: NextRequest): Promise<string> {
         'GW': 'pt', // Guinea-Bissau
         'ST': 'pt', // São Tomé and Príncipe
         'TL': 'pt', // East Timor
+        
+        // Spanish-speaking countries
         'ES': 'es', // Spain
         'MX': 'es', // Mexico
         'AR': 'es', // Argentina
@@ -42,6 +45,18 @@ export async function getLocale(request: NextRequest): Promise<string> {
         'PA': 'es', // Panama
         'UY': 'es', // Uruguay
         'GQ': 'es', // Equatorial Guinea
+        
+        // English-speaking countries (fallback)
+        'US': 'en', // United States
+        'GB': 'en', // United Kingdom
+        'CA': 'en', // Canada
+        'AU': 'en', // Australia
+        'NZ': 'en', // New Zealand
+        'IE': 'en', // Ireland
+        'ZA': 'en', // South Africa
+        'IN': 'en', // India
+        'SG': 'en', // Singapore
+        'HK': 'en', // Hong Kong
       };
 
       return countryToLanguage[data.countryCode] || 'en';

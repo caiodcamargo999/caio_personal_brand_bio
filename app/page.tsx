@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation';
-
+// Root page - redirects are now handled by middleware
 export default function RootPage() {
-  redirect('/bio');
+  return null; // This page will never render due to middleware redirect
 }

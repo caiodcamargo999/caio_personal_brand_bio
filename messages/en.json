@@ -96,7 +96,8 @@
       "budget": {
         "title": "Are you able to invest money to achieve your business goals?",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "noNotice": "No problem! We'll redirect you to resources that don't require investment."
       },
       "budgetAmount": {
         "title": "What's your budget range?",
@@ -120,12 +121,15 @@
       "stepCounter": "Step {current} of {total}",
       "selectOption": "Select an option"
     },
+    "progress": { "complete": "Complete" },
     "timezones": {
       "europeMadrid": "Europe/Madrid",
       "americaNewYork": "America/New_York",
       "americaSaoPaulo": "America/Sao_Paulo",
       "europeLondon": "Europe/London",
       "asiaTokyo": "Asia/Tokyo",
+      "asiaDubai": "Asia/Dubai",
+      "asiaBali": "Asia/Bali (Denpasar)",
       "australiaSydney": "Australia/Sydney"
     },
     "success": {

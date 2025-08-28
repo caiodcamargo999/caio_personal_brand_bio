@@ -126,3 +126,96 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const url = new URL(request.url);
+    const lookAheadMinutes = parseInt(url.searchParams.get('lookAhead') || '10', 10); // default 10 minutes window
+
+    // Pull events from Google Calendar for the next 2 days to evaluate reminders
+    const { getGoogleAuth, GoogleCalendarService } = await import('@/lib/google-services');
+    const auth = await getGoogleAuth();
+    const calendar = new (GoogleCalendarService as any)(auth);
+
+    // We'll reuse list logic by calling internal method through events.list instead of public method
+    const { google } = await import('googleapis');
+    const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID as string;
+    const svc = google.calendar({ version: 'v3', auth });
+
+    const now = new Date();
+    const horizon = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+
+    const list = await svc.events.list({
+      calendarId: CALENDAR_ID,
+      timeMin: now.toISOString(),
+      timeMax: horizon.toISOString(),
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
+
+    const events = list.data.items || [];
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
+    let sent = 0;
+
+    for (const ev of events) {
+      const startISO = ev.start?.dateTime || ev.start?.date;
+      if (!startISO) continue;
+      const start = new Date(startISO);
+      const msUntil = start.getTime() - now.getTime();
+      const minutesUntil = Math.floor(msUntil / 60000);
+
+      const flags = ev.extendedProperties?.private || {};
+
+      const shouldSend24h = minutesUntil <= 24 * 60 && minutesUntil > (24 * 60 - lookAheadMinutes) && !flags['reminder24h'];
+      const shouldSend2h = minutesUntil <= 120 && minutesUntil > (120 - lookAheadMinutes) && !flags['reminder2h'];
+      const shouldSend15m = minutesUntil <= 15 && minutesUntil > (15 - lookAheadMinutes) && !flags['reminder15m'];
+
+      const attendee = (ev.attendees || []).find(a => a.email && a.responseStatus !== 'declined');
+      const leadEmail = attendee?.email;
+      const leadName = (ev.summary || '').replace(/^Strategy Call with\s+/i, '').trim() || 'there';
+
+      const sendReminder = async (kind: 'preCall') => {
+        if (!leadEmail) return;
+        await fetch(`${baseUrl}/api/email-sequence`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'preCall',
+            locale: 'en',
+            leadData: {
+              name: leadName,
+              email: leadEmail,
+              scheduledDateTime: start.toISOString(),
+              userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            },
+          }),
+        });
+      };
+
+      // If event is the same day (<= 24h), skip the 24h reminder; send 2h/15m only
+      const sameDay = minutesUntil <= 24 * 60;
+      const willSend = (sameDay ? false : shouldSend24h) || shouldSend2h || shouldSend15m;
+      if (willSend) {
+        await sendReminder('preCall');
+        // Mark flag to avoid duplicates
+        const flagKey = (sameDay ? (shouldSend2h ? 'reminder2h' : 'reminder15m') : (shouldSend24h ? 'reminder24h' : (shouldSend2h ? 'reminder2h' : 'reminder15m')));
+        await svc.events.patch({
+          calendarId: CALENDAR_ID,
+          eventId: ev.id!,
+          requestBody: {
+            extendedProperties: {
+              private: { ...flags, [flagKey]: 'true' },
+            },
+          },
+        });
+        sent++;
+      }
+    }
+
+    return NextResponse.json({ success: true, sent });
+  } catch (error) {
+    console.error('Reminders GET error:', error);
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+  }
+}

@@ -1,64 +1,30 @@
-# LEAD CAPTURE SETUP GUIDE
+# LEAD CAPTURE: IMPLEMENTATION GUIDELINES (Sheets, Calendar, Email)
 
-## 🚨 **TROUBLESHOOTING: "Failed to save to API" Error**
+Use this guideline to implement, verify, and operate the lead capture system across projects. It includes setup, testing, customization, and troubleshooting.
 
-If you're seeing "Failed to save to API" errors in the console, follow these steps:
+## 1) Prerequisites
+- Node.js installed and the app able to run with `npm run dev`.
+- Access to Google Cloud Console to create a Service Account and enable APIs.
+- Ability to place `google-credentials.json` in the project root.
 
-### **1. Check Environment Variables**
-Ensure these are set in your `.env.local` file:
-```bash
-GOOGLE_APPLICATION_CREDENTIALS=./google-credentials.json
-GOOGLE_SPREADSHEET_ID=your_actual_spreadsheet_id
-GOOGLE_CALENDAR_ID=caiorarity@gmail.com
-```
-
-### **2. Verify Google Credentials File**
-- Ensure `google-credentials.json` exists in your project root
-- Check file permissions (should be readable)
-- Verify the JSON contains valid service account credentials
-
-### **3. Test API Connectivity**
-Run this command to test Google Sheets API:
-```bash
-curl -X POST http://localhost:3000/api/leads \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com"}'
-```
-
-### **4. Common Issues & Solutions**
-
-#### **Issue: 500 Internal Server Error**
-- **Cause**: Missing or invalid Google API credentials
-- **Solution**: Regenerate service account key and update credentials
-
-#### **Issue: "Failed to load resource"**
-- **Cause**: API route not accessible or server error
-- **Solution**: Check Next.js server logs and restart development server
-
-#### **Issue: Google Sheets Permission Denied**
-- **Cause**: Service account doesn't have access to spreadsheet
-- **Solution**: Share spreadsheet with service account email
-
----
-
-## 📋 **Complete Setup Instructions**
-
-### **Step 1: Google Cloud Platform Setup**
-
-1. **Create a new project** or select existing one
-2. **Enable APIs**:
+## 2) Google Cloud Setup (one-time per environment)
+1. Create or select a project in Google Cloud Console.
+2. Enable APIs:
    - Google Sheets API v4
    - Google Calendar API v3
-3. **Create Service Account**:
-   - Go to IAM & Admin > Service Accounts
-   - Create new service account
-   - Download JSON key file
-   - Rename to `google-credentials.json`
+3. Create a Service Account:
+   - IAM & Admin → Service Accounts → Create Service Account
+   - Assign minimally necessary role (Editor is sufficient for prototyping)
+   - Create a JSON key and download it
+4. Store the key at the project root as `google-credentials.json` and keep it secret.
 
-### **Step 2: Google Sheets Setup**
+Verification checklist:
+- The JSON is valid and readable by the app.
+- The service account email is noted (you will share resources with it).
 
-1. **Create new spreadsheet** or use existing one
-2. **Set up columns** (in this order):
+## 3) Google Sheets Configuration
+1. Create a Google Sheet or choose an existing one.
+2. Create columns in this order (first row as headers):
    - A: Name
    - B: WhatsApp
    - C: Email
@@ -68,186 +34,121 @@ curl -X POST http://localhost:3000/api/leads \
    - G: Budget/Investment
    - H: Scheduled Date & Time
    - I: Timestamp
+3. Share the Sheet with the Service Account email and grant Editor access.
+4. Copy the Spreadsheet ID from the URL: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`.
 
-3. **Share with service account**:
-   - Copy service account email from credentials
-   - Share spreadsheet with that email
-   - Give "Editor" permissions
+Recommended practices:
+- Freeze header row; format date/time columns.
+- Keep a dedicated Sheet per environment (dev/staging/prod) and share accordingly.
 
-4. **Get Spreadsheet ID**:
-   - From URL: `https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit`
-   - Copy the ID part
+## 4) Google Calendar Configuration
+1. Create or select a calendar for bookings.
+2. Set timezone accurately (e.g., `Europe/Madrid`).
+3. Configure working hours (e.g., Monday–Friday, 08:00–18:00; no weekends).
+4. Share the calendar with the Service Account and grant sufficient permissions to create events.
+5. Note the Calendar ID (typically an email-like identifier).
 
-### **Step 3: Google Calendar Setup**
+Optional tips:
+- Create a dedicated “Bookings” calendar separate from your personal calendar.
+- Ensure event guests receive invitations if desired (depends on implementation).
 
-1. **Create new calendar** or use existing one
-2. **Set timezone** to Europe/Madrid
-3. **Configure working hours**:
-   - Monday-Friday: 8:00 AM - 6:00 PM
-   - No weekend availability
-4. **Share with service account**:
-   - Add service account email as calendar admin
-
-### **Step 4: Environment Configuration**
-
-Create `.env.local` file in project root:
+## 5) Environment Variables (.env.local)
+Create or update `.env.local` in the project root:
 ```bash
-# Google API Configuration
+# Google APIs
 GOOGLE_APPLICATION_CREDENTIALS=./google-credentials.json
 GOOGLE_SPREADSHEET_ID=your_spreadsheet_id_here
-GOOGLE_CALENDAR_ID=caiorarity@gmail.com
+GOOGLE_CALENDAR_ID=your_calendar_id_here
 
-# SMTP Configuration (Required for email sending)
+# Email (Gmail SMTP example)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER=your_gmail_address@gmail.com
-SMTP_PASS=your_16_character_app_password
-MAIL_FROM=your_gmail_address@gmail.com
+SMTP_USER=your_gmail@gmail.com
+SMTP_PASS=your_16_char_app_password
+MAIL_FROM=your_gmail@gmail.com
 
-# Next.js Configuration
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_nextauth_secret_here
+# Feature flags / App config
 NEXT_PUBLIC_EMAIL_ENABLED=true
 ```
 
-### **Step 5: Email Setup (Gmail SMTP)**
+Notes:
+- Restart the dev server after changing env vars.
+- Use separate credentials per environment; never commit secrets.
 
-To enable email confirmation for lead capture, you need to set up Gmail SMTP:
+## 6) Gmail SMTP (recommended quick start)
+1. Enable 2‑Step Verification on your Google Account.
+2. Generate an App Password: `https://myaccount.google.com/apppasswords` (App: Mail, Device: Other → name it).
+3. Use the 16‑character password (remove spaces) as `SMTP_PASS`, and your Gmail as `SMTP_USER`/`MAIL_FROM`.
 
-#### **5.1 Enable 2-Step Verification**
-1. Go to [Google Account Security](https://myaccount.google.com/security)
-2. Click "2-Step Verification" and follow the setup process
-3. This is required to generate app passwords
-
-#### **5.2 Generate App Password**
-1. **Direct Link**: Go to [https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-2. Select "Mail" as the app
-3. Select "Other (Custom name)" as the device
-4. Enter a name like "Caio Lead Capture System"
-5. Click "Generate"
-6. **Copy the 16-character password** (e.g., `affz lhsl qiem nbcz`)
-
-#### **5.3 Update Environment Variables**
-Replace the SMTP values in your `.env.local`:
-```bash
-SMTP_USER=caiorarity@gmail.com
-SMTP_PASS=affz lhsl qiem nbcz
-MAIL_FROM=caiorarity@gmail.com
-```
-
-**Important Notes:**
-- Use the **app password**, not your regular Gmail password
-- Remove spaces from the app password when adding to `.env.local`
-- Keep the app password secure and don't share it
-- The app password grants full access to your Google Account
-
-### **Step 6: Test the Setup**
-
-1. **Start development server**:
+## 7) Start and Verify End‑to‑End
+1. Start the dev server:
 ```bash
 npm run dev
 ```
+2. Open the lead capture modal and submit a test lead.
+3. Verify all three integrations:
+   - Google Sheets: a new row is added with your data.
+   - Google Calendar: an event is created at the selected time.
+   - Email: a confirmation email is received (if `NEXT_PUBLIC_EMAIL_ENABLED=true`).
 
-2. **Open lead capture modal** and fill out form
-
-3. **Check console** for any errors
-
-4. **Verify data** appears in Google Sheets
-
-5. **Check calendar** for scheduled events
-6. **Verify email confirmation** is sent (if email is enabled)
-
-#### **6.1 Test Email API (Optional)**
-To test email functionality separately:
+## 8) API Tests (direct endpoint checks)
+- Leads → Google Sheets write:
 ```bash
-# Using PowerShell
-Invoke-WebRequest -Uri "http://localhost:3000/api/email" -Method POST -ContentType "application/json" -Body '{"to":["test@example.com"],"subject":"Test Email","html":"<h1>Test Email</h1><p>This is a test email.</p>"}'
-
-# Using curl (if available)
-curl -X POST http://localhost:3000/api/email -H "Content-Type: application/json" -d "{\"to\":[\"test@example.com\"],\"subject\":\"Test Email\",\"html\":\"<h1>Test Email</h1><p>This is a test email.</p>\"}"
+curl -X POST http://localhost:3000/api/leads \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email":"test@example.com"}'
 ```
 
-**Expected Response**: `{"success":true,"id":"message_id_here"}`
+- Single Email sending:
+```bash
+# PowerShell
+Invoke-WebRequest -Uri "http://localhost:3000/api/email" -Method POST -ContentType "application/json" -Body '{"to":["test@example.com"],"subject":"Test Email","html":"<h1>Test</h1><p>Hello</p>"}'
 
----
+# curl
+curl -X POST http://localhost:3000/api/email -H "Content-Type: application/json" -d "{\"to\":[\"test@example.com\"],\"subject\":\"Test Email\",\"html\":\"<h1>Test</h1><p>Hello</p>\"}"
+```
+Expected response: `{ "success": true, "id": "..." }`.
 
-## 🔧 **Advanced Configuration**
+## 9) Troubleshooting (detailed)
+Common symptoms and fixes:
+- Failed to save to API (client console):
+  - Ensure `.env.local` contains correct IDs and paths.
+  - Confirm `google-credentials.json` exists and is readable.
+  - Check that the API route is accessible (server logs).
+- 500 Internal Server Error (server):
+  - Missing/invalid Google credentials; recreate the service account key.
+  - Environment variables not loaded; restart the server.
+- Google Sheets “Permission denied”:
+  - Share the Sheet with the Service Account email (Editor).
+  - Verify Spreadsheet ID is correct.
+- Google Calendar event not created:
+  - Ensure the Service Account has permissions on the target calendar.
+  - Verify Calendar ID and timezone settings.
+- Email delivery issues:
+  - 500 on `/api/email`: verify SMTP host/port and credentials.
+  - Authentication failed: use Gmail app password and remove spaces.
+  - Connection timeouts: confirm network egress and correct `SMTP_PORT`.
 
-### **Customizing Available Time Slots**
+Operational tips:
+- After any env var change, restart `npm run dev`.
+- Use server logs to diagnose API route failures.
 
-Edit `lib/google-services.ts` to modify:
-- Working hours
-- Timezone settings
-- Slot duration (currently 1 hour)
+## 10) Advanced Configuration
+- Availability and slot duration: adjust logic in `lib/google-services.ts` (working hours, timezone, slot length).
+- Form schema/validation: modify `lib/types.ts`.
+- UI/UX customization: edit `components/LeadCaptureModal.tsx` (theme, layout, animations).
+- Multi‑language email content: update `messages/*.json` and HTML in `lib/email-templates.ts`.
 
-### **Modifying Form Fields**
+## 11) Production & Security
+- Secrets management: use environment variables or secret stores; never commit keys.
+- Separate resources: different Sheets/Calendars per environment; share with the correct Service Account.
+- Quotas & reliability: monitor Google API usage; implement retries and logging around API calls.
+- Compliance: verify SPF/DKIM/DMARC if using custom domain for email.
 
-Edit `lib/types.ts` to:
-- Add/remove form fields
-- Change validation rules
-- Modify field types
+## 12) Support & Verification Checklist
+- Console shows no network/API errors during form flow.
+- New leads appear in the correct spreadsheet tab.
+- Calendar event reflects the expected date/time and attendees.
+- Emails render properly across clients (Gmail desktop/mobile at minimum).
 
-### **Styling Customization**
-
-Edit `components/LeadCaptureModal.tsx` to:
-- Change colors and themes
-- Modify layout and spacing
-- Add custom animations
-
----
-
-## 🚀 **Deployment Considerations**
-
-### **Production Environment**
-
-1. **Secure credentials**:
-   - Use environment variables in production
-   - Never commit credentials to git
-   - Use secure secret management
-
-2. **API quotas**:
-   - Monitor Google API usage
-   - Implement rate limiting if needed
-   - Set up alerts for quota limits
-
-3. **Error monitoring**:
-   - Set up logging and monitoring
-   - Implement retry logic for failed API calls
-   - Monitor user experience metrics
-
----
-
-## 📞 **Support & Troubleshooting**
-
-### **Getting Help**
-
-1. **Check console logs** for detailed error messages
-2. **Verify API status** at [Google Cloud Console](https://console.cloud.google.com)
-3. **Test API endpoints** individually
-4. **Check network tab** for failed requests
-
-### **Common Error Messages**
-
-- **"Failed to save to API"**: Check credentials and permissions
-- **"500 Internal Server Error"**: Server-side configuration issue
-- **"Permission denied"**: Service account access issue
-- **"Quota exceeded"**: API usage limits reached
-
-### **Email-Specific Issues**
-
-- **"500 Internal Server Error" on /api/email**: Check SMTP configuration in `.env.local`
-- **"Authentication failed"**: Verify app password is correct and 2-Step Verification is enabled
-- **"Connection timeout"**: Check SMTP_HOST and SMTP_PORT settings
-- **"Invalid credentials"**: Ensure SMTP_USER and SMTP_PASS are properly set
-
-#### **Email Troubleshooting Steps**
-1. **Verify SMTP settings** in `.env.local`
-2. **Check app password** is correct (16 characters, no spaces)
-3. **Ensure 2-Step Verification** is enabled on Gmail
-4. **Restart development server** after changing environment variables
-5. **Test email API** separately using the test commands above
-
----
-
-*This guide covers the essential setup steps. For advanced configuration, refer to the Google API documentation.*

@@ -16,17 +16,8 @@ export async function POST(request: NextRequest) {
     const auth = await getGoogleAuth();
     const sheets = new GoogleSheetsService(auth);
 
-    // Upsert by email: if email exists, update; else append
-    if (body.email) {
-      try {
-        await sheets.updateLeadData(0, body);
-      } catch (e: any) {
-        // If the update failed because the user isn't found, append instead
-        await sheets.appendLeadData(body);
-      }
-    } else {
-      await sheets.appendLeadData(body);
-    }
+    // Always append a new row; do not overwrite previous entries
+    await sheets.appendLeadData(body);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

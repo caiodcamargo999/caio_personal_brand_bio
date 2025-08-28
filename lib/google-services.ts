@@ -19,23 +19,42 @@ console.log('Google API Environment Variables:', {
 });
 
 // Initialize Google Auth
+// Prefers OAuth (acting as the user) if GOOGLE_OAUTH_CLIENT_ID/SECRET and GOOGLE_OAUTH_REFRESH_TOKEN are present.
+// Falls back to service account key file when OAuth is not configured.
 export const getGoogleAuth = async () => {
   try {
-    console.log('Initializing Google Auth with:', {
+    const hasOAuth = !!(
+      process.env.GOOGLE_OAUTH_CLIENT_ID &&
+      process.env.GOOGLE_OAUTH_CLIENT_SECRET &&
+      process.env.GOOGLE_OAUTH_REFRESH_TOKEN &&
+      process.env.GOOGLE_OAUTH_REDIRECT_URL
+    );
+
+    if (hasOAuth) {
+      const oAuth2 = new google.auth.OAuth2(
+        process.env.GOOGLE_OAUTH_CLIENT_ID,
+        process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+        process.env.GOOGLE_OAUTH_REDIRECT_URL
+      );
+      oAuth2.setCredentials({ refresh_token: process.env.GOOGLE_OAUTH_REFRESH_TOKEN });
+      // Force token refresh to ensure validity
+      await oAuth2.getAccessToken();
+      console.log('Initialized Google OAuth2 client (user-based).');
+      return oAuth2 as any;
+    }
+
+    console.log('Initializing Service Account Google Auth with:', {
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES
     });
-    
     if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
       throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable is not set');
     }
-    
     const auth = new google.auth.GoogleAuth({
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES,
     });
-    
-    console.log('Google Auth initialized successfully');
+    console.log('Service Account Google Auth initialized successfully');
     return auth;
   } catch (error) {
     console.error('Error initializing Google Auth:', error);
@@ -55,6 +74,17 @@ export class GoogleSheetsService {
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
+      const budgetCell = (() => {
+        if (data.budget === 'no') return 'no budget';
+        if (data.budget === 'yes' && data.budgetAmount) return `${data.budgetAmount} USD`;
+        if (data.budget === 'yes') return 'yes';
+        return '';
+      })();
+
+      const scheduledCell = data.scheduledDateTime
+        ? new Date(data.scheduledDateTime).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : '';
+
       const values = [
         [
           data.name || '',
@@ -63,8 +93,8 @@ export class GoogleSheetsService {
           data.instagram || '',
           data.industry || '',
           data.struggle || '',
-          data.budgetAmount ? `${data.budgetAmount} USD` : (data.budget || ''),
-          data.scheduledDateTime ? new Date(data.scheduledDateTime).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '',
+          budgetCell,
+          scheduledCell,
           new Date().toISOString(), // Timestamp
         ]
       ];
@@ -95,38 +125,8 @@ export class GoogleSheetsService {
         range: 'Folha1!A:I',
       });
 
-      const rows = response.data.values || [];
-      const userRowIndex = rows.findIndex((row: any[]) => row[2] === data.email);
-
-      if (userRowIndex === -1) {
-        // If user not found, append a new row
-        return this.appendLeadData(data);
-      }
-
-      // If user is found, update the existing row
-      const existingRow = rows[userRowIndex] || [];
-      const updatedRow = [
-        data.name || existingRow[0] || '',
-        data.whatsapp || existingRow[1] || '',
-        data.email || existingRow[2] || '',
-        data.instagram || existingRow[3] || '',
-        data.industry || existingRow[4] || '',
-        data.struggle || existingRow[5] || '',
-        data.budgetAmount ? `${data.budgetAmount} USD` : (data.budget || existingRow[6] || ''),
-        data.scheduledDateTime ? new Date(data.scheduledDateTime).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : (existingRow[7] || ''),
-        new Date().toISOString(),
-      ];
-
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: SPREADSHEET_ID,
-        range: `Folha1!A${userRowIndex + 1}:I${userRowIndex + 1}`,
-        valueInputOption: 'USER_ENTERED',
-        requestBody: {
-          values: [updatedRow],
-        },
-      });
-
-      return true;
+      // We no longer update rows in place; new submissions should append new rows
+      return this.appendLeadData(data);
     } catch (error) {
       console.error('Error updating Google Sheets:', error);
       throw error;
@@ -195,12 +195,11 @@ export class GoogleCalendarService {
           dateTime: endDateTime.toISOString(),
           timeZone: 'Europe/Madrid',
         },
-        // Note: Service accounts cannot add attendees without domain-wide delegation
-        // The event will be created in the calendar but attendees won't be automatically added
-        // attendees: [
-        //   { email: 'caiorarity@gmail.com' },
-        //   { email: data.email },
-        // ],
+        // Try to include attendees so Google sends native invitations/RSVP
+        attendees: [
+          { email: 'caiorarity@gmail.com' },
+          { email: data.email },
+        ],
         reminders: {
           useDefault: false,
           overrides: [
@@ -227,13 +226,26 @@ export class GoogleCalendarService {
         supportsAttachments: false
       });
       
-      const response = await calendar.events.insert({
-        calendarId: CALENDAR_ID,
-        requestBody: event,
-        sendUpdates: 'all',
-        conferenceDataVersion: 1,
-        supportsAttachments: false,
-      });
+      let response;
+      try {
+        response = await calendar.events.insert({
+          calendarId: CALENDAR_ID,
+          requestBody: event,
+          sendUpdates: 'all', // emails attendees
+          conferenceDataVersion: 1,
+          supportsAttachments: false,
+        });
+      } catch (err: any) {
+        // Fallback: some personal calendars or service accounts cannot create Google Meet links
+        console.warn('Conference creation failed, retrying without conferenceData:', err?.response?.data || err?.message);
+        const { conferenceData, ...eventWithoutConference } = event;
+        response = await calendar.events.insert({
+          calendarId: CALENDAR_ID,
+          requestBody: eventWithoutConference as any,
+          sendUpdates: 'all',
+          supportsAttachments: false,
+        });
+      }
 
       // Log the created event for debugging
       console.log('Calendar event created successfully:', {

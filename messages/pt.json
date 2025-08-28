@@ -96,7 +96,8 @@
       "budget": {
         "title": "Você consegue investir dinheiro para alcançar seus objetivos de negócio?",
         "yes": "Sim",
-        "no": "Não"
+        "no": "Não",
+        "noNotice": "Sem problemas! Vamos te direcionar para recursos que não exigem investimento."
       },
       "budgetAmount": {
         "title": "Qual é a sua faixa de orçamento?",
@@ -120,12 +121,15 @@
       "stepCounter": "Passo {current} de {total}",
       "selectOption": "Selecione uma opção"
     },
+    "progress": { "complete": "Completo" },
     "timezones": {
       "europeMadrid": "Europa/Madri",
       "americaNewYork": "América/Nova_York",
       "americaSaoPaulo": "América/São_Paulo",
       "europeLondon": "Europa/Londres",
       "asiaTokyo": "Ásia/Tóquio",
+      "asiaDubai": "Ásia/Dubai",
+      "asiaBali": "Ásia/Bali (Denpasar)",
       "australiaSydney": "Austrália/Sydney"
     },
     "success": {

@@ -69,8 +69,45 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
       }
     }
     
-
+    // Debug: log current step info
+    console.log('Current step:', currentStep, 'Step ID:', currentStepData.id, 'Budget value:', watchedValues['budget']);
     
+    // If user selected no budget, auto-save and redirect to WhatsApp instead of showing a button
+    if (currentStepData.id === 'budget' && watchedValues['budget'] === 'no') {
+      console.log('Redirecting to WhatsApp - no budget selected');
+      try {
+        const leadData = {
+          name: watchedValues.name,
+          whatsapp: watchedValues.whatsapp,
+          email: watchedValues.email,
+          instagram: watchedValues.instagram,
+          industry: watchedValues.industry,
+          struggle: watchedValues.struggle,
+          budget: 'no',
+          budgetAmount: undefined,
+        };
+
+        await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData),
+        });
+      } catch (e) {
+        console.error('Failed to save lead before WhatsApp redirect:', e);
+      } finally {
+        const messages = {
+          en: "Hey Caio, I filled the form but I don't have budget to invest.",
+          pt: 'Oi Caio, preenchi o formulário mas não tenho orçamento para investir.',
+          es: 'Hola Caio, completé el formulario pero no tengo presupuesto para invertir.',
+        } as const;
+        const whatsappMessage = (messages as any)[locale] || messages.en;
+        const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(whatsappUrl, '_blank');
+        onClose();
+      }
+      return;
+    }
+
     // Regular next step logic
     if (currentStep < formSteps.length - 1) {
       setCurrentStep(currentStep + 1);
@@ -99,12 +136,90 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         });
 
         if (response.ok) {
+          const calendarData = await response.json();
           setIsSuccess(true);
-          await fetch('/api/leads', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(finalData),
-          });
+          
+          // Save lead data and log problems
+          try {
+            const saveRes = await fetch('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(finalData),
+            });
+            if (!saveRes.ok) {
+              console.error('Leads save failed:', saveRes.status, await saveRes.text());
+            }
+          } catch (e) {
+            console.error('Leads save error:', e);
+          }
+
+          // Send notification email to Caio (minimal)
+          try {
+            await fetch('/api/email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                to: ['caiorarity@gmail.com'],
+                subject: `New Strategy and Consultation Booking: ${data.name}`,
+                html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Strategy Call Booked</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; }
+    .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+    .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+    .header { padding: 24px; border-bottom: 1px solid #e5e7eb; }
+    .title { font-size: 20px; font-weight: 700; margin: 0; color: #111827; }
+    .content { padding: 24px; }
+    .row { display: flex; margin: 6px 0; }
+    .label { width: 120px; color: #6b7280; }
+    .value { color: #111827; font-weight: 600; }
+    .button { display: inline-block; margin-top: 16px; background: #111827; color: #ffffff; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { padding: 16px 24px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="title">New strategy call booked</div>
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="label">Lead</div>
+          <div class="value">${data.name}</div>
+        </div>
+        <div class="row">
+          <div class="label">Email</div>
+          <div class="value">${data.email}</div>
+        </div>
+        <div class="row">
+          <div class="label">WhatsApp</div>
+          <div class="value">${data.whatsapp}</div>
+        </div>
+        <div class="row">
+          <div class="label">Instagram</div>
+          <div class="value">${data.instagram}</div>
+        </div>
+        <div class="row">
+          <div class="label">When</div>
+          <div class="value">${selectedDate.toLocaleDateString(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'})} ${new Date(selectedTime).toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit',timeZone:userTimeZone})} (${userTimeZone})</div>
+        </div>
+        <a class="button" href="${calendarData.event?.hangoutLink || calendarData.event?.meetLink || '#'}">Open Meet</a>
+      </div>
+              <div class="footer">Lead will receive Google Calendar invitation with RSVP.</div>
+    </div>
+  </div>
+</body>
+</html>`
+              })
+            });
+          } catch (caioEmailError) {
+            console.error('Failed to send Caio notification email:', caioEmailError);
+          }
         } else {
           console.error('Failed to create calendar event');
         }
@@ -212,7 +327,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               {t('leadCapture.form.stepCounter').replace('{current}', String(currentStep + 1)).replace('{total}', String(formSteps.length))}
             </span>
             <span className="text-xs text-primary font-medium">
-              {Math.round(progress)}% Complete
+              {Math.round(progress)}% {t('leadCapture.progress.complete')}
             </span>
           </div>
 
@@ -256,7 +371,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         type={currentStepData.field === 'whatsapp' ? 'tel' : 'text'}
                         inputMode={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
                         autoComplete={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
-                        pattern={currentStepData.field === 'whatsapp' ? "^[+0-9()\\s\\-]*$" : undefined}
+                        pattern={currentStepData.field === 'whatsapp' ? "^[0-9() +\\-]*$" : undefined}
                         placeholder={currentStepData.placeholder}
                         className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                       />
@@ -321,65 +436,8 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                       {watchedValues[currentStepData.field!] === 'no' && (
                         <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                           <p className="text-sm text-yellow-400 text-center">
-                            No problem! We&apos;ll redirect you to resources that don&apos;t require investment.
+                            {t('leadCapture.steps.budget.noNotice')}
                           </p>
-                          <div className="mt-3 text-center">
-                            <Button 
-                              onClick={async () => {
-                                // Save the lead data first
-                                try {
-                                  const leadData = {
-                                    name: watchedValues.name,
-                                    whatsapp: watchedValues.whatsapp,
-                                    email: watchedValues.email,
-                                    instagram: watchedValues.instagram,
-                                    industry: watchedValues.industry,
-                                    struggle: watchedValues.struggle,
-                                    budget: 'no',
-                                    budgetAmount: undefined
-                                  };
-                                  
-                                  await fetch('/api/leads', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(leadData),
-                                  });
-                                  
-                                  // Redirect to WhatsApp with appropriate message based on language
-                                  const messages = {
-                                    en: "Hey Caio, I filled the form but I don't have budget to invest.",
-                                    pt: "Oi Caio, preenchi o formulário mas não tenho orçamento para investir.",
-                                    es: "Hola Caio, completé el formulario pero no tengo presupuesto para invertir."
-                                  };
-                                  
-                                  const whatsappMessage = messages[locale as keyof typeof messages] || messages.en;
-                                  const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
-                                  
-                                  // Open WhatsApp in new tab
-                                  window.open(whatsappUrl, '_blank');
-                                  
-                                  // Close the modal
-                                  onClose();
-                                } catch (error) {
-                                  console.error('Error saving lead data:', error);
-                                  // Still redirect to WhatsApp even if saving fails
-                                  const messages = {
-                                    en: "Hey Caio, I filled the form but I don't have budget to invest.",
-                                    pt: "Oi Caio, preenchi o formulário mas não tenho orçamento para investir.",
-                                    es: "Hola Caio, completé el formulario pero no tengo presupuesto para invertir."
-                                  };
-                                  
-                                  const whatsappMessage = messages[locale as keyof typeof messages] || messages.en;
-                                  const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
-                                  window.open(whatsappUrl, '_blank');
-                                  onClose();
-                                }
-                              }}
-                              className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
-                            >
-                              Continue to WhatsApp
-                            </Button>
-                          </div>
                         </div>
                       )}
                     </div>
@@ -388,12 +446,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                   {currentStepData.type === 'number' && watchedValues.budget === 'yes' && (
                     <div className="space-y-3">
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted">$</span>
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted">{locale === 'pt' ? 'R$' : '$'}</span>
                         <input
                           type="number"
                           value={budgetAmount || ''}
                           onChange={(e) => setBudgetAmount(parseFloat(e.target.value) || undefined)}
-                          placeholder="Enter amount"
+                          placeholder={t('leadCapture.steps.budgetAmount.placeholder')}
                           className="w-full pl-8 pr-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                           min="0"
                           step="100"
@@ -428,14 +486,18 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                       <select
                         value={userTimeZone}
                         onChange={(e) => setUserTimeZone(e.target.value)}
-                        className="flex-1 bg-transparent text-white focus:outline-none text-center"
+                        className="flex-1 bg-card/70 text-white border border-primary/40 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary text-center"
                       >
                         <option value="Europe/Madrid">{t('leadCapture.timezones.europeMadrid')}</option>
                         <option value="America/New_York">{t('leadCapture.timezones.americaNewYork')}</option>
                         <option value="America/Sao_Paulo">{t('leadCapture.timezones.americaSaoPaulo')}</option>
                         <option value="Europe/London">{t('leadCapture.timezones.europeLondon')}</option>
                         <option value="Asia/Tokyo">{t('leadCapture.timezones.asiaTokyo')}</option>
+                        <option value="Asia/Dubai">{t('leadCapture.timezones.asiaDubai')}</option>
+                        <option value="Asia/Makassar">{t('leadCapture.timezones.asiaBali')}</option>
                         <option value="Australia/Sydney">{t('leadCapture.timezones.australiaSydney')}</option>
+                        <option value="UTC">UTC</option>
+                        <option value="America/Los_Angeles">America/Los_Angeles</option>
                       </select>
                     </div>
                   </div>

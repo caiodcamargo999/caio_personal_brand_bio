@@ -25,109 +25,38 @@ export function generateConfirmationEmail(
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${t('leadCapture.emails.confirmation.title')}</title>
       <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #ffffff; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .title { font-size: 28px; font-weight: bold; margin: 0 0 20px 0; }
-        .greeting { font-size: 18px; margin: 20px 0; }
-        .main-message { font-size: 16px; margin: 20px 0; line-height: 1.8; }
-        .section { margin: 30px 0; }
-        .section-title { font-size: 20px; font-weight: bold; color: #8b5cf6; margin-bottom: 15px; border-bottom: 2px solid #8b5cf6; padding-bottom: 5px; }
-        .detail-row { display: flex; margin: 10px 0; }
-        .detail-label { font-weight: bold; width: 120px; color: #666; }
-        .detail-value { flex: 1; }
-        .list { margin: 15px 0; }
-        .list-item { margin: 8px 0; padding-left: 20px; position: relative; }
-        .list-item:before { content: "✓"; color: #8b5cf6; font-weight: bold; position: absolute; left: 0; }
-        .reminders { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #8b5cf6; }
-        .signature { margin: 30px 0; text-align: center; }
-        .signature-name { font-size: 18px; font-weight: bold; color: #8b5cf6; }
-        .tagline { font-size: 14px; color: #666; font-style: italic; }
-        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 12px; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; }
+        .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+        .header { padding: 24px; border-bottom: 1px solid #e5e7eb; }
+        .title { font-size: 22px; font-weight: 700; margin: 0; color: #111827; }
+        .content { padding: 24px; }
+        .lead { margin: 0 0 16px 0; font-size: 16px; }
+        .section-title { font-size: 14px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; margin: 24px 0 8px; }
+        .row { display: flex; margin: 6px 0; }
+        .label { width: 120px; color: #6b7280; }
+        .value { color: #111827; font-weight: 600; }
+        .button { display: inline-block; margin-top: 16px; background: #111827; color: #ffffff; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .footer { padding: 16px 24px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <div class="title">${t('leadCapture.emails.confirmation.title')}</div>
-        </div>
-        
-        <div class="content">
-          <div class="greeting">${t('leadCapture.emails.confirmation.greeting').replace('{name}', data.name)}</div>
-          
-          <div class="main-message">${t('leadCapture.emails.confirmation.mainMessage')}</div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.confirmation.callDetails')}</div>
-            <div class="detail-row">
-              <div class="detail-label">${t('leadCapture.emails.confirmation.when')}:</div>
-              <div class="detail-value">${new Date(data.scheduledTime).toLocaleString(locale, { 
-                dateStyle: 'full', 
-                timeStyle: 'short',
-                timeZone: data.userTimeZone 
-              })} (${data.userTimeZone})</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">${t('leadCapture.emails.confirmation.where')}:</div>
-              <div class="detail-value">${t('leadCapture.emails.confirmation.platform')}</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">${t('leadCapture.emails.confirmation.duration')}:</div>
-              <div class="detail-value">${t('leadCapture.emails.confirmation.durationValue')}</div>
-            </div>
+        <div class="card">
+          <div class="header">
+            <div class="title">Your strategy call is confirmed</div>
           </div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.confirmation.preparation')}</div>
-            <div class="list">
-              ${(() => {
-                try {
-                  const prepItems = JSON.parse(t('leadCapture.emails.confirmation.prepItems'));
-                  if (Array.isArray(prepItems)) {
-                    return prepItems.map((item: string) => 
-                      `<div class="list-item">${item}</div>`
-                    ).join('');
-                  }
-                  return `<div class="list-item">${t('leadCapture.emails.confirmation.prepItems')}</div>`;
-                } catch {
-                  return `<div class="list-item">${t('leadCapture.emails.confirmation.prepItems')}</div>`;
-                }
-              })()}
-            </div>
+          <div class="content">
+            <p class="lead">Hi ${data.name}, thanks for booking your Strategy & Consultation session. Below are your call details.</p>
+            <div class="section-title">Call details</div>
+            <div class="row"><div class="label">When</div><div class="value">${new Date(data.scheduledTime).toLocaleString(locale, { dateStyle: 'full', timeStyle: 'short', timeZone: data.userTimeZone })} (${data.userTimeZone})</div></div>
+            <div class="row"><div class="label">Where</div><div class="value">Google Meet</div></div>
+            <div class="row"><div class="label">Duration</div><div class="value">60 minutes</div></div>
+            <a class="button" href="{{MEETING_LINK}}">Join the call</a>
+            <div class="section-title">How to get the most from our call</div>
+            <p>Come prepared with your top business goal for the next 90 days, your current bottlenecks, and an overview of your acquisition process and tools. This helps us move fast and get you clear, actionable next steps.</p>
           </div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.confirmation.valueProposition')}</div>
-            <div class="list">
-              ${(() => {
-                try {
-                  const valueItems = JSON.parse(t('leadCapture.emails.confirmation.valueItems'));
-                  if (Array.isArray(valueItems)) {
-                    return valueItems.map((item: string) => 
-                      `<div class="list-item">${item}</div>`
-                    ).join('');
-                  }
-                  return `<div class="list-item">${t('leadCapture.emails.confirmation.valueItems')}</div>`;
-                } catch {
-                  return `<div class="list-item">${t('leadCapture.emails.confirmation.valueItems')}</div>`;
-                }
-              })()}
-            </div>
-          </div>
-          
-          <div class="reminders">
-            <strong>📅 ${t('leadCapture.emails.confirmation.reminders')}</strong>
-          </div>
-          
-          <div class="signature">
-            <div class="signature-name">${t('leadCapture.emails.confirmation.signature')}</div>
-            <div class="tagline">${t('leadCapture.emails.confirmation.tagline')}</div>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p>This email was sent from your lead capture system</p>
+          <div class="footer">You’ll also receive automatic reminders before the call.</div>
         </div>
       </div>
     </body>
@@ -142,7 +71,7 @@ export function generatePreCallEmail(
   locale: string,
   t: (key: string) => string
 ): { subject: string; html: string } {
-  const subject = t('leadCapture.emails.preCall.subject');
+  const subject = 'Reminder: your strategy call is coming up';
   
   const html = `
     <!DOCTYPE html>
@@ -150,103 +79,33 @@ export function generatePreCallEmail(
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${t('leadCapture.emails.preCall.title')}</title>
+      <title>Strategy call reminder</title>
       <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #ffffff; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .title { font-size: 28px; font-weight: bold; margin: 0 0 20px 0; }
-        .greeting { font-size: 18px; margin: 20px 0; }
-        .main-message { font-size: 16px; margin: 20px 0; line-height: 1.8; }
-        .section { margin: 30px 0; }
-        .section-title { font-size: 20px; font-weight: bold; color: #8b5cf6; margin-bottom: 15px; border-bottom: 2px solid #8b5cf6; padding-bottom: 5px; }
-        .detail-row { display: flex; margin: 10px 0; }
-        .detail-label { font-weight: bold; width: 120px; color: #666; }
-        .detail-value { flex: 1; }
-        .list { margin: 15px 0; }
-        .list-item { margin: 8px 0; padding-left: 20px; position: relative; }
-        .list-item:before { content: "✓"; color: #8b5cf6; font-weight: bold; position: absolute; left: 0; }
-        .signature { margin: 30px 0; text-align: center; }
-        .signature-name { font-size: 18px; font-weight: bold; color: #8b5cf6; }
-        .tagline { font-size: 14px; color: #666; font-style: italic; }
-        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 12px; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; }
+        .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+        .header { padding: 24px; border-bottom: 1px solid #e5e7eb; }
+        .title { font-size: 20px; font-weight: 700; margin: 0; color: #111827; }
+        .content { padding: 24px; }
+        .row { display: flex; margin: 6px 0; }
+        .label { width: 120px; color: #6b7280; }
+        .value { color: #111827; font-weight: 600; }
+        .button { display: inline-block; margin-top: 16px; background: #111827; color: #ffffff; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .footer { padding: 16px 24px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <div class="title">${t('leadCapture.emails.preCall.title')}</div>
-        </div>
-        
-        <div class="content">
-          <div class="greeting">${t('leadCapture.emails.preCall.greeting').replace('{name}', data.name)}</div>
-          
-          <div class="main-message">${t('leadCapture.emails.preCall.mainMessage')}</div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.preCall.callReminder')}</div>
-            <div class="detail-row">
-              <div class="detail-label">${t('leadCapture.emails.preCall.when')}:</div>
-              <div class="detail-value">${new Date(data.scheduledTime).toLocaleString(locale, { 
-                dateStyle: 'full', 
-                timeStyle: 'short',
-                timeZone: data.userTimeZone 
-              })} (${data.userTimeZone})</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">${t('leadCapture.emails.preCall.where')}:</div>
-              <div class="detail-value">Google Meet (link in calendar invite)</div>
-            </div>
+        <div class="card">
+          <div class="header"><div class="title">Reminder: your strategy call</div></div>
+          <div class="content">
+            <p>Hi ${data.name}, this is a quick reminder of our strategy call.</p>
+            <div class="row"><div class="label">When</div><div class="value">${new Date(data.scheduledTime).toLocaleString(locale, { dateStyle: 'full', timeStyle: 'short', timeZone: data.userTimeZone })} (${data.userTimeZone})</div></div>
+            <div class="row"><div class="label">Where</div><div class="value">Google Meet</div></div>
+            <a class="button" href="{{MEETING_LINK}}">Join the call</a>
+            <p style="margin-top:16px;">To maximize value, have your top goal, main bottlenecks, and current tools in mind.</p>
           </div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.preCall.preparation')}</div>
-            <p>${t('leadCapture.emails.preCall.prepMessage')}</p>
-            <div class="list">
-              ${(() => {
-                try {
-                  const prepItems = JSON.parse(t('leadCapture.emails.preCall.prepItems'));
-                  if (Array.isArray(prepItems)) {
-                    return prepItems.map((item: string) => 
-                      `<div class="list-item">${item}</div>`
-                    ).join('');
-                  }
-                  return `<div class="list-item">${t('leadCapture.emails.preCall.prepItems')}</div>`;
-                } catch {
-                  return `<div class="list-item">${t('leadCapture.emails.preCall.prepItems')}</div>`;
-                }
-              })()}
-            </div>
-          </div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.preCall.whatToExpect')}</div>
-            <div class="list">
-              ${(() => {
-                try {
-                  const expectItems = JSON.parse(t('leadCapture.emails.preCall.expectItems'));
-                  if (Array.isArray(expectItems)) {
-                    return expectItems.map((item: string) => 
-                      `<div class="list-item">${item}</div>`
-                    ).join('');
-                  }
-                  return `<div class="list-item">${t('leadCapture.emails.preCall.expectItems')}</div>`;
-                } catch {
-                  return `<div class="list-item">${t('leadCapture.emails.preCall.expectItems')}</div>`;
-                }
-              })()}
-            </div>
-          </div>
-          
-          <div class="signature">
-            <div class="signature-name">${t('leadCapture.emails.preCall.signature')}</div>
-            <div class="tagline">${t('leadCapture.emails.preCall.tagline')}</div>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p>This email was sent from your lead capture system</p>
+          <div class="footer">See you soon.</div>
         </div>
       </div>
     </body>
@@ -261,7 +120,7 @@ export function generateFollowUpEmail(
   locale: string,
   t: (key: string) => string
 ): { subject: string; html: string } {
-  const subject = t('leadCapture.emails.followUp.subject');
+  const subject = 'Thanks for the call — your next steps';
   
   const html = `
     <!DOCTYPE html>
@@ -269,79 +128,33 @@ export function generateFollowUpEmail(
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${t('leadCapture.emails.followUp.title')}</title>
+      <title>Next steps</title>
       <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #ffffff; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .title { font-size: 28px; font-weight: bold; margin: 0 0 20px 0; }
-        .greeting { font-size: 18px; margin: 20px 0; }
-        .main-message { font-size: 16px; margin: 20px 0; line-height: 1.8; }
-        .section { margin: 30px 0; }
-        .section-title { font-size: 20px; font-weight: bold; color: #8b5cf6; margin-bottom: 15px; border-bottom: 2px solid #8b5cf6; padding-bottom: 5px; }
-        .list { margin: 15px 0; }
-        .list-item { margin: 8px 0; padding-left: 20px; position: relative; }
-        .list-item:before { content: "✓"; color: #8b5cf6; font-weight: bold; position: absolute; left: 0; }
-        .cta { background: #8b5cf6; color: white; padding: 15px 25px; border-radius: 8px; text-align: center; margin: 20px 0; }
-        .cta a { color: white; text-decoration: none; font-weight: bold; }
-        .signature { margin: 30px 0; text-align: center; }
-        .signature-name { font-size: 18px; font-weight: bold; color: #8b5cf6; }
-        .tagline { font-size: 14px; color: #666; font-style: italic; }
-        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 12px; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; margin: 0; padding: 0; }
+        .container { max-width: 640px; margin: 0 auto; padding: 24px; }
+        .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+        .header { padding: 24px; border-bottom: 1px solid #e5e7eb; }
+        .title { font-size: 20px; font-weight: 700; margin: 0; color: #111827; }
+        .content { padding: 24px; }
+        .list { margin: 8px 0 0 18px; }
+        .button { display: inline-block; margin-top: 16px; background: #111827; color: #ffffff; padding: 12px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .footer { padding: 16px 24px; border-top: 1px solid #e5e7eb; font-size: 12px; color: #6b7280; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <div class="title">${t('leadCapture.emails.followUp.title')}</div>
-        </div>
-        
-        <div class="content">
-          <div class="greeting">${t('leadCapture.emails.followUp.greeting').replace('{name}', data.name)}</div>
-          
-          <div class="main-message">${t('leadCapture.emails.followUp.mainMessage')}</div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.followUp.nextSteps')}</div>
-            <div class="list">
-              <div class="list-item">${t('leadCapture.emails.followUp.step1')}</div>
-              <div class="list-item">${t('leadCapture.emails.followUp.step2')}</div>
-              <div class="list-item">${t('leadCapture.emails.followUp.step3')}</div>
-            </div>
+        <div class="card">
+          <div class="header"><div class="title">Thank you for the strategy call</div></div>
+          <div class="content">
+            <p>Hi ${data.name}, it was great speaking with you. Here are your next steps:</p>
+            <ol class="list">
+              <li>Review the action plan we discussed and confirm priorities.</li>
+              <li>Book your implementation kickoff.</li>
+              <li>Share access to the key tools we listed.</li>
+            </ol>
+            <a class="button" href="mailto:caiorarity@gmail.com">Reply with questions</a>
           </div>
-          
-          <div class="section">
-            <div class="section-title">${t('leadCapture.emails.followUp.resources')}</div>
-            <div class="list">
-              ${(() => {
-                try {
-                  const resourceItems = JSON.parse(t('leadCapture.emails.followUp.resourceItems'));
-                  if (Array.isArray(resourceItems)) {
-                    return resourceItems.map((item: string) => 
-                      `<div class="list-item">${item}</div>`
-                    ).join('');
-                  }
-                  return `<div class="list-item">${t('leadCapture.emails.followUp.resourceItems')}</div>`;
-                } catch {
-                  return `<div class="list-item">${t('leadCapture.emails.followUp.resourceItems')}</div>`;
-                }
-              })()}
-            </div>
-          </div>
-          
-          <div class="cta">
-            <a href="mailto:caiorarity@gmail.com">${t('leadCapture.emails.followUp.support')}</a>
-          </div>
-          
-          <div class="signature">
-            <div class="signature-name">${t('leadCapture.emails.followUp.signature')}</div>
-            <div class="tagline">${t('leadCapture.emails.followUp.tagline')}</div>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p>This email was sent from your lead capture system</p>
+          <div class="footer">I’m here to help you execute quickly.</div>
         </div>
       </div>
     </body>

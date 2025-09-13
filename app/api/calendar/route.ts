@@ -102,6 +102,36 @@ export async function POST(request: NextRequest) {
       console.log('Google Calendar service initialized');
       
       const event = await calendar.createEvent(body as any, startTime);
+
+      // Fire-and-forget WhatsApp confirmation (if WhatsApp present)
+      try {
+        if (body.whatsapp) {
+          const hangoutLink = event.hangoutLink || event.conferenceData?.entryPoints?.[0]?.uri;
+          const meetLink = hangoutLink || 'Link will be sent separately';
+          
+          const msg = `✅ Your Strategy Call with Caio is locked in.
+
+📅 When: ${new Date(startTime).toLocaleString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit', 
+            timeZone: 'Europe/Madrid' 
+          })}
+
+🔗 Google Meet link: ${meetLink}
+
+This call is for you—show up ready, take notes, and walk away with clarity. You'll get a reminder 1 hour before we start.`;
+          
+          fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/whatsapp/send`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: body.whatsapp, message: msg }),
+          }).catch(()=>{});
+        }
+      } catch {}
       
       // Check if the event was created successfully
       if (event && event.id) {

@@ -15,7 +15,8 @@ const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'caiorarity@gmail.com';
 console.log('Google API Environment Variables:', {
   SPREADSHEET_ID: SPREADSHEET_ID ? 'SET' : 'NOT SET',
   CALENDAR_ID: CALENDAR_ID,
-  CREDENTIALS_PATH: process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'SET' : 'NOT SET'
+  OAUTH2_AVAILABLE: !!(process.env.GOOGLE_OAUTH_CLIENT_ID && process.env.GOOGLE_OAUTH_CLIENT_SECRET && process.env.GOOGLE_OAUTH_REFRESH_TOKEN),
+  SERVICE_ACCOUNT_AVAILABLE: !!process.env.GOOGLE_APPLICATION_CREDENTIALS
 });
 
 // Initialize Google Auth
@@ -23,6 +24,12 @@ console.log('Google API Environment Variables:', {
 // Falls back to service account key file when OAuth is not configured.
 export const getGoogleAuth = async () => {
   try {
+    console.log('🔍 Checking OAuth2 configuration...');
+    console.log('GOOGLE_OAUTH_CLIENT_ID:', process.env.GOOGLE_OAUTH_CLIENT_ID ? 'SET' : 'NOT SET');
+    console.log('GOOGLE_OAUTH_CLIENT_SECRET:', process.env.GOOGLE_OAUTH_CLIENT_SECRET ? 'SET' : 'NOT SET');
+    console.log('GOOGLE_OAUTH_REFRESH_TOKEN:', process.env.GOOGLE_OAUTH_REFRESH_TOKEN ? 'SET' : 'NOT SET');
+    console.log('GOOGLE_OAUTH_REDIRECT_URL:', process.env.GOOGLE_OAUTH_REDIRECT_URL ? 'SET' : 'NOT SET');
+    
     const hasOAuth = !!(
       process.env.GOOGLE_OAUTH_CLIENT_ID &&
       process.env.GOOGLE_OAUTH_CLIENT_SECRET &&
@@ -30,7 +37,10 @@ export const getGoogleAuth = async () => {
       process.env.GOOGLE_OAUTH_REDIRECT_URL
     );
 
+    console.log('🔍 Has OAuth2 credentials:', hasOAuth);
+
     if (hasOAuth) {
+      console.log('🚀 Setting up OAuth2 client...');
       const oAuth2 = new google.auth.OAuth2(
         process.env.GOOGLE_OAUTH_CLIENT_ID,
         process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -39,22 +49,26 @@ export const getGoogleAuth = async () => {
       oAuth2.setCredentials({ refresh_token: process.env.GOOGLE_OAUTH_REFRESH_TOKEN });
       // Force token refresh to ensure validity
       await oAuth2.getAccessToken();
-      console.log('Initialized Google OAuth2 client (user-based).');
+      console.log('✅ Initialized Google OAuth2 client (user-based).');
       return oAuth2 as any;
     }
 
+    console.log('⚠️  OAuth2 not available, falling back to Service Account...');
+    
+    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      throw new Error('Neither OAuth2 nor Service Account credentials are available. Please configure OAuth2 or provide service account credentials.');
+    }
+    
     console.log('Initializing Service Account Google Auth with:', {
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES
     });
-    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-      throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable is not set');
-    }
+    
     const auth = new google.auth.GoogleAuth({
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES,
     });
-    console.log('Service Account Google Auth initialized successfully');
+    console.log('❌ Service Account Google Auth initialized successfully');
     return auth;
   } catch (error) {
     console.error('Error initializing Google Auth:', error);
@@ -201,13 +215,12 @@ export class GoogleCalendarService {
           { email: data.email },
         ],
         reminders: {
-          useDefault: false,
-          overrides: [
-            { method: 'email', minutes: 24 * 60 }, // 24 hours before
-            { method: 'email', minutes: 120 }, // 2 hours before
-            { method: 'popup', minutes: 15 },
-          ],
+          useDefault: true, // Use Google's default reminder system
         },
+        // Ensure attendees receive notifications
+        guestsCanModify: false,
+        guestsCanInviteOthers: false,
+        guestsCanSeeOtherGuests: true,
         conferenceData: {
           createRequest: {
             requestId: `meet-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -254,6 +267,18 @@ export class GoogleCalendarService {
         conferenceData: response.data.conferenceData,
         startTime: response.data.start,
         endTime: response.data.end,
+        reminders: response.data.reminders,
+        attendees: response.data.attendees,
+      });
+      
+      // Log the event configuration that was sent
+      console.log('Event configuration sent to Google:', {
+        summary: event.summary,
+        start: event.start,
+        end: event.end,
+        reminders: event.reminders,
+        attendees: event.attendees,
+        sendUpdates: 'all'
       });
 
       return response.data;

@@ -8,11 +8,70 @@
 	--muted: #a0a0a0;
 	--card: #1c1c1c;
 	--card-border: #2d2d2d;
+	--primary: #8b5cf6;
+	--primary-foreground: #ffffff;
 }
 
-html { scroll-behavior: smooth; }
+html { 
+	scroll-behavior: smooth; 
+}
 
 body {
 	background-color: var(--background);
 	color: var(--foreground);
+	font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Enhanced scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--card);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--primary);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #7c3aed;
+}
+
+/* Selection styles */
+::selection {
+	background-color: rgba(139, 92, 246, 0.3);
+	color: var(--foreground);
+}
+
+/* Focus styles */
+.focus-ring {
+	@apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* Custom animations */
+@keyframes float {
+	0%, 100% { transform: translateY(0px); }
+	50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+	animation: float 3s ease-in-out infinite;
+}
+
+/* Glass morphism effect */
+.glass {
+	backdrop-filter: blur(16px) saturate(180%);
+	background-color: rgba(17, 25, 40, 0.25);
+	border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+/* Gradient text */
+.gradient-text {
+	background: linear-gradient(135deg, #8b5cf6, #a78bfa, #c4b5fd);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
 }

@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
     }
   };
 
-  const currentMeta = metadata[locale];
+  const currentMeta = metadata[locale] || metadata['en']; // Fallback to English if locale not found
 
   return {
     title: currentMeta.title,

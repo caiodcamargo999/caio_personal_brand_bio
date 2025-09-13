@@ -420,19 +420,52 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
                   {currentStepData.type === 'select' && (
                     <div className="space-y-3">
-                      <div className="flex items-center space-x-4 p-4 bg-card/50 rounded-lg border-2 border-cardBorder hover:border-primary/30 transition-colors">
-                        <Switch
-                          id="budget-toggle"
-                          checked={watchedValues[currentStepData.field!] === 'yes'}
-                          onCheckedChange={(checked) => {
-                            const value = checked ? 'yes' : 'no';
-                            setValue(currentStepData.field!, value);
-                          }}
-                        />
-                        <label htmlFor="budget-toggle" className="font-medium text-white cursor-pointer">
-                          {t('leadCapture.steps.budget.yes')}
-                        </label>
+                      {/* Budget Options */}
+                      <div className="grid grid-cols-2 gap-3">
+                        {/* Yes Option */}
+                        <div 
+                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                            watchedValues[currentStepData.field!] === 'yes' 
+                              ? 'bg-primary/20 border-primary text-white' 
+                              : 'bg-card/50 border-cardBorder text-muted hover:border-primary/30 hover:text-white'
+                          }`}
+                          onClick={() => setValue(currentStepData.field!, 'yes')}
+                        >
+                          <Switch
+                            id="budget-toggle-yes"
+                            checked={watchedValues[currentStepData.field!] === 'yes'}
+                            onCheckedChange={(checked) => {
+                              setValue(currentStepData.field!, checked ? 'yes' : 'no');
+                            }}
+                          />
+                          <label htmlFor="budget-toggle-yes" className="font-medium cursor-pointer">
+                            {t('leadCapture.steps.budget.yes')}
+                          </label>
+                        </div>
+                        
+                        {/* No Option */}
+                        <div 
+                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                            watchedValues[currentStepData.field!] === 'no' 
+                              ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' 
+                              : 'bg-card/50 border-cardBorder text-muted hover:border-yellow-500/30 hover:text-yellow-300'
+                          }`}
+                          onClick={() => setValue(currentStepData.field!, 'no')}
+                        >
+                          <Switch
+                            id="budget-toggle-no"
+                            checked={watchedValues[currentStepData.field!] === 'no'}
+                            onCheckedChange={(checked) => {
+                              setValue(currentStepData.field!, checked ? 'no' : 'yes');
+                            }}
+                          />
+                          <label htmlFor="budget-toggle-no" className="font-medium cursor-pointer">
+                            {t('leadCapture.steps.budget.no')}
+                          </label>
+                        </div>
                       </div>
+                      
+                      {/* Notice for No selection */}
                       {watchedValues[currentStepData.field!] === 'no' && (
                         <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                           <p className="text-sm text-yellow-400 text-center">

@@ -81,7 +81,7 @@
   "leadCapture": {
     "intro": {
       "title": "Strategy & Consultation",
-      "message": "Me and my team can help you with Automation, AI, and Software implementation, as well as scaling your company's marketing and sales processes. But before we jump on a video call, I need to know a few things from you.",
+      "message": "I'll help you with Automation, AI, and Software implementation, as well as scaling your company's marketing and sales processes. But before we jump on a video call, I need to know a few things from you.",
       "nextButton": "Next"
     },
     "steps": {
@@ -106,7 +106,7 @@
         "placeholder": "Describe your industry or business"
       },
       "struggle": {
-        "title": "What do you most struggle to achieve?",
+        "title": "Tell me more about your project/business?",
         "placeholder": "Describe your main challenge or goal"
       },
       "budget": {
@@ -114,11 +114,6 @@
         "yes": "Yes",
         "no": "No",
         "noNotice": "No problem! We'll redirect you to resources that don't require investment."
-      },
-      "budgetAmount": {
-        "title": "What's your budget range?",
-        "placeholder": "Enter amount in USD",
-        "description": "This helps me prepare the right strategy for your investment level"
       },
       "calendar": {
         "title": "Choose the best day and time in my schedule, and see you there!",

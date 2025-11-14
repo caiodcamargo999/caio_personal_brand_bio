@@ -151,7 +151,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${sans.variable} ${heading.variable}`}>
-      <body className="min-h-screen bg-[radial-gradient(ellipse_at_top_left,rgba(139,92,246,0.15)_0%,transparent_50%),radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.12)_0%,transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(147,51,234,0.1)_0%,transparent_50%),radial-gradient(ellipse_at_bottom_right,rgba(124,58,237,0.08)_0%,transparent_50%),linear-gradient(135deg,#0a0a0a_0%,#1a0a1a_25%,#0f0a1f_50%,#1a0a2a_75%,#0a0a0a_100%)] text-white antialiased font-sans">
+      <body className="min-h-screen bg-[radial-gradient(circle_at_center,rgba(88,28,135,0.4)_0%,rgba(67,56,202,0.3)_25%,rgba(30,27,75,0.2)_50%,transparent_75%),radial-gradient(ellipse_at_top,rgba(109,40,217,0.25)_0%,transparent_60%),radial-gradient(ellipse_at_bottom,rgba(76,29,149,0.2)_0%,transparent_60%),linear-gradient(180deg,#0a0510_0%,#150a28_30%,#1e1142_50%,#150a28_70%,#0a0510_100%)] text-white antialiased font-sans">
         <I18nProvider initialLocale={locale}>
           {children}
         </I18nProvider>

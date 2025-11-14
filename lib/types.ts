@@ -4,11 +4,11 @@ import { z } from "zod";
 export function createLeadFormSchema(t: (key: string) => string) {
   return z.object({
     name: z.string().min(2, t('leadCapture.validation.nameRequired')),
-    // Normalize formatting (spaces, dashes, parentheses) and validate E.164
+    // Just validate that it has digits (prefix will be added automatically)
     whatsapp: z
       .string()
-      .transform((val) => (typeof val === 'string' ? val.replace(/[^\d+]/g, '') : val))
-      .refine((val) => /^\+[1-9]\d{7,14}$/.test(val || ''), {
+      .min(8, t('leadCapture.validation.whatsappRequired'))
+      .refine((val) => /\d{8,}/.test(val || ''), {
         message: t('leadCapture.validation.whatsappRequired'),
       }),
     email: z.string().email(t('leadCapture.validation.emailRequired')),

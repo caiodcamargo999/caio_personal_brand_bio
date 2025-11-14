@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
-    const tz = searchParams.get('tz') || 'Europe/Madrid';
+    const tz = searchParams.get('tz') || 'America/Sao_Paulo';
     
     if (!date) {
       return NextResponse.json(
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
-        timeZone: tz || 'Europe/Madrid',
+        timeZone: tz || 'America/Sao_Paulo',
       });
 
       // Filter out past times if the selected date is "today" in the selected timezone
@@ -111,14 +111,14 @@ export async function POST(request: NextRequest) {
           
           const msg = `✅ Your Strategy Call with Caio is locked in.
 
-📅 When: ${new Date(startTime).toLocaleString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
+📅 When: ${new Date(startTime).toLocaleString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
             day: 'numeric',
-            hour: '2-digit', 
-            minute: '2-digit', 
-            timeZone: 'Europe/Madrid' 
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'America/Sao_Paulo'
           })}
 
 🔗 Google Meet link: ${meetLink}

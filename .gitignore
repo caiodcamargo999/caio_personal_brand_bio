@@ -31,3 +31,4 @@ google-credentials-*.json
 .vercel/
 .vscode/
 .idea/
+nul

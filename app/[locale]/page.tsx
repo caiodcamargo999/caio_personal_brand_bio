@@ -100,12 +100,35 @@ export default function HomePage() {
 					>
 						<motion.div variants={itemVariants} className="p-6 sm:p-7 md:p-8">
 							<CardContent className="p-0 space-y-4">
-								{/* Título como botão azul/roxo com ícone dentro */}
-								<button className="bg-gradient-to-r from-primary-900 to-primary-800 hover:from-primary-950 hover:to-primary-900 text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-glow hover:shadow-glow-lg flex items-center gap-2 w-full justify-center">
-									<BrainIcon size={20} />
-									{t('cards.strategyConsultation.title')}
-								</button>
-								
+								{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
+								<div className="relative group/btn p-1">
+									{/* Container com borda grossa externa */}
+									<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
+
+										{/* Botão interno */}
+										<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
+
+											{/* Background principal com gradiente */}
+											<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
+
+											{/* Textura de grade sutil */}
+											<div className="absolute inset-0 rounded-full opacity-20" style={{
+												backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
+											}}></div>
+
+											{/* Brilho superior */}
+											<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
+
+											{/* Brilho inferior (reflexo) */}
+											<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
+
+											{/* Conteúdo do botão */}
+											<BrainIcon size={22} className="relative z-10" />
+											<span className="relative z-10 font-bold">{t('cards.strategyConsultation.title')}</span>
+										</button>
+									</div>
+								</div>
+
 								{/* Descrição */}
 								<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
 									{t('cards.strategyConsultation.description')}
@@ -120,12 +143,35 @@ export default function HomePage() {
 							<Card className="group cursor-pointer overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/20 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/60">
 								<motion.div className="p-6 sm:p-7 md:p-8" variants={itemVariants}>
 									<CardContent className="p-0 space-y-4">
-										{/* Título como botão azul/roxo com ícone dentro */}
-										<button className="bg-gradient-to-r from-primary-900 to-primary-800 hover:from-primary-950 hover:to-primary-900 text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-glow hover:shadow-glow-lg flex items-center gap-2 w-full justify-center">
-											<HomeIcon size={20} />
-											{t('cards.realEstate.title')}
-										</button>
-										
+										{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
+										<div className="relative group/btn p-1">
+											{/* Container com borda grossa externa */}
+											<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
+
+												{/* Botão interno */}
+												<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
+
+													{/* Background principal com gradiente */}
+													<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
+
+													{/* Textura de grade sutil */}
+													<div className="absolute inset-0 rounded-full opacity-20" style={{
+														backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
+													}}></div>
+
+													{/* Brilho superior */}
+													<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
+
+													{/* Brilho inferior (reflexo) */}
+													<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
+
+													{/* Conteúdo do botão */}
+													<HomeIcon size={22} className="relative z-10" />
+													<span className="relative z-10 font-bold">{t('cards.realEstate.title')}</span>
+												</button>
+											</div>
+										</div>
+
 										{/* Descrição */}
 										<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
 											{t('cards.realEstate.description')}
@@ -168,12 +214,35 @@ export default function HomePage() {
 						<motion.div variants={itemVariants}>
 							<a href="https://rarityagency.io" className="block p-6 sm:p-7 md:p-8">
 								<CardContent className="p-0 space-y-4">
-									{/* Título como botão azul/roxo com ícone dentro */}
-									<button className="bg-gradient-to-r from-primary-900 to-primary-800 hover:from-primary-950 hover:to-primary-900 text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-glow hover:shadow-glow-lg flex items-center gap-2 w-full justify-center">
-										<PhoneChartIcon size={20} />
-										{t('cards.rarityAgency.title')}
-									</button>
-									
+									{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
+									<div className="relative group/btn p-1">
+										{/* Container com borda grossa externa */}
+										<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
+
+											{/* Botão interno */}
+											<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
+
+												{/* Background principal com gradiente */}
+												<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
+
+												{/* Textura de grade sutil */}
+												<div className="absolute inset-0 rounded-full opacity-20" style={{
+													backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
+												}}></div>
+
+												{/* Brilho superior */}
+												<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
+
+												{/* Brilho inferior (reflexo) */}
+												<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
+
+												{/* Conteúdo do botão */}
+												<PhoneChartIcon size={22} className="relative z-10" />
+												<span className="relative z-10 font-bold">{t('cards.rarityAgency.title')}</span>
+											</button>
+										</div>
+									</div>
+
 									{/* Descrição */}
 									<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
 										{t('cards.rarityAgency.description')}

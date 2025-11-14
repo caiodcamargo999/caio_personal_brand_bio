@@ -54,21 +54,45 @@ export const getGoogleAuth = async () => {
     }
 
     console.log('⚠️  OAuth2 not available, falling back to Service Account...');
-    
-    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-      throw new Error('Neither OAuth2 nor Service Account credentials are available. Please configure OAuth2 or provide service account credentials.');
+
+    // Check for individual service account environment variables first
+    const hasServiceAccountEnvVars = !!(
+      process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
+      process.env.GOOGLE_PRIVATE_KEY
+    );
+
+    if (hasServiceAccountEnvVars) {
+      console.log('🔑 Using Service Account from environment variables...');
+      console.log('Service Account Email:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+
+      // Parse the private key (handle escaped newlines)
+      const privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+
+      const auth = new google.auth.GoogleAuth({
+        credentials: {
+          client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+          private_key: privateKey,
+        },
+        scopes: SCOPES,
+      });
+
+      console.log('✅ Service Account Google Auth initialized successfully from env vars');
+      return auth;
     }
-    
-    console.log('Initializing Service Account Google Auth with:', {
-      keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-      scopes: SCOPES
-    });
-    
+
+    // Fallback to credentials file
+    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      throw new Error('Neither OAuth2 nor Service Account credentials are available. Please configure OAuth2 or provide service account credentials (GOOGLE_SERVICE_ACCOUNT_EMAIL + GOOGLE_PRIVATE_KEY or GOOGLE_APPLICATION_CREDENTIALS).');
+    }
+
+    console.log('📄 Using Service Account from credentials file...');
+    console.log('Credentials file path:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
     const auth = new google.auth.GoogleAuth({
       keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       scopes: SCOPES,
     });
-    console.log('❌ Service Account Google Auth initialized successfully');
+    console.log('✅ Service Account Google Auth initialized successfully from file');
     return auth;
   } catch (error) {
     console.error('Error initializing Google Auth:', error);
@@ -96,8 +120,26 @@ export class GoogleSheetsService {
       })();
 
       const scheduledCell = data.scheduledDateTime
-        ? new Date(data.scheduledDateTime).toLocaleString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        ? new Date(data.scheduledDateTime).toLocaleString('en-US', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'America/Sao_Paulo'
+          })
         : '';
+
+      // Timestamp in Brasilia timezone
+      const timestamp = new Date().toLocaleString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone: 'America/Sao_Paulo'
+      });
 
       const values = [
         [
@@ -109,7 +151,7 @@ export class GoogleSheetsService {
           data.struggle || '',
           budgetCell,
           scheduledCell,
-          new Date().toISOString(), // Timestamp
+          timestamp, // Timestamp in Brasilia timezone
         ]
       ];
 
@@ -203,11 +245,11 @@ export class GoogleCalendarService {
         ].join('\n'),
         start: {
           dateTime: startDateTime.toISOString(),
-          timeZone: 'Europe/Madrid',
+          timeZone: 'America/Sao_Paulo',
         },
         end: {
           dateTime: endDateTime.toISOString(),
-          timeZone: 'Europe/Madrid',
+          timeZone: 'America/Sao_Paulo',
         },
         // Try to include attendees so Google sends native invitations/RSVP
         attendees: [
@@ -291,16 +333,28 @@ export class GoogleCalendarService {
   async getAvailableTimeSlots(date: Date, userTimeZone?: string): Promise<string[]> {
     try {
       console.log('Getting available time slots for date:', date, 'user timezone:', userTimeZone);
-      
+
       const calendar = google.calendar({ version: 'v3', auth: this.auth });
-      
-      // Define office hours in Madrid time
-      const tz = 'Europe/Madrid';
-      const startOfDay = new Date(date);
-      startOfDay.setHours(8, 0, 0, 0); // 8:00 AM Madrid
-      
-      const endOfDay = new Date(date);
-      endOfDay.setHours(18, 0, 0, 0); // 6:00 PM Madrid
+
+      // Define office hours in Brasilia time (America/Sao_Paulo)
+      const tz = 'America/Sao_Paulo';
+
+      // Helper to create a date in Brasilia timezone
+      // Extract YYYY-MM-DD from the input date
+      const dateStr = date.toISOString().split('T')[0]; // e.g., "2025-11-14"
+
+      // Create start and end times in Brasilia timezone using ISO 8601 format
+      // This ensures we're working with the correct date in Brasilia time
+      const startOfDay = new Date(`${dateStr}T08:00:00-03:00`); // 8:00 AM Brasilia (UTC-3)
+      const endOfDay = new Date(`${dateStr}T20:00:00-03:00`); // 8:00 PM Brasilia (UTC-3)
+
+      // Check if the selected date is a Sunday (0 = Sunday)
+      // Use the date string to avoid timezone confusion
+      const dayOfWeek = new Date(dateStr).getUTCDay();
+      if (dayOfWeek === 0) {
+        console.log('Selected date is Sunday - no available slots');
+        return [];
+      }
 
       console.log('Searching for events between:', startOfDay.toISOString(), 'and', endOfDay.toISOString());
 
@@ -315,15 +369,27 @@ export class GoogleCalendarService {
       const events = response.data.items || [];
       console.log('Found existing events:', events.length);
 
+      // Calculate minimum booking time (2 hours from now) in UTC
+      const now = new Date();
+      const minBookingTime = new Date(now.getTime() + 2 * 60 * 60 * 1000); // 2 hours from now
+      console.log('Current time (UTC):', now.toISOString());
+      console.log('Minimum booking time (2h from now, UTC):', minBookingTime.toISOString());
+
       const availableSlots: string[] = [];
 
-      // Generate 1-hour slots from 8 AM to 6 PM
-      for (let hour = 8; hour < 18; hour++) {
-        const slotTime = new Date(date);
-        slotTime.setHours(hour, 0, 0, 0);
-        
+      // Generate 1-hour slots from 8 AM to 8 PM (Monday to Saturday)
+      for (let hour = 8; hour < 20; hour++) {
+        // Create slot time in Brasilia timezone (UTC-3)
+        const slotTime = new Date(`${dateStr}T${hour.toString().padStart(2, '0')}:00:00-03:00`);
         const slotEnd = new Date(slotTime.getTime() + 60 * 60 * 1000);
-        
+
+        // Skip slots that are less than 2 hours from now
+        // Compare both dates in UTC (they're already Date objects in UTC internally)
+        if (slotTime.getTime() < minBookingTime.getTime()) {
+          console.log('Skipping slot (too soon):', slotTime.toISOString(), '- slot time:', slotTime.getTime(), 'min time:', minBookingTime.getTime());
+          continue;
+        }
+
         // Check if slot conflicts with existing events
         const hasConflict = events.some(event => {
           const eventStart = new Date(event.start?.dateTime || '');
@@ -332,7 +398,7 @@ export class GoogleCalendarService {
         });
 
         if (!hasConflict) {
-          // If user requested a timezone, we still store ISO in Madrid; client/server will format with tz param
+          // Store ISO time in Brasilia timezone
           availableSlots.push(slotTime.toISOString());
         }
       }

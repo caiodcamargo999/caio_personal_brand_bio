@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createLeadFormSchema, LeadFormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { createPortal } from 'react-dom';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
@@ -26,6 +27,170 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [userTimeZone, setUserTimeZone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Madrid');
   const [budgetAmount, setBudgetAmount] = useState<number | undefined>();
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+  const [slotsCache, setSlotsCache] = useState<Map<string, Array<{iso: string, display: string}>>>(new Map());
+  const [lastLoadedDate, setLastLoadedDate] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<{code: string, flag: string, prefix: string, format: string}>({
+    code: 'BR',
+    flag: '🇧🇷',
+    prefix: '+55',
+    format: '(11) 98765-4321'
+  });
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [countrySearchQuery, setCountrySearchQuery] = useState('');
+  const [dropdownPosition, setDropdownPosition] = useState<{top: number, left: number} | null>(null);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
+  const countryButtonRef = useRef<HTMLButtonElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Close dropdown when clicking outside (DISABLED - using Escape key instead)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // Don't close if clicking inside the dropdown
+      if (countryDropdownRef.current && countryDropdownRef.current.contains(target)) {
+        return;
+      }
+
+      // Don't close if clicking the button (button handles its own toggle)
+      if (countryButtonRef.current && countryButtonRef.current.contains(target)) {
+        return;
+      }
+
+      // Close only if clicking truly outside both elements
+      setIsCountryDropdownOpen(false);
+      setCountrySearchQuery('');
+    };
+
+    if (isCountryDropdownOpen) {
+      // Add small delay to prevent immediate close
+      const timer = setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 100);
+
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isCountryDropdownOpen]);
+
+  // Focus search input when dropdown opens - AGGRESSIVE
+  useEffect(() => {
+    if (isCountryDropdownOpen) {
+      const focusInput = () => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus();
+          searchInputRef.current.click();
+        }
+      };
+
+      // Multiple attempts with different delays
+      requestAnimationFrame(focusInput);
+      setTimeout(focusInput, 0);
+      setTimeout(focusInput, 50);
+      setTimeout(focusInput, 100);
+      setTimeout(focusInput, 200);
+    }
+  }, [isCountryDropdownOpen]);
+
+  // Lista completa de países com bandeiras, prefixos e formatos
+  const countries = [
+    // América do Sul
+    { code: 'BR', flag: '🇧🇷', prefix: '+55', name: 'Brasil', format: '(11) 98765-4321' },
+    { code: 'AR', flag: '🇦🇷', prefix: '+54', name: 'Argentina', format: '11 2345-6789' },
+    { code: 'CL', flag: '🇨🇱', prefix: '+56', name: 'Chile', format: '9 8765 4321' },
+    { code: 'CO', flag: '🇨🇴', prefix: '+57', name: 'Colombia', format: '312 345 6789' },
+    { code: 'PE', flag: '🇵🇪', prefix: '+51', name: 'Perú', format: '987 654 321' },
+    { code: 'VE', flag: '🇻🇪', prefix: '+58', name: 'Venezuela', format: '412-3456789' },
+    { code: 'EC', flag: '🇪🇨', prefix: '+593', name: 'Ecuador', format: '99 123 4567' },
+    { code: 'BO', flag: '🇧🇴', prefix: '+591', name: 'Bolivia', format: '71234567' },
+    { code: 'PY', flag: '🇵🇾', prefix: '+595', name: 'Paraguay', format: '981 123456' },
+    { code: 'UY', flag: '🇺🇾', prefix: '+598', name: 'Uruguay', format: '94 123 456' },
+    { code: 'GY', flag: '🇬🇾', prefix: '+592', name: 'Guyana', format: '609 1234' },
+    { code: 'SR', flag: '🇸🇷', prefix: '+597', name: 'Suriname', format: '741-2345' },
+
+    // América Central
+    { code: 'MX', flag: '🇲🇽', prefix: '+52', name: 'México', format: '55 1234 5678' },
+    { code: 'GT', flag: '🇬🇹', prefix: '+502', name: 'Guatemala', format: '5123 4567' },
+    { code: 'HN', flag: '🇭🇳', prefix: '+504', name: 'Honduras', format: '9123-4567' },
+    { code: 'SV', flag: '🇸🇻', prefix: '+503', name: 'El Salvador', format: '7123-4567' },
+    { code: 'NI', flag: '🇳🇮', prefix: '+505', name: 'Nicaragua', format: '8123 4567' },
+    { code: 'CR', flag: '🇨🇷', prefix: '+506', name: 'Costa Rica', format: '8312-3456' },
+    { code: 'PA', flag: '🇵🇦', prefix: '+507', name: 'Panamá', format: '6123-4567' },
+    { code: 'BZ', flag: '🇧🇿', prefix: '+501', name: 'Belize', format: '622-1234' },
+
+    // América do Norte
+    { code: 'US', flag: '🇺🇸', prefix: '+1', name: 'USA', format: '(555) 123-4567' },
+    { code: 'CA', flag: '🇨🇦', prefix: '+1', name: 'Canada', format: '(555) 123-4567' },
+
+    // Europa Ocidental
+    { code: 'ES', flag: '🇪🇸', prefix: '+34', name: 'España', format: '612 34 56 78' },
+    { code: 'PT', flag: '🇵🇹', prefix: '+351', name: 'Portugal', format: '912 345 678' },
+    { code: 'FR', flag: '🇫🇷', prefix: '+33', name: 'France', format: '6 12 34 56 78' },
+    { code: 'IT', flag: '🇮🇹', prefix: '+39', name: 'Italy', format: '312 345 6789' },
+    { code: 'DE', flag: '🇩🇪', prefix: '+49', name: 'Germany', format: '151 23456789' },
+    { code: 'GB', flag: '🇬🇧', prefix: '+44', name: 'UK', format: '7400 123456' },
+    { code: 'IE', flag: '🇮🇪', prefix: '+353', name: 'Ireland', format: '85 123 4567' },
+    { code: 'NL', flag: '🇳🇱', prefix: '+31', name: 'Netherlands', format: '6 12345678' },
+    { code: 'BE', flag: '🇧🇪', prefix: '+32', name: 'Belgium', format: '470 12 34 56' },
+    { code: 'LU', flag: '🇱🇺', prefix: '+352', name: 'Luxembourg', format: '628 123 456' },
+    { code: 'CH', flag: '🇨🇭', prefix: '+41', name: 'Switzerland', format: '78 123 45 67' },
+    { code: 'AT', flag: '🇦🇹', prefix: '+43', name: 'Austria', format: '664 1234567' },
+
+    // Europa do Norte
+    { code: 'SE', flag: '🇸🇪', prefix: '+46', name: 'Sweden', format: '70-123 45 67' },
+    { code: 'NO', flag: '🇳🇴', prefix: '+47', name: 'Norway', format: '406 12 345' },
+    { code: 'DK', flag: '🇩🇰', prefix: '+45', name: 'Denmark', format: '32 12 34 56' },
+    { code: 'FI', flag: '🇫🇮', prefix: '+358', name: 'Finland', format: '41 2345678' },
+    { code: 'IS', flag: '🇮🇸', prefix: '+354', name: 'Iceland', format: '611 2345' },
+
+    // Europa do Leste
+    { code: 'PL', flag: '🇵🇱', prefix: '+48', name: 'Poland', format: '512 345 678' },
+    { code: 'CZ', flag: '🇨🇿', prefix: '+420', name: 'Czech Republic', format: '601 123 456' },
+    { code: 'SK', flag: '🇸🇰', prefix: '+421', name: 'Slovakia', format: '912 123 456' },
+    { code: 'HU', flag: '🇭🇺', prefix: '+36', name: 'Hungary', format: '20 123 4567' },
+    { code: 'RO', flag: '🇷🇴', prefix: '+40', name: 'Romania', format: '712 345 678' },
+    { code: 'BG', flag: '🇧🇬', prefix: '+359', name: 'Bulgaria', format: '87 123 4567' },
+    { code: 'UA', flag: '🇺🇦', prefix: '+380', name: 'Ukraine', format: '50 123 4567' },
+    { code: 'RU', flag: '🇷🇺', prefix: '+7', name: 'Russia', format: '912 345-67-89' },
+
+    // Europa do Sul
+    { code: 'GR', flag: '🇬🇷', prefix: '+30', name: 'Greece', format: '691 234 5678' },
+    { code: 'HR', flag: '🇭🇷', prefix: '+385', name: 'Croatia', format: '91 234 5678' },
+    { code: 'SI', flag: '🇸🇮', prefix: '+386', name: 'Slovenia', format: '31 234 567' },
+    { code: 'RS', flag: '🇷🇸', prefix: '+381', name: 'Serbia', format: '60 1234567' },
+
+    // Ásia - Leste
+    { code: 'CN', flag: '🇨🇳', prefix: '+86', name: 'China', format: '131 2345 6789' },
+    { code: 'JP', flag: '🇯🇵', prefix: '+81', name: 'Japan', format: '90-1234-5678' },
+    { code: 'KR', flag: '🇰🇷', prefix: '+82', name: 'South Korea', format: '10-1234-5678' },
+
+    // Ásia - Sudeste
+    { code: 'ID', flag: '🇮🇩', prefix: '+62', name: 'Indonesia', format: '812-3456-7890' },
+    { code: 'KH', flag: '🇰🇭', prefix: '+855', name: 'Cambodia', format: '12 345 678' },
+    { code: 'TH', flag: '🇹🇭', prefix: '+66', name: 'Thailand', format: '81 234 5678' },
+    { code: 'VN', flag: '🇻🇳', prefix: '+84', name: 'Vietnam', format: '91 234 56 78' },
+    { code: 'SG', flag: '🇸🇬', prefix: '+65', name: 'Singapore', format: '8123 4567' },
+    { code: 'MY', flag: '🇲🇾', prefix: '+60', name: 'Malaysia', format: '12-345 6789' },
+    { code: 'PH', flag: '🇵🇭', prefix: '+63', name: 'Philippines', format: '905 123 4567' },
+
+    // Ásia - Sul
+    { code: 'IN', flag: '🇮🇳', prefix: '+91', name: 'India', format: '81234 56789' },
+    { code: 'PK', flag: '🇵🇰', prefix: '+92', name: 'Pakistan', format: '301 2345678' },
+    { code: 'BD', flag: '🇧🇩', prefix: '+880', name: 'Bangladesh', format: '1712-345678' },
+
+    // Oceania
+    { code: 'AU', flag: '🇦🇺', prefix: '+61', name: 'Australia', format: '412 345 678' },
+    { code: 'NZ', flag: '🇳🇿', prefix: '+64', name: 'New Zealand', format: '21 123 4567' },
+
+    // Oriente Médio
+    { code: 'AE', flag: '🇦🇪', prefix: '+971', name: 'UAE', format: '50 123 4567' },
+    { code: 'SA', flag: '🇸🇦', prefix: '+966', name: 'Saudi Arabia', format: '51 234 5678' },
+    { code: 'IL', flag: '🇮🇱', prefix: '+972', name: 'Israel', format: '50-123-4567' },
+    { code: 'TR', flag: '🇹🇷', prefix: '+90', name: 'Turkey', format: '501 234 5678' },
+  ];
 
   const formSteps = [
     { id: 'intro', title: t('leadCapture.intro.title'), field: null, type: 'intro' as const, required: false },
@@ -36,7 +201,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     { id: 'industry', title: t('leadCapture.steps.industry.title'), field: 'industry' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.industry.placeholder'), required: true },
     { id: 'struggle', title: t('leadCapture.steps.struggle.title'), field: 'struggle' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.struggle.placeholder'), required: true },
     { id: 'budget', title: t('leadCapture.steps.budget.title'), field: 'budget' as keyof LeadFormData, type: 'select' as const, options: [{ value: 'yes', label: t('leadCapture.steps.budget.yes') }, { value: 'no', label: t('leadCapture.steps.budget.no') }], required: true },
-    { id: 'budgetAmount', title: t('leadCapture.steps.budgetAmount.title'), field: null, type: 'number' as const, placeholder: t('leadCapture.steps.budgetAmount.placeholder'), required: false },
     { id: 'calendar', title: t('leadCapture.steps.calendar.title'), field: null, type: 'calendar' as const, required: false },
   ];
 
@@ -76,9 +240,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     if (currentStepData.id === 'budget' && watchedValues['budget'] === 'no') {
       console.log('Redirecting to WhatsApp - no budget selected');
       try {
+        // Concatenate country prefix with WhatsApp number
+        const fullWhatsApp = `${selectedCountry.prefix}${watchedValues.whatsapp}`;
+
         const leadData = {
           name: watchedValues.name,
-          whatsapp: watchedValues.whatsapp,
+          whatsapp: fullWhatsApp,
           email: watchedValues.email,
           instagram: watchedValues.instagram,
           industry: watchedValues.industry,
@@ -124,8 +291,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     setIsSubmitting(true);
     try {
       if (currentStep === formSteps.length - 1 && selectedTime) {
+        // Concatenate country prefix with WhatsApp number
+        const fullWhatsApp = `${selectedCountry.prefix}${data.whatsapp}`;
+
         const finalData = {
           ...data,
+          whatsapp: fullWhatsApp,
           budgetAmount,
           scheduledDateTime: selectedTime
         };
@@ -243,7 +414,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const handleCalendarDateSelect = (date: Date) => {
     setSelectedDate(date);
     setSelectedTime('');
-    loadAvailableTimeSlots();
+    loadTimeSlots(date);
   };
 
   const handleTimeSlotSelect = (timeSlot: string) => {
@@ -251,21 +422,82 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     setValue('scheduledDateTime', timeSlot);
   };
 
-  const loadAvailableTimeSlots = useCallback(async () => {
+  // Load time slots for a given date with CACHE
+  const loadTimeSlots = async (date: Date) => {
+    const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+    // Check cache first - instant response!
+    if (slotsCache.has(dateKey)) {
+      setAvailableSlots(slotsCache.get(dateKey)!);
+      setLastLoadedDate(dateKey);
+      return;
+    }
+
+    // Only show loading if we don't have cache
+    setIsLoadingSlots(true);
     try {
-      const response = await fetch(`/api/calendar?date=${selectedDate.toISOString()}&tz=${encodeURIComponent(userTimeZone)}`);
+      const response = await fetch(`/api/calendar?date=${date.toISOString()}&tz=${encodeURIComponent(userTimeZone)}`);
       if (response.ok) {
         const data = await response.json();
-        setAvailableSlots(data.availableSlots || []);
+        const slots = data.availableSlots || [];
+
+        // Update cache
+        setSlotsCache(prev => new Map(prev).set(dateKey, slots));
+        setAvailableSlots(slots);
+        setLastLoadedDate(dateKey);
       }
     } catch (error) {
       console.error('Error loading time slots:', error);
+      setAvailableSlots([]);
+    } finally {
+      setIsLoadingSlots(false);
     }
-  }, [selectedDate, userTimeZone]);
+  };
 
+  // ULTRA-AGGRESSIVE PRE-LOAD: Start loading from NAME step (step 1)
   useEffect(() => {
-    loadAvailableTimeSlots();
-  }, [loadAvailableTimeSlots]);
+    const calendarStepIndex = formSteps.length - 1; // Calendar is last
+
+    // Pre-load as soon as modal opens (step 1 or later)
+    if (currentStep >= 1 && isOpen) {
+      // Find first available date (skip today if it's past 6 PM BRT or if it's Sunday)
+      const findFirstAvailableDate = () => {
+        const now = new Date();
+        const nowBRT = new Date(now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+        const currentHourBRT = nowBRT.getHours();
+
+        for (let i = 0; i < 14; i++) {
+          const date = new Date();
+          date.setDate(date.getDate() + i);
+          const dayOfWeek = date.getDay();
+
+          // Skip Sundays
+          if (dayOfWeek === 0) continue;
+
+          // Skip today if it's past 6 PM BRT (considering 2-hour advance booking)
+          if (i === 0 && currentHourBRT >= 18) continue;
+
+          return date;
+        }
+
+        // Fallback to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return tomorrow;
+      };
+
+      const firstAvailable = findFirstAvailableDate();
+
+      // Only update selectedDate if we're actually on the calendar step
+      if (currentStep === calendarStepIndex) {
+        setSelectedDate(firstAvailable);
+      }
+
+      // ALWAYS pre-load slots on every step change to ensure they're ready
+      loadTimeSlots(firstAvailable);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep, isOpen, formSteps.length]);
 
   const resetForm = () => {
     setCurrentStep(0);
@@ -276,6 +508,13 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   const currentStepData = formSteps[currentStep];
   const progress = ((currentStep + 1) / formSteps.length) * 100;
+
+  // Filter countries based on search query
+  const filteredCountries = countries.filter(country =>
+    country.name.toLowerCase().includes(countrySearchQuery.toLowerCase()) ||
+    country.prefix.includes(countrySearchQuery) ||
+    country.code.toLowerCase().includes(countrySearchQuery.toLowerCase())
+  );
 
   if (isSuccess) {
     return (
@@ -366,15 +605,151 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                 <div className="space-y-4">
                   {currentStepData.type === 'text' && (
                     <div className="space-y-2">
-                      <input
-                        {...register(currentStepData.field!)}
-                        type={currentStepData.field === 'whatsapp' ? 'tel' : 'text'}
-                        inputMode={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
-                        autoComplete={currentStepData.field === 'whatsapp' ? 'tel' : undefined}
-                        pattern={currentStepData.field === 'whatsapp' ? "^[0-9() +\\-]*$" : undefined}
-                        placeholder={currentStepData.placeholder}
-                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-                      />
+                      {currentStepData.field === 'whatsapp' ? (
+                        <div className="flex gap-2">
+                          {/* Country Selector - Calendly Style */}
+                          <div className="relative min-w-[100px]">
+                            <button
+                              ref={countryButtonRef}
+                              type="button"
+                              onClick={() => {
+                                if (!isCountryDropdownOpen && countryButtonRef.current) {
+                                  const rect = countryButtonRef.current.getBoundingClientRect();
+                                  setDropdownPosition({
+                                    top: rect.bottom,
+                                    left: rect.left
+                                  });
+                                }
+                                setIsCountryDropdownOpen(!isCountryDropdownOpen);
+                              }}
+                              className="w-full px-3 py-3 bg-card/50 border border-cardBorder rounded-lg text-white focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5"
+                            >
+                              <span className="text-base">{selectedCountry.flag}</span>
+                              <span className="text-xs font-medium">{selectedCountry.code}</span>
+                              <svg className={`w-3 h-3 transition-transform ${isCountryDropdownOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+
+                            {/* Dropdown via Portal with pointer-events */}
+                            {isCountryDropdownOpen && dropdownPosition && typeof window !== 'undefined' && createPortal(
+                              <div
+                                ref={countryDropdownRef}
+                                className="fixed w-[320px] bg-[#1a1a2e] border border-gray-700 rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
+                                style={{
+                                  top: `${dropdownPosition.top + 8}px`,
+                                  left: `${dropdownPosition.left}px`,
+                                  zIndex: 9999
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {/* Search Input */}
+                                <div className="p-3 border-b border-gray-700 bg-[#1a1a2e]">
+                                  <input
+                                    ref={searchInputRef}
+                                    type="text"
+                                    inputMode="text"
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    autoCapitalize="off"
+                                    spellCheck="false"
+                                    autoFocus
+                                    tabIndex={0}
+                                    placeholder="Search country..."
+                                    value={countrySearchQuery}
+                                    onChange={(e) => setCountrySearchQuery(e.target.value)}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      e.currentTarget.focus();
+                                    }}
+                                    onMouseDown={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter' && filteredCountries.length > 0) {
+                                        e.preventDefault();
+                                        setSelectedCountry(filteredCountries[0]);
+                                        setIsCountryDropdownOpen(false);
+                                        setCountrySearchQuery('');
+                                      } else if (e.key === 'Escape') {
+                                        e.preventDefault();
+                                        setIsCountryDropdownOpen(false);
+                                        setCountrySearchQuery('');
+                                      }
+                                    }}
+                                    className="w-full px-3 py-2.5 bg-[#0f0f1e] border border-gray-600 rounded-lg text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-text"
+                                  />
+                                </div>
+
+                                {/* Country List - Scrollable */}
+                                <div className="overflow-y-auto max-h-[280px] overscroll-contain">
+                                  {filteredCountries.length > 0 ? (
+                                    filteredCountries.map((country) => (
+                                      <button
+                                        key={country.code}
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setSelectedCountry(country);
+                                          setIsCountryDropdownOpen(false);
+                                          setCountrySearchQuery('');
+                                        }}
+                                        className={`w-full px-4 py-3 text-left hover:bg-blue-600/20 transition-colors flex items-center gap-3 ${
+                                          selectedCountry.code === country.code ? 'bg-blue-600/30' : ''
+                                        }`}
+                                      >
+                                        <span className="text-xl">{country.flag}</span>
+                                        <span className="text-sm text-white flex-1">{country.name}</span>
+                                        <span className="text-xs text-gray-400 font-mono">{country.prefix}</span>
+                                      </button>
+                                    ))
+                                  ) : (
+                                    <div className="px-4 py-6 text-center text-gray-400 text-sm">
+                                      No countries found
+                                    </div>
+                                  )}
+                                </div>
+                              </div>,
+                              document.body
+                            )}
+                          </div>
+
+                          {/* WhatsApp Input */}
+                          <input
+                            {...register(currentStepData.field!)}
+                            type="tel"
+                            inputMode="tel"
+                            autoComplete="tel"
+                            placeholder={selectedCountry.format}
+                            className="flex-1 px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                            onChange={(e) => {
+                              // Only allow numbers, spaces, parentheses, and dashes (NO +)
+                              let value = e.target.value.replace(/[^\d() \-]/g, '');
+                              e.target.value = value;
+                              register(currentStepData.field!).onChange(e);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                handleNext();
+                              }
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <input
+                          {...register(currentStepData.field!)}
+                          type="text"
+                          placeholder={currentStepData.placeholder}
+                          className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleNext();
+                            }
+                          }}
+                        />
+                      )}
                       {errors[currentStepData.field as keyof LeadFormData] && (
                         <p className="text-red-400 text-sm flex items-center gap-2">
                           <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
@@ -391,6 +766,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         type="email"
                         placeholder={currentStepData.placeholder}
                         className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleNext();
+                          }
+                        }}
                       />
                       {errors[currentStepData.field as keyof LeadFormData] && (
                         <p className="text-red-400 text-sm flex items-center gap-2">
@@ -408,6 +789,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         placeholder={currentStepData.placeholder}
                         rows={4}
                         className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 resize-none"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                            e.preventDefault();
+                            handleNext();
+                          }
+                        }}
                       />
                       {errors[currentStepData.field as keyof LeadFormData] && (
                         <p className="text-red-400 text-sm flex items-center gap-2">
@@ -423,10 +810,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                       {/* Budget Options */}
                       <div className="grid grid-cols-2 gap-3">
                         {/* Yes Option */}
-                        <div 
+                        <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                            watchedValues[currentStepData.field!] === 'yes' 
-                              ? 'bg-primary/20 border-primary text-white' 
+                            watchedValues[currentStepData.field!] === 'yes'
+                              ? 'bg-primary/20 border-primary text-white'
                               : 'bg-card/50 border-cardBorder text-muted hover:border-primary/30 hover:text-white'
                           }`}
                           onClick={() => setValue(currentStepData.field!, 'yes')}
@@ -442,12 +829,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                             {t('leadCapture.steps.budget.yes')}
                           </label>
                         </div>
-                        
+
                         {/* No Option */}
-                        <div 
+                        <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                            watchedValues[currentStepData.field!] === 'no' 
-                              ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' 
+                            watchedValues[currentStepData.field!] === 'no'
+                              ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300'
                               : 'bg-card/50 border-cardBorder text-muted hover:border-yellow-500/30 hover:text-yellow-300'
                           }`}
                           onClick={() => setValue(currentStepData.field!, 'no')}
@@ -464,43 +851,13 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                           </label>
                         </div>
                       </div>
-                      
+
                       {/* Notice for No selection */}
                       {watchedValues[currentStepData.field!] === 'no' && (
                         <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                           <p className="text-sm text-yellow-400 text-center">
                             {t('leadCapture.steps.budget.noNotice')}
                           </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {currentStepData.type === 'number' && watchedValues.budget === 'yes' && (
-                    <div className="space-y-3">
-                      <div className="relative">
-                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted">{locale === 'pt' ? 'R$' : '$'}</span>
-                        <input
-                          type="number"
-                          value={budgetAmount || ''}
-                          onChange={(e) => setBudgetAmount(parseFloat(e.target.value) || undefined)}
-                          placeholder={t('leadCapture.steps.budgetAmount.placeholder')}
-                          className="w-full pl-8 pr-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-                          min="0"
-                          step="100"
-                        />
-                      </div>
-                      <p className="text-sm text-muted">{t('leadCapture.steps.budgetAmount.description')}</p>
-                      {budgetAmount && budgetAmount > 0 && (
-                        <div className="flex items-center gap-2 text-sm text-green-400">
-                          <Check className="w-4 h-4" />
-                          Valid budget amount
-                        </div>
-                      )}
-                      {budgetAmount !== undefined && budgetAmount <= 0 && (
-                        <div className="flex items-center gap-2 text-sm text-red-400">
-                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
-                          Please enter a valid amount greater than 0
                         </div>
                       )}
                     </div>
@@ -544,17 +901,29 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         date.setDate(date.getDate() + i);
                         const isSelected = selectedDate.toDateString() === date.toDateString();
                         const isToday = i === 0;
-                        
+                        const isSunday = date.getDay() === 0;
+
+                        // Check if today is past 6 PM BRT (considering 2-hour advance booking)
+                        const now = new Date();
+                        const nowBRT = new Date(now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+                        const currentHourBRT = nowBRT.getHours();
+                        const isTodayPastBookingTime = i === 0 && currentHourBRT >= 18;
+
+                        const isDisabled = isSunday || isTodayPastBookingTime;
+
                         return (
                           <button
                             key={i}
                             type="button"
-                            onClick={() => handleCalendarDateSelect(date)}
-                            className={`p-2 rounded-lg border transition-all text-center hover:scale-105 ${
-                              isSelected
-                                ? 'border-primary bg-primary text-white shadow-lg'
-                                : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70'
-                            } ${isToday ? 'ring-2 ring-primary/50' : ''}`}
+                            onClick={() => !isDisabled && handleCalendarDateSelect(date)}
+                            disabled={isDisabled}
+                            className={`p-2 rounded-lg border transition-all text-center ${
+                              isDisabled
+                                ? 'opacity-30 cursor-not-allowed bg-card/20 border-cardBorder/30'
+                                : isSelected
+                                ? 'border-primary bg-primary text-white shadow-lg hover:scale-105'
+                                : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70 hover:scale-105'
+                            } ${isToday && !isDisabled ? 'ring-2 ring-primary/50' : ''}`}
                           >
                             <div className="text-xs font-medium opacity-80">
                               {date.toLocaleDateString(locale, { weekday: 'short' })}
@@ -572,11 +941,16 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                   {selectedDate && (
                     <div className="space-y-3">
                       <h3 className="font-medium text-center">{t('leadCapture.steps.calendar.timeSlots')}</h3>
-                      {availableSlots.length > 0 ? (
+                      {isLoadingSlots ? (
+                        <div className="text-center py-6">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
+                          <p className="text-muted text-sm">Loading available time slots...</p>
+                        </div>
+                      ) : availableSlots.length > 0 ? (
                         <div className="grid grid-cols-3 gap-2">
                           {availableSlots.map((slot) => {
                             const isSelected = slot.iso === selectedTime;
-                            
+
                             return (
                               <button
                                 key={slot.iso}
@@ -595,8 +969,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         </div>
                       ) : (
                         <div className="text-center py-6">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
-                          <p className="text-muted text-sm">Loading available time slots...</p>
+                          <p className="text-muted text-sm">{t('leadCapture.steps.calendar.noSlots')}</p>
                         </div>
                       )}
                     </div>

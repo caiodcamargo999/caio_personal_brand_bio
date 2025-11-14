@@ -80,8 +80,8 @@
   },
   "leadCapture": {
     "intro": {
-      "title": "Estrategia & Consultoría",
-      "message": "Yo y mi equipo podemos ayudarte con implementación de Automatización, IA y Software, así como escalar los procesos de marketing y ventas de tu empresa. Pero antes de hacer una videollamada, necesito saber algunas cosas sobre ti.",
+      "title": "Estrategia y Consultoría",
+      "message": "Te ayudaré a implementar automatización, IA y software en tu proyecto/negocio, así como a optimizar tus procesos de marketing y ventas. Pero antes de nuestra videollamada, necesito saber algunas cosas sobre ti.",
       "nextButton": "Siguiente"
     },
     "steps": {
@@ -106,7 +106,7 @@
         "placeholder": "Describe tu industria o negocio"
       },
       "struggle": {
-        "title": "¿Qué es lo que más te cuesta lograr?",
+        "title": "¿Podrías contarme más sobre tu proyecto/negocio?",
         "placeholder": "Describe tu principal desafío u objetivo"
       },
       "budget": {
@@ -114,11 +114,6 @@
         "yes": "Sí",
         "no": "No",
         "noNotice": "No hay problema. Te redirigiremos a recursos que no requieren inversión."
-      },
-      "budgetAmount": {
-        "title": "¿Cuál es tu rango de presupuesto?",
-        "placeholder": "Ingresa el monto en USD",
-        "description": "Esto me ayuda a preparar la estrategia correcta para tu nivel de inversión"
       },
       "calendar": {
         "title": "¡Elige el mejor día y horario en mi agenda, y nos vemos ahí!",

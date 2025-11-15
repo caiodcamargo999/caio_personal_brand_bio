@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createLeadFormSchema, LeadFormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { createPortal } from 'react-dom';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
@@ -36,65 +35,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     prefix: '+55',
     format: '(11) 98765-4321'
   });
-  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
-  const [countrySearchQuery, setCountrySearchQuery] = useState('');
-  const [dropdownPosition, setDropdownPosition] = useState<{top: number, left: number} | null>(null);
-  const countryDropdownRef = useRef<HTMLDivElement>(null);
-  const countryButtonRef = useRef<HTMLButtonElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // Close dropdown when clicking outside (DISABLED - using Escape key instead)
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      // Don't close if clicking inside the dropdown
-      if (countryDropdownRef.current && countryDropdownRef.current.contains(target)) {
-        return;
-      }
-
-      // Don't close if clicking the button (button handles its own toggle)
-      if (countryButtonRef.current && countryButtonRef.current.contains(target)) {
-        return;
-      }
-
-      // Close only if clicking truly outside both elements
-      setIsCountryDropdownOpen(false);
-      setCountrySearchQuery('');
-    };
-
-    if (isCountryDropdownOpen) {
-      // Add small delay to prevent immediate close
-      const timer = setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-      }, 100);
-
-      return () => {
-        clearTimeout(timer);
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }
-  }, [isCountryDropdownOpen]);
-
-  // Focus search input when dropdown opens - AGGRESSIVE
-  useEffect(() => {
-    if (isCountryDropdownOpen) {
-      const focusInput = () => {
-        if (searchInputRef.current) {
-          searchInputRef.current.focus();
-          searchInputRef.current.click();
-        }
-      };
-
-      // Multiple attempts with different delays
-      requestAnimationFrame(focusInput);
-      setTimeout(focusInput, 0);
-      setTimeout(focusInput, 50);
-      setTimeout(focusInput, 100);
-      setTimeout(focusInput, 200);
-    }
-  }, [isCountryDropdownOpen]);
-
   // Lista completa de países com bandeiras, prefixos e formatos
   const countries = [
     // América do Sul
@@ -509,13 +449,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const currentStepData = formSteps[currentStep];
   const progress = ((currentStep + 1) / formSteps.length) * 100;
 
-  // Filter countries based on search query
-  const filteredCountries = countries.filter(country =>
-    country.name.toLowerCase().includes(countrySearchQuery.toLowerCase()) ||
-    country.prefix.includes(countrySearchQuery) ||
-    country.code.toLowerCase().includes(countrySearchQuery.toLowerCase())
-  );
-
   if (isSuccess) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -606,113 +539,28 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                   {currentStepData.type === 'text' && (
                     <div className="space-y-2">
                       {currentStepData.field === 'whatsapp' ? (
-                        <div className="flex gap-2">
-                          {/* Country Selector - Calendly Style */}
-                          <div className="relative min-w-[100px]">
-                            <button
-                              ref={countryButtonRef}
-                              type="button"
-                              onClick={() => {
-                                if (!isCountryDropdownOpen && countryButtonRef.current) {
-                                  const rect = countryButtonRef.current.getBoundingClientRect();
-                                  setDropdownPosition({
-                                    top: rect.bottom,
-                                    left: rect.left
-                                  });
-                                }
-                                setIsCountryDropdownOpen(!isCountryDropdownOpen);
-                              }}
-                              className="w-full px-3 py-3 bg-card/50 border border-cardBorder rounded-lg text-white focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5"
-                            >
-                              <span className="text-base">{selectedCountry.flag}</span>
-                              <span className="text-xs font-medium">{selectedCountry.code}</span>
-                              <svg className={`w-3 h-3 transition-transform ${isCountryDropdownOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </button>
-
-                            {/* Dropdown via Portal with pointer-events */}
-                            {isCountryDropdownOpen && dropdownPosition && typeof window !== 'undefined' && createPortal(
-                              <div
-                                ref={countryDropdownRef}
-                                className="fixed w-[320px] bg-[#1a1a2e] border border-gray-700 rounded-xl shadow-2xl overflow-hidden pointer-events-auto"
-                                style={{
-                                  top: `${dropdownPosition.top + 8}px`,
-                                  left: `${dropdownPosition.left}px`,
-                                  zIndex: 9999
-                                }}
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                {/* Search Input */}
-                                <div className="p-3 border-b border-gray-700 bg-[#1a1a2e]">
-                                  <input
-                                    ref={searchInputRef}
-                                    type="text"
-                                    inputMode="text"
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    autoCapitalize="off"
-                                    spellCheck="false"
-                                    autoFocus
-                                    tabIndex={0}
-                                    placeholder="Search country..."
-                                    value={countrySearchQuery}
-                                    onChange={(e) => setCountrySearchQuery(e.target.value)}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      e.currentTarget.focus();
-                                    }}
-                                    onMouseDown={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter' && filteredCountries.length > 0) {
-                                        e.preventDefault();
-                                        setSelectedCountry(filteredCountries[0]);
-                                        setIsCountryDropdownOpen(false);
-                                        setCountrySearchQuery('');
-                                      } else if (e.key === 'Escape') {
-                                        e.preventDefault();
-                                        setIsCountryDropdownOpen(false);
-                                        setCountrySearchQuery('');
-                                      }
-                                    }}
-                                    className="w-full px-3 py-2.5 bg-[#0f0f1e] border border-gray-600 rounded-lg text-white text-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-text"
-                                  />
-                                </div>
-
-                                {/* Country List - Scrollable */}
-                                <div className="overflow-y-auto max-h-[280px] overscroll-contain">
-                                  {filteredCountries.length > 0 ? (
-                                    filteredCountries.map((country) => (
-                                      <button
-                                        key={country.code}
-                                        type="button"
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setSelectedCountry(country);
-                                          setIsCountryDropdownOpen(false);
-                                          setCountrySearchQuery('');
-                                        }}
-                                        className={`w-full px-4 py-3 text-left hover:bg-blue-600/20 transition-colors flex items-center gap-3 ${
-                                          selectedCountry.code === country.code ? 'bg-blue-600/30' : ''
-                                        }`}
-                                      >
-                                        <span className="text-xl">{country.flag}</span>
-                                        <span className="text-sm text-white flex-1">{country.name}</span>
-                                        <span className="text-xs text-gray-400 font-mono">{country.prefix}</span>
-                                      </button>
-                                    ))
-                                  ) : (
-                                    <div className="px-4 py-6 text-center text-gray-400 text-sm">
-                                      No countries found
-                                    </div>
-                                  )}
-                                </div>
-                              </div>,
-                              document.body
-                            )}
-                          </div>
+                        <div className="flex gap-3">
+                          {/* Country Selector - Minimal */}
+                          <select
+                            value={selectedCountry.code}
+                            onChange={(e) => {
+                              const country = countries.find(c => c.code === e.target.value);
+                              if (country) setSelectedCountry(country);
+                            }}
+                            className="h-[50px] w-[110px] pl-3 pr-9 bg-card/50 border border-cardBorder rounded-xl text-white hover:border-primary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all duration-200 cursor-pointer appearance-none text-base font-medium shadow-sm hover:shadow-md"
+                            style={{
+                              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgba(168,85,247,0.6)' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E")`,
+                              backgroundRepeat: 'no-repeat',
+                              backgroundPosition: 'right 12px center',
+                              backgroundSize: '16px'
+                            }}
+                          >
+                            {countries.map((country) => (
+                              <option key={country.code} value={country.code}>
+                                {country.flag} {country.prefix}
+                              </option>
+                            ))}
+                          </select>
 
                           {/* WhatsApp Input */}
                           <input
@@ -1051,6 +899,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           </div>
         </div>
       </DialogContent>
+
     </Dialog>
   );
 }

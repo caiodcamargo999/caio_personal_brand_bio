@@ -375,6 +375,12 @@ export class GoogleCalendarService {
       console.log('Current time (UTC):', now.toISOString());
       console.log('Minimum booking time (2h from now, UTC):', minBookingTime.toISOString());
 
+      // Check if the selected date is TODAY in Brasilia timezone
+      const nowBrasilia = new Date(now.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+      const todayStr = nowBrasilia.toISOString().split('T')[0];
+      const isToday = dateStr === todayStr;
+      console.log('Is today?', isToday, 'Selected date:', dateStr, 'Today in Brasilia:', todayStr);
+
       const availableSlots: string[] = [];
 
       // Generate 1-hour slots from 8 AM to 8 PM (Monday to Saturday)
@@ -383,9 +389,8 @@ export class GoogleCalendarService {
         const slotTime = new Date(`${dateStr}T${hour.toString().padStart(2, '0')}:00:00-03:00`);
         const slotEnd = new Date(slotTime.getTime() + 60 * 60 * 1000);
 
-        // Skip slots that are less than 2 hours from now
-        // Compare both dates in UTC (they're already Date objects in UTC internally)
-        if (slotTime.getTime() < minBookingTime.getTime()) {
+        // Only apply 2-hour rule if it's TODAY
+        if (isToday && slotTime.getTime() < minBookingTime.getTime()) {
           console.log('Skipping slot (too soon):', slotTime.toISOString(), '- slot time:', slotTime.getTime(), 'min time:', minBookingTime.getTime());
           continue;
         }

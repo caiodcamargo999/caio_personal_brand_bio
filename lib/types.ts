@@ -4,11 +4,14 @@ import { z } from "zod";
 export function createLeadFormSchema(t: (key: string) => string) {
   return z.object({
     name: z.string().min(2, t('leadCapture.validation.nameRequired')),
-    // Just validate that it has digits (prefix will be added automatically)
+    // Extract only digits and validate minimum 8 numbers (allows formatting like (51) 99328-8772)
     whatsapp: z
       .string()
-      .min(8, t('leadCapture.validation.whatsappRequired'))
-      .refine((val) => /\d{8,}/.test(val || ''), {
+      .min(1, t('leadCapture.validation.whatsappRequired'))
+      .refine((val) => {
+        const digitsOnly = (val || '').replace(/\D/g, '');
+        return digitsOnly.length >= 8;
+      }, {
         message: t('leadCapture.validation.whatsappRequired'),
       }),
     email: z.string().email(t('leadCapture.validation.emailRequired')),

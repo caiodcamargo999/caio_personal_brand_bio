@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import photo from "/caio-new-photo.jpg";
+import photo from "/caio-profile-2026.jpg";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { useRouter, usePathname } from "next/navigation";
@@ -14,6 +14,7 @@ import { HomeIcon } from "@/components/icons/HomeIcon";
 import { PhoneChartIcon } from "@/components/icons/PhoneChartIcon";
 import { Button } from "@/components/ui/button";
 import { HighlightedTitle } from "@/components/ui/highlighted-title";
+import { NeuralButton } from "@/components/ui/neural-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
 	Dialog,
@@ -61,9 +62,9 @@ export default function HomePage() {
 			</div>
 
 			<header className="mb-6 sm:mb-8 md:mb-10 text-center">
-				<motion.div 
-					initial={{ opacity: 0, y: 10 }} 
-					animate={{ opacity: 1, y: 0 }} 
+				<motion.div
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
 					className="space-y-4 sm:space-y-6"
 				>
@@ -94,40 +95,16 @@ export default function HomePage() {
 			<section className="mb-6 sm:mb-8 md:mb-10">
 				<motion.div variants={listVariants} initial="hidden" animate="show" className="space-y-4 sm:space-y-5 md:space-y-6">
 					{/* 1) Strategy & Consultation first */}
-					<Card 
+					<Card
 						className="group cursor-pointer overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/15 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30"
 						onClick={() => setIsLeadModalOpen(true)}
 					>
 						<motion.div variants={itemVariants} className="p-6 sm:p-7 md:p-8">
 							<CardContent className="p-0 space-y-4">
 								{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-								<div className="relative group/btn p-1">
-									{/* Container com borda grossa externa */}
-									<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-										{/* Botão interno */}
-										<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
-
-											{/* Background principal com gradiente */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
-
-											{/* Textura de grade sutil */}
-											<div className="absolute inset-0 rounded-full opacity-20" style={{
-												backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-											}}></div>
-
-											{/* Brilho superior */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-											{/* Brilho inferior (reflexo) */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-											{/* Conteúdo do botão */}
-											<BrainIcon size={22} className="relative z-10" />
-											<span className="relative z-10 font-bold">{t('cards.strategyConsultation.title')}</span>
-										</button>
-									</div>
-								</div>
+								<NeuralButton icon={<BrainIcon size={22} />}>
+									{t('cards.strategyConsultation.title')}
+								</NeuralButton>
 
 								{/* Descrição */}
 								<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -144,33 +121,9 @@ export default function HomePage() {
 								<motion.div className="p-6 sm:p-7 md:p-8" variants={itemVariants}>
 									<CardContent className="p-0 space-y-4">
 										{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-										<div className="relative group/btn p-1">
-											{/* Container com borda grossa externa */}
-											<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-												{/* Botão interno */}
-												<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
-
-													{/* Background principal com gradiente */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
-
-													{/* Textura de grade sutil */}
-													<div className="absolute inset-0 rounded-full opacity-20" style={{
-														backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-													}}></div>
-
-													{/* Brilho superior */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-													{/* Brilho inferior (reflexo) */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-													{/* Conteúdo do botão */}
-													<HomeIcon size={22} className="relative z-10" />
-													<span className="relative z-10 font-bold">{t('cards.realEstate.title')}</span>
-												</button>
-											</div>
-										</div>
+										<NeuralButton icon={<HomeIcon size={22} />}>
+											{t('cards.realEstate.title')}
+										</NeuralButton>
 
 										{/* Descrição */}
 										<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -215,33 +168,9 @@ export default function HomePage() {
 							<a href="https://rarityagency.io" className="block p-6 sm:p-7 md:p-8">
 								<CardContent className="p-0 space-y-4">
 									{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-									<div className="relative group/btn p-1">
-										{/* Container com borda grossa externa */}
-										<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-											{/* Botão interno */}
-											<button className="relative w-full px-6 py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base md:text-lg text-white uppercase tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-3 justify-center overflow-hidden">
-
-												{/* Background principal com gradiente */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600"></div>
-
-												{/* Textura de grade sutil */}
-												<div className="absolute inset-0 rounded-full opacity-20" style={{
-													backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-												}}></div>
-
-												{/* Brilho superior */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-												{/* Brilho inferior (reflexo) */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-												{/* Conteúdo do botão */}
-												<PhoneChartIcon size={22} className="relative z-10" />
-												<span className="relative z-10 font-bold">{t('cards.rarityAgency.title')}</span>
-											</button>
-										</div>
-									</div>
+									<NeuralButton icon={<PhoneChartIcon size={22} />}>
+										{t('cards.rarityAgency.title')}
+									</NeuralButton>
 
 									{/* Descrição */}
 									<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -285,9 +214,9 @@ export default function HomePage() {
 			</footer>
 
 			{/* Lead Capture Modal */}
-			<LeadCaptureModal 
-				isOpen={isLeadModalOpen} 
-				onClose={() => setIsLeadModalOpen(false)} 
+			<LeadCaptureModal
+				isOpen={isLeadModalOpen}
+				onClose={() => setIsLeadModalOpen(false)}
 			/>
 		</main>
 	);

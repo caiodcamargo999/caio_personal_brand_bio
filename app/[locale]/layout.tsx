@@ -15,7 +15,7 @@ export type Locale = (typeof locales)[number];
 // Generate metadata for each locale
 export async function generateMetadata({ params }: { params: { locale: Locale } }): Promise<Metadata> {
   const locale = params.locale;
-  
+
   // Localized metadata
   const metadata = {
     en: {
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation, business scaling, and exclusive real estate investment opportunities in Dubai, Bali, and Brazil. Book your free strategy consultation today.",
       keywords: [
         "AI Strategy Consultant",
-        "Business Strategy Expert", 
+        "Business Strategy Expert",
         "Real Estate Investment Dubai",
         "Real Estate Investment Bali",
         "Real Estate Investment Brazil",
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
         "Consultor de Estratégia com IA",
         "Especialista em Estratégia de Negócios",
         "Investimento Imobiliário Dubai",
-        "Investimento Imobiliário Bali", 
+        "Investimento Imobiliário Bali",
         "Investimento Imobiliário Brasil",
         "Soluções de IA para Negócios",
         "Transformação Digital",
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
         "Experto en Estrategia de Negocios",
         "Inversión Inmobiliaria Dubai",
         "Inversión Inmobiliaria Bali",
-        "Inversión Inmobiliaria Brasil", 
+        "Inversión Inmobiliaria Brasil",
         "Soluciones de IA para Negocios",
         "Transformación Digital",
         "Experto en Escalado de Negocios",
@@ -103,7 +103,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       siteName: "Caio de Camargo",
       images: [
         {
-          url: "https://caiodcamargo.com/caio-new-photo.jpg",
+          url: "https://caiodcamargo.com/caio-profile-2026.jpg",
           width: 1200,
           height: 630,
           alt: `Caio de Camargo - ${locale === 'pt' ? 'Especialista em Estratégia com IA' : locale === 'es' ? 'Experto en Estrategia con IA' : 'AI Strategy Expert'}`,
@@ -114,14 +114,14 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       card: "summary_large_image",
       title: currentMeta.title,
       description: currentMeta.description,
-      images: ["https://caiodcamargo.com/caio-new-photo.jpg"],
+      images: ["https://caiodcamargo.com/caio-profile-2026.jpg"],
       creator: "@caiodcamargo",
     },
     alternates: {
       canonical: `https://caiodcamargo.com/${locale}`,
       languages: {
         "en": "https://caiodcamargo.com/en",
-        "pt": "https://caiodcamargo.com/pt", 
+        "pt": "https://caiodcamargo.com/pt",
         "es": "https://caiodcamargo.com/es",
       },
     },

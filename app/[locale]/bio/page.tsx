@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import photo from "/caio-new-photo.jpg";
+import photo from "/caio-profile-2026.jpg";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { useRouter, usePathname } from "next/navigation";
@@ -14,6 +14,7 @@ import { HomeIcon } from "@/components/icons/HomeIcon";
 import { PhoneChartIcon } from "@/components/icons/PhoneChartIcon";
 import { Button } from "@/components/ui/button";
 import { HighlightedTitle } from "@/components/ui/highlighted-title";
+import { NeuralButton } from "@/components/ui/neural-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
 	Dialog,
@@ -34,7 +35,7 @@ export default function BioPage() {
 
 	const handleSelectCountry = (country: string) => {
 		let message = '';
-		
+
 		if (locale === 'pt') {
 			message = `Oi Caio, quero saber sobre oportunidades de investimento imobiliário em ${country}`;
 		} else if (locale === 'es') {
@@ -42,7 +43,7 @@ export default function BioPage() {
 		} else {
 			message = `Hey Caio, I want to know about opportunities on Real Estate in ${country}`;
 		}
-		
+
 		const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(message)}`;
 		window.open(whatsappUrl, "_blank");
 	};
@@ -68,9 +69,9 @@ export default function BioPage() {
 			</div>
 
 			<header className="mb-6 sm:mb-8 md:mb-10 text-center">
-				<motion.div 
-					initial={{ opacity: 0, y: 10 }} 
-					animate={{ opacity: 1, y: 0 }} 
+				<motion.div
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
 					className="space-y-4 sm:space-y-6"
 				>
@@ -108,33 +109,9 @@ export default function BioPage() {
 						<motion.div variants={itemVariants} className="p-6 sm:p-7 md:p-8">
 							<CardContent className="p-0 space-y-4">
 								{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-								<div className="relative group/btn p-1 max-w-md mx-auto">
-									{/* Container com borda grossa externa */}
-									<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-										{/* Botão interno */}
-										<button className="relative w-full px-4 py-1.5 sm:py-2 rounded-full font-semibold text-xs sm:text-sm md:text-base text-white tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-2 sm:gap-3 justify-center overflow-hidden">
-
-											{/* Background principal com gradiente */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900"></div>
-
-											{/* Textura de grade sutil */}
-											<div className="absolute inset-0 rounded-full opacity-20" style={{
-												backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-											}}></div>
-
-											{/* Brilho superior */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-											{/* Brilho inferior (reflexo) */}
-											<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-											{/* Conteúdo do botão */}
-											<BrainIcon size={18} className="relative z-10" />
-											<span className="relative z-10 font-semibold">{t('cards.strategyConsultation.title')}</span>
-										</button>
-									</div>
-								</div>
+								<NeuralButton icon={<BrainIcon size={18} />}>
+									{t('cards.strategyConsultation.title')}
+								</NeuralButton>
 
 								{/* Descrição */}
 								<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -150,33 +127,9 @@ export default function BioPage() {
 							<a href="https://rarityagency.io" className="block p-6 sm:p-7 md:p-8">
 								<CardContent className="p-0 space-y-4">
 									{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-									<div className="relative group/btn p-1 max-w-md mx-auto">
-										{/* Container com borda grossa externa */}
-										<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-											{/* Botão interno */}
-											<button className="relative w-full px-4 py-1.5 sm:py-2 rounded-full font-semibold text-xs sm:text-sm md:text-base text-white tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-2 sm:gap-3 justify-center overflow-hidden">
-
-												{/* Background principal com gradiente */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900"></div>
-
-												{/* Textura de grade sutil */}
-												<div className="absolute inset-0 rounded-full opacity-20" style={{
-													backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-												}}></div>
-
-												{/* Brilho superior */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-												{/* Brilho inferior (reflexo) */}
-												<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-												{/* Conteúdo do botão */}
-												<PhoneChartIcon size={18} className="relative z-10" />
-												<span className="relative z-10 font-semibold">{t('cards.rarityAgency.title')}</span>
-											</button>
-										</div>
-									</div>
+									<NeuralButton icon={<PhoneChartIcon size={18} />}>
+										{t('cards.rarityAgency.title')}
+									</NeuralButton>
 
 									{/* Descrição */}
 									<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -194,33 +147,9 @@ export default function BioPage() {
 								<motion.div variants={itemVariants} className="p-6 sm:p-7 md:p-8">
 									<CardContent className="p-0 space-y-4">
 										{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-										<div className="relative group/btn p-1 max-w-md mx-auto">
-											{/* Container com borda grossa externa */}
-											<div className="relative rounded-full p-[3px] bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900 shadow-[0_0_30px_rgba(139,92,246,0.4)] group-hover/btn:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all duration-300">
-
-												{/* Botão interno */}
-												<button className="relative w-full px-4 py-1.5 sm:py-2 rounded-full font-semibold text-xs sm:text-sm md:text-base text-white tracking-wide transition-all duration-300 group-hover/btn:scale-[1.01] flex items-center gap-2 sm:gap-3 justify-center overflow-hidden">
-
-													{/* Background principal com gradiente */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-700 via-primary-800 to-primary-900"></div>
-
-													{/* Textura de grade sutil */}
-													<div className="absolute inset-0 rounded-full opacity-20" style={{
-														backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px)'
-													}}></div>
-
-													{/* Brilho superior */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/30 via-white/5 to-transparent"></div>
-
-													{/* Brilho inferior (reflexo) */}
-													<div className="absolute inset-0 rounded-full bg-gradient-to-t from-white/10 via-transparent to-transparent"></div>
-
-													{/* Conteúdo do botão */}
-													<HomeIcon size={18} className="relative z-10" />
-													<span className="relative z-10 font-semibold">{t('cards.realEstate.title')}</span>
-												</button>
-											</div>
-										</div>
+										<NeuralButton icon={<HomeIcon size={18} />}>
+											{t('cards.realEstate.title')}
+										</NeuralButton>
 
 										{/* Descrição */}
 										<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
@@ -292,9 +221,9 @@ export default function BioPage() {
 			</footer>
 
 			{/* Lead Capture Modal */}
-			<LeadCaptureModal 
-				isOpen={isLeadModalOpen} 
-				onClose={() => setIsLeadModalOpen(false)} 
+			<LeadCaptureModal
+				isOpen={isLeadModalOpen}
+				onClose={() => setIsLeadModalOpen(false)}
 			/>
 		</main>
 	);

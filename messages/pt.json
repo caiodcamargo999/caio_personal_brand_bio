@@ -54,7 +54,7 @@
     "cta": "Agendar uma chamada"
   },
   "footer": {
-    "copyright": "© 2025 Caio de Camargo. Todos os Direitos Reservados."
+    "copyright": "© 2026 Caio de Camargo. Todos os Direitos Reservados."
   },
   "bio": {
     "tagline": "Ajudando você a escalar com IA, marketing, estratégia e oportunidades de investimento imobiliário.",
@@ -132,7 +132,9 @@
       "stepCounter": "Passo {current} de {total}",
       "selectOption": "Selecione uma opção"
     },
-    "progress": { "complete": "Completo" },
+    "progress": {
+      "complete": "Completo"
+    },
     "timezones": {
       "europeMadrid": "Europa/Madri",
       "americaNewYork": "América/Nova_York",

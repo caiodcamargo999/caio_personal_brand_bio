@@ -12,12 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     icons: [
       {
-        src: '/caio-new-photo.jpg',
+        src: '/caio-profile-2026.jpg',
         sizes: '192x192',
         type: 'image/jpeg',
       },
       {
-        src: '/caio-new-photo.jpg',
+        src: '/caio-profile-2026.jpg',
         sizes: '512x512',
         type: 'image/jpeg',
       },

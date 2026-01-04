@@ -54,7 +54,7 @@
     "cta": "Book a call"
   },
   "footer": {
-    "copyright": "© 2025 Caio de Camargo. All Rights Reserved."
+    "copyright": "© 2026 Caio de Camargo. All Rights Reserved."
   },
   "languageSwitcher": {
     "label": "Language",
@@ -132,7 +132,9 @@
       "stepCounter": "Step {current} of {total}",
       "selectOption": "Select an option"
     },
-    "progress": { "complete": "Complete" },
+    "progress": {
+      "complete": "Complete"
+    },
     "timezones": {
       "europeMadrid": "Europe/Madrid",
       "americaNewYork": "America/New_York",

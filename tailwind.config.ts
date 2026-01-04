@@ -53,6 +53,8 @@ const config: Config = {
 				'fade-in': 'fadeIn 0.5s ease-in-out',
 				'scale-in': 'scaleIn 0.3s ease-out',
 				'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+				'shimmer': 'shimmer 2s linear infinite',
+				'scan': 'scan 2s ease-in-out infinite',
 			},
 			keyframes: {
 				fadeIn: {
@@ -66,6 +68,15 @@ const config: Config = {
 				glowPulse: {
 					'0%, 100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' },
 					'50%': { boxShadow: '0 0 30px rgba(139, 92, 246, 0.6)' },
+				},
+				shimmer: {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' },
+				},
+				scan: {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' },
 				},
 			},
 		},

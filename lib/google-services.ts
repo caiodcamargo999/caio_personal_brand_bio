@@ -29,7 +29,7 @@ export const getGoogleAuth = async () => {
     console.log('GOOGLE_OAUTH_CLIENT_SECRET:', process.env.GOOGLE_OAUTH_CLIENT_SECRET ? 'SET' : 'NOT SET');
     console.log('GOOGLE_OAUTH_REFRESH_TOKEN:', process.env.GOOGLE_OAUTH_REFRESH_TOKEN ? 'SET' : 'NOT SET');
     console.log('GOOGLE_OAUTH_REDIRECT_URL:', process.env.GOOGLE_OAUTH_REDIRECT_URL ? 'SET' : 'NOT SET');
-    
+
     const hasOAuth = !!(
       process.env.GOOGLE_OAUTH_CLIENT_ID &&
       process.env.GOOGLE_OAUTH_CLIENT_SECRET &&
@@ -112,6 +112,37 @@ export class GoogleSheetsService {
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
+      // First, check for existing lead with this email to prevent duplicates
+      const checkResponse = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'Folha1!A:I', // Read all data
+      });
+
+      const rows = checkResponse.data.values || [];
+      const emailIndex = 2; // Column C is index 2
+      const whatsappIndex = 1; // Column B is index 1
+
+      const normalizePhone = (phone: string) => phone?.replace(/\D/g, '') || '';
+
+      const existingRowIndex = rows.findIndex((row, index) => {
+        // Skip header row
+        if (index === 0) return false;
+
+        const rowEmail = row[emailIndex]?.toString().toLowerCase()?.trim();
+        const inputEmail = data.email?.toString().toLowerCase()?.trim();
+
+        // Match by Email if both exist
+        if (rowEmail && inputEmail && rowEmail === inputEmail) return true;
+
+        // Match by WhatsApp if Email didn't match (or wasn't present)
+        const rowWhatsapp = normalizePhone(row[whatsappIndex]?.toString() || '');
+        const inputWhatsapp = normalizePhone(data.whatsapp?.toString() || '');
+
+        if (rowWhatsapp && inputWhatsapp && rowWhatsapp === inputWhatsapp) return true;
+
+        return false;
+      });
+
       const budgetCell = (() => {
         if (data.budget === 'no') return 'no budget';
         if (data.budget === 'yes' && data.budgetAmount) return `${data.budgetAmount} USD`;
@@ -121,13 +152,13 @@ export class GoogleSheetsService {
 
       const scheduledCell = data.scheduledDateTime
         ? new Date(data.scheduledDateTime).toLocaleString('en-US', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: 'America/Sao_Paulo'
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'America/Sao_Paulo'
+        })
         : '';
 
       // Timestamp in Brasilia timezone
@@ -141,32 +172,49 @@ export class GoogleSheetsService {
         timeZone: 'America/Sao_Paulo'
       });
 
-      const values = [
-        [
-          data.name || '',
-          data.whatsapp || '',
-          data.email || '',
-          data.instagram || '',
-          data.industry || '',
-          data.struggle || '',
-          budgetCell,
-          scheduledCell,
-          timestamp, // Timestamp in Brasilia timezone
-        ]
+      const rowValues = [
+        data.name || '',
+        data.whatsapp || '',
+        data.email || '',
+        data.instagram || '',
+        data.industry || '',
+        data.struggle || '',
+        budgetCell,
+        scheduledCell,
+        timestamp,
       ];
 
-      const response = await sheets.spreadsheets.values.append({
-        spreadsheetId: SPREADSHEET_ID,
-        range: 'Folha1!A:I', // Adjust range based on your sheet
-        valueInputOption: 'USER_ENTERED',
-        requestBody: {
-          values,
-        },
-      });
+      if (existingRowIndex !== -1) {
+        console.log(`Initial duplicate check: Found existing lead with email ${data.email} at row ${existingRowIndex + 1}. Updating...`);
+        // Update existing row
+        // Row index is 0-based from the array, but Sheets uses 1-based.
+        // Array index 0 is Row 1 (Header). Array index N is Row N+1.
+        // So existingRowIndex corresponds to Sheets Row (existingRowIndex + 1).
 
-      return response.data;
+        await sheets.spreadsheets.values.update({
+          spreadsheetId: SPREADSHEET_ID,
+          range: `Folha1!A${existingRowIndex + 1}:I${existingRowIndex + 1}`,
+          valueInputOption: 'USER_ENTERED',
+          requestBody: {
+            values: [rowValues],
+          },
+        });
+        return { updated: true, row: existingRowIndex + 1 };
+      } else {
+        // Append new row
+        const response = await sheets.spreadsheets.values.append({
+          spreadsheetId: SPREADSHEET_ID,
+          range: 'Folha1!A:I',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: {
+            values: [rowValues],
+          },
+        });
+        return response.data;
+      }
+
     } catch (error) {
-      console.error('Error appending to Google Sheets:', error);
+      console.error('Error appending/updating Google Sheets:', error);
       throw error;
     }
   }
@@ -206,9 +254,9 @@ export class GoogleCalendarService {
         startTime,
         calendarId: CALENDAR_ID
       });
-      
+
       const calendar = google.calendar({ version: 'v3', auth: this.auth });
-      
+
       // Format budget for calendar display
       let budgetDisplay: string = '';
       if (data.budget === 'yes' && data.budgetAmount) {
@@ -280,7 +328,7 @@ export class GoogleCalendarService {
         conferenceDataVersion: 1,
         supportsAttachments: false
       });
-      
+
       let response;
       try {
         response = await calendar.events.insert({
@@ -312,7 +360,7 @@ export class GoogleCalendarService {
         reminders: response.data.reminders,
         attendees: response.data.attendees,
       });
-      
+
       // Log the event configuration that was sent
       console.log('Event configuration sent to Google:', {
         summary: event.summary,

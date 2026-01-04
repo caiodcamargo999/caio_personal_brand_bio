@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 		siteName: "Caio de Camargo",
 		images: [
 			{
-				url: "https://caiodcamargo.com/caio-new-photo.jpg",
+				url: "https://caiodcamargo.com/caio-profile-2026.jpg",
 				width: 1200,
 				height: 630,
 				alt: "Caio de Camargo - AI Strategy Expert",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
 		card: "summary_large_image",
 		title: "Caio de Camargo | AI Strategy Expert & Real Estate Investment Opportunities",
 		description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation, business scaling, and exclusive real estate investment opportunities.",
-		images: ["https://caiodcamargo.com/caio-new-photo.jpg"],
+		images: ["https://caiodcamargo.com/caio-profile-2026.jpg"],
 		creator: "@caiodcamargo",
 	},
 	alternates: {
@@ -76,9 +76,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-  return children;
+	return children;
 }

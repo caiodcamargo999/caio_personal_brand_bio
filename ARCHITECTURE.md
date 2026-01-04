@@ -40,7 +40,7 @@ caio_personal_brand_lp/
 │   ├── pt.json                 # Portuguese translations
 │   └── es.json                 # Spanish translations
 ├── public/                      # Static assets
-│   └── caio-new-photo.jpg      # Profile photo (static import)
+│   └── caio-profile-2026.jpg      # Profile photo (static import)
 ├── styles/                      # Additional styles
 │   └── globals.css             # Global CSS (legacy)
 ├── middleware.ts                # Next.js middleware

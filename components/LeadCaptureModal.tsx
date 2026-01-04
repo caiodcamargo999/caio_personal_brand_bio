@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
+import Cal, { getCalApi } from "@calcom/embed-react";
 import { useI18n } from '@/lib/i18n';
+
 
 interface LeadCaptureModalProps {
   isOpen: boolean;
@@ -21,15 +23,15 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [availableSlots, setAvailableSlots] = useState<Array<{iso: string, display: string}>>([]);
+  const [availableSlots, setAvailableSlots] = useState<Array<{ iso: string, display: string }>>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [userTimeZone, setUserTimeZone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Madrid');
   const [budgetAmount, setBudgetAmount] = useState<number | undefined>();
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
-  const [slotsCache, setSlotsCache] = useState<Map<string, Array<{iso: string, display: string}>>>(new Map());
+  const [slotsCache, setSlotsCache] = useState<Map<string, Array<{ iso: string, display: string }>>>(new Map());
   const [lastLoadedDate, setLastLoadedDate] = useState<string | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<{code: string, flag: string, prefix: string, format: string}>({
+  const [selectedCountry, setSelectedCountry] = useState<{ code: string, flag: string, prefix: string, format: string }>({
     code: 'BR',
     flag: '🇧🇷',
     prefix: '+55',
@@ -162,9 +164,93 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   const watchedValues = watch();
 
+  // Cal.com initialization - Initialize immediately on mount
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi();
+      cal("ui", {
+        theme: "dark",
+        hideEventTypeDetails: false,
+        layout: "month_view",
+        cssVarsPerTheme: {
+          dark: {
+            "cal-brand": "#8b5cf6",
+            "cal-text": "#ffffff",
+            "cal-text-muted": "#9ca3af",
+            "cal-bg": "#000000",
+          },
+          light: {
+            "cal-brand": "#8b5cf6",
+            "cal-text": "#111827",
+            "cal-text-muted": "#4b5563",
+            "cal-bg": "#ffffff",
+          }
+        }
+      });
+
+      // Listen for booking success directly via Cal API
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: (e: any) => {
+          console.log("Cal.com Booking Event Received:", e);
+
+          // Cal.com events can sometimes be nested in detail.data or just data depending on version/context
+          const eventData = e.detail?.data || e.data || e;
+
+          if (!eventData) {
+            console.error("No data found in booking event");
+            setIsSuccess(true); // Still show success UI to avoid getting stuck
+            return;
+          }
+
+          const fullWhatsApp = `${selectedCountry.prefix}${watchedValuesRef.current.whatsapp}`;
+          const finalData = {
+            ...watchedValuesRef.current,
+            // We trust our form email more than Cal.com's potential extraction
+            email: watchedValuesRef.current.email,
+            whatsapp: fullWhatsApp,
+            budgetAmount,
+            scheduledDateTime: eventData?.date || eventData?.startTime || new Date().toISOString(),
+            bookingDetails: eventData
+          };
+
+          // Mark success immediately to update UI
+          setIsSuccess(true);
+
+          // Send data in background
+          fetch('/api/leads', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(finalData)
+          }).catch(err => console.error("Error saving lead:", err));
+        }
+      });
+    })();
+  }, []); // Run ONCE on mount
+
+  // Ref to access latest values inside the callback without re-running effect
+  const watchedValuesRef = useRef(watchedValues);
+  useEffect(() => {
+    watchedValuesRef.current = watchedValues;
+  }, [watchedValues]);
+
+  // Preload data when values change, but don't re-initialize the whole API
+  useEffect(() => {
+    if (watchedValues.name) {
+      (async function () {
+        const cal = await getCalApi();
+        cal("preload", {
+          name: watchedValues.name,
+          email: watchedValues.email, // Passing email back to Cal.com
+          notes: `Industry: ${watchedValues.industry}\nStruggle: ${watchedValues.struggle}`
+        } as any);
+      })();
+    }
+  }, [watchedValues.name, watchedValues.email, watchedValues.industry, watchedValues.struggle]);
+
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
-    
+
     // Regular field validation
     if (currentField) {
       const isValid = await trigger(currentField);
@@ -172,10 +258,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         return;
       }
     }
-    
+
     // Debug: log current step info
     console.log('Current step:', currentStep, 'Step ID:', currentStepData.id, 'Budget value:', watchedValues['budget']);
-    
+
     // If user selected no budget, auto-save and redirect to WhatsApp instead of showing a button
     if (currentStepData.id === 'budget' && watchedValues['budget'] === 'no') {
       console.log('Redirecting to WhatsApp - no budget selected');
@@ -217,6 +303,24 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
     // Regular next step logic
     if (currentStep < formSteps.length - 1) {
+      // PRE-SAVE LEAD: If we are moving to the Calendar step (last step), save the lead data immediately.
+      // This ensures we capture the lead even if they don't complete the Cal.com booking.
+      if (currentStep + 1 === formSteps.length - 1) {
+        console.log("Pre-saving lead data before Calendar...");
+        const fullWhatsApp = `${selectedCountry.prefix}${watchedValues.whatsapp}`;
+        const leadData = {
+          ...watchedValues,
+          whatsapp: fullWhatsApp,
+          budgetAmount,
+          source: 'Form Completion (Pre-Booking)'
+        };
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData)
+        }).catch(err => console.error("Pre-save lead failed:", err));
+      }
+
       setCurrentStep(currentStep + 1);
     }
   };
@@ -249,7 +353,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         if (response.ok) {
           const calendarData = await response.json();
           setIsSuccess(true);
-          
+
           // Save lead data and log problems
           try {
             const saveRes = await fetch('/api/leads', {
@@ -317,7 +421,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
         <div class="row">
           <div class="label">When</div>
-          <div class="value">${selectedDate.toLocaleDateString(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'})} ${new Date(selectedTime).toLocaleTimeString(locale,{hour:'2-digit',minute:'2-digit',timeZone:userTimeZone})} (${userTimeZone})</div>
+          <div class="value">${selectedDate.toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} ${new Date(selectedTime).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', timeZone: userTimeZone })} (${userTimeZone})</div>
         </div>
         <a class="button" href="${calendarData.event?.hangoutLink || calendarData.event?.meetLink || '#'}">Open Meet</a>
       </div>
@@ -659,11 +763,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                       <div className="grid grid-cols-2 gap-3">
                         {/* Yes Option */}
                         <div
-                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                            watchedValues[currentStepData.field!] === 'yes'
-                              ? 'bg-primary/20 border-primary text-white'
-                              : 'bg-card/50 border-cardBorder text-muted hover:border-primary/30 hover:text-white'
-                          }`}
+                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'yes'
+                            ? 'bg-primary/20 border-primary text-white'
+                            : 'bg-card/50 border-cardBorder text-muted hover:border-primary/30 hover:text-white'
+                            }`}
                           onClick={() => setValue(currentStepData.field!, 'yes')}
                         >
                           <Switch
@@ -680,11 +783,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
                         {/* No Option */}
                         <div
-                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
-                            watchedValues[currentStepData.field!] === 'no'
-                              ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300'
-                              : 'bg-card/50 border-cardBorder text-muted hover:border-yellow-500/30 hover:text-yellow-300'
-                          }`}
+                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'no'
+                            ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300'
+                            : 'bg-card/50 border-cardBorder text-muted hover:border-yellow-500/30 hover:text-yellow-300'
+                            }`}
                           onClick={() => setValue(currentStepData.field!, 'no')}
                         >
                           <Switch
@@ -715,30 +817,18 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="space-y-6">
-                  {/* Timezone Selection */}
-                  <div className="space-y-3">
-                    <label className="block text-sm font-medium text-center">{t('leadCapture.steps.calendar.timezoneLabel')}</label>
-                    <div className="flex items-center gap-2 p-3 bg-card/50 rounded-lg border border-cardBorder">
-                      <MapPin className="w-4 h-4 text-muted" />
-                      <select
-                        value={userTimeZone}
-                        onChange={(e) => setUserTimeZone(e.target.value)}
-                        className="flex-1 bg-card/70 text-white border border-primary/40 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary text-center"
-                      >
-                        <option value="Europe/Madrid">{t('leadCapture.timezones.europeMadrid')}</option>
-                        <option value="America/New_York">{t('leadCapture.timezones.americaNewYork')}</option>
-                        <option value="America/Sao_Paulo">{t('leadCapture.timezones.americaSaoPaulo')}</option>
-                        <option value="Europe/London">{t('leadCapture.timezones.europeLondon')}</option>
-                        <option value="Asia/Tokyo">{t('leadCapture.timezones.asiaTokyo')}</option>
-                        <option value="Asia/Dubai">{t('leadCapture.timezones.asiaDubai')}</option>
-                        <option value="Asia/Makassar">{t('leadCapture.timezones.asiaBali')}</option>
-                        <option value="Australia/Sydney">{t('leadCapture.timezones.australiaSydney')}</option>
-                        <option value="UTC">UTC</option>
-                        <option value="America/Los_Angeles">America/Los_Angeles</option>
-                      </select>
-                    </div>
-                  </div>
+                <div className="w-full h-full min-h-[500px]">
+                  <Cal
+                    calLink={process.env.NEXT_PUBLIC_CALCOM_LINK || "caio-camargo-peyctj/30min"}
+                    style={{ width: "100%", height: "100%", minHeight: "500px", overflow: "scroll" }}
+                    config={{ layout: "month_view", theme: "dark" }}
+                  />
+
+                </div>
+              )}
+              {/* REMOVED OLD CALENDAR LOGIC */}
+              {false && (
+                <div className="hidden">
 
                   {/* Date Selection */}
                   <div className="space-y-3">
@@ -765,13 +855,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                             type="button"
                             onClick={() => !isDisabled && handleCalendarDateSelect(date)}
                             disabled={isDisabled}
-                            className={`p-2 rounded-lg border transition-all text-center ${
-                              isDisabled
-                                ? 'opacity-30 cursor-not-allowed bg-card/20 border-cardBorder/30'
-                                : isSelected
+                            className={`p-2 rounded-lg border transition-all text-center ${isDisabled
+                              ? 'opacity-30 cursor-not-allowed bg-card/20 border-cardBorder/30'
+                              : isSelected
                                 ? 'border-primary bg-primary text-white shadow-lg hover:scale-105'
                                 : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70 hover:scale-105'
-                            } ${isToday && !isDisabled ? 'ring-2 ring-primary/50' : ''}`}
+                              } ${isToday && !isDisabled ? 'ring-2 ring-primary/50' : ''}`}
                           >
                             <div className="text-xs font-medium opacity-80">
                               {date.toLocaleDateString(locale, { weekday: 'short' })}
@@ -804,11 +893,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                                 key={slot.iso}
                                 type="button"
                                 onClick={() => handleTimeSlotSelect(slot.iso)}
-                                className={`p-3 rounded-lg border transition-all text-sm hover:scale-105 ${
-                                  isSelected
-                                    ? 'border-primary bg-primary text-white shadow-lg'
-                                    : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70'
-                                }`}
+                                className={`p-3 rounded-lg border transition-all text-sm hover:scale-105 ${isSelected
+                                  ? 'border-primary bg-primary text-white shadow-lg'
+                                  : 'border-cardBorder hover:border-primary/50 bg-card/50 hover:bg-card/70'
+                                  }`}
                               >
                                 {slot.display}
                               </button>
@@ -830,18 +918,18 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         <Calendar className="w-5 h-5 text-primary" />
                         <div className="flex-1">
                           <p className="text-sm font-medium">
-                            {selectedDate.toLocaleDateString(locale, { 
-                              weekday: 'long', 
-                              year: 'numeric', 
-                              month: 'long', 
-                              day: 'numeric' 
+                            {selectedDate.toLocaleDateString(locale, {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
                             })}
                           </p>
                           <p className="text-xs text-muted">
-                            at {new Date(selectedTime).toLocaleTimeString(locale, { 
-                              hour: '2-digit', 
+                            at {new Date(selectedTime).toLocaleTimeString(locale, {
+                              hour: '2-digit',
                               minute: '2-digit',
-                              timeZone: userTimeZone 
+                              timeZone: userTimeZone
                             })}
                           </p>
                         </div>
@@ -869,23 +957,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
             </Button>
 
             {currentStep === formSteps.length - 1 ? (
-              <Button
-                onClick={handleSubmit(onSubmit)}
-                disabled={isSubmitting || !selectedTime}
-                className="flex items-center gap-2 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Scheduling...</span>
-                  </>
-                ) : (
-                  <>
-                    <Calendar className="w-4 h-4" />
-                    <span>{t('leadCapture.navigation.scheduleCall')}</span>
-                  </>
-                )}
-              </Button>
+              <></> // Hidden on calendar step
             ) : (
               <Button
                 type="button"

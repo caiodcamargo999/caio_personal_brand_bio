@@ -37,7 +37,7 @@ next.config.js
 middleware.ts
 ```
 
-Static asset used by the page: `caio-new-photo.jpg` is in `public/`. Next serves it at `/caio-new-photo.jpg`.
+Static asset used by the page: `caio-profile-2026.jpg` is in `public/`. Next serves it at `/caio-profile-2026.jpg`.
 
 ## Internationalization Features
 
@@ -69,7 +69,7 @@ The original `index.html` content was migrated into `site/app/page.tsx` with Tai
    ```bash
    npm install
    ```
-2. Ensure the photo is accessible at `/caio-new-photo.jpg`.
+2. Ensure the photo is accessible at `/caio-profile-2026.jpg`.
    - The photo is already in `public/` folder
 3. Run the dev server
    ```bash

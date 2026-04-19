@@ -18,8 +18,11 @@ export async function POST(request: NextRequest) {
       const auth = await getGoogleAuth();
       const sheets = new GoogleSheetsService(auth);
       await sheets.appendLeadData(body);
-    } catch (sheetsError) {
-      console.error('Failed to append to Google Sheets:', sheetsError);
+    } catch (sheetsError: any) {
+      console.error('❌ Failed to append to Google Sheets:', sheetsError.message);
+      if (sheetsError.response?.data) {
+        console.error('❌ Google Sheets API Error Details:', JSON.stringify(sheetsError.response.data, null, 2));
+      }
       // We continue to Trello even if Sheets fails
     }
 

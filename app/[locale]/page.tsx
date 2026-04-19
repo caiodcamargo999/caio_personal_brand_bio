@@ -10,20 +10,12 @@ import { LinkedInLogo } from "@/components/icons/LinkedInLogo";
 import { InstagramLogo } from "@/components/icons/InstagramLogo";
 import { XLogo } from "@/components/icons/XLogo";
 import { BrainIcon } from "@/components/icons/BrainIcon";
-import { HomeIcon } from "@/components/icons/HomeIcon";
 import { PhoneChartIcon } from "@/components/icons/PhoneChartIcon";
 import { Button } from "@/components/ui/button";
 import { HighlightedTitle } from "@/components/ui/highlighted-title";
 import { NeuralButton } from "@/components/ui/neural-button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogDescription,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { LeadCaptureModal } from "@/components/LeadCaptureModal";
 
@@ -35,11 +27,7 @@ export default function HomePage() {
 
 
 
-	const handleSelectCountry = (country: string) => {
-		const message = `Hey Caio, I want to know about opportunities on Real Estate in ${country}`;
-		const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(message)}`;
-		window.open(whatsappUrl, "_blank");
-	};
+
 
 	const listVariants = {
 		hidden: { opacity: 0 },
@@ -114,52 +102,7 @@ export default function HomePage() {
 						</motion.div>
 					</Card>
 
-					{/* 2) Real Estate Opportunities second */}
-					<Dialog>
-						<DialogTrigger asChild>
-							<Card className="group cursor-pointer overflow-hidden border-cardBorder bg-gradient-to-tr from-card/95 to-black/70 hover:from-primary/20 hover:to-black/80 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/60">
-								<motion.div className="p-6 sm:p-7 md:p-8" variants={itemVariants}>
-									<CardContent className="p-0 space-y-4">
-										{/* Botão estilo "QUERO TER UMA MÁQUINA MILIONÁRIA" */}
-										<NeuralButton icon={<HomeIcon size={22} />}>
-											{t('cards.realEstate.title')}
-										</NeuralButton>
 
-										{/* Descrição */}
-										<p className="text-sm sm:text-base text-muted leading-relaxed text-center">
-											{t('cards.realEstate.description')}
-										</p>
-									</CardContent>
-								</motion.div>
-							</Card>
-						</DialogTrigger>
-						<DialogContent className="max-w-[520px] border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl">
-							<DialogHeader>
-								<DialogTitle className="bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">{t('realEstate.dialogTitle')}</DialogTitle>
-								<DialogDescription className="text-muted">{t('realEstate.dialogDescription')}</DialogDescription>
-							</DialogHeader>
-							<div className="grid gap-3">
-								<Card onClick={() => handleSelectCountry(t('realEstate.countries.indonesia.name'))} className="cursor-pointer border-primary/25 bg-gradient-to-tr from-primary/10 via-primary/5 to-primary/0 transition-all hover:-translate-y-1 hover:border-primary/50">
-									<CardContent className="p-4 sm:p-5">
-										<p className="text-sm sm:text-base font-semibold">{t('realEstate.countries.indonesia.name')}</p>
-										<p className="mt-1 text-xs sm:text-sm text-muted">{t('realEstate.countries.indonesia.description')}</p>
-									</CardContent>
-								</Card>
-								<Card onClick={() => handleSelectCountry(t('realEstate.countries.dubai.name'))} className="cursor-pointer border-primary/25 bg-gradient-to-tr from-primary/10 via-primary/5 to-primary/0 transition-all hover:-translate-y-1 hover:border-primary/50">
-									<CardContent className="p-4 sm:p-5">
-										<p className="text-sm sm:text-base font-semibold">{t('realEstate.countries.dubai.name')}</p>
-										<p className="mt-1 text-xs sm:text-sm text-muted">{t('realEstate.countries.dubai.description')}</p>
-									</CardContent>
-								</Card>
-								<Card onClick={() => handleSelectCountry(t('realEstate.countries.brazil.name'))} className="cursor-pointer border-primary/25 bg-gradient-to-tr from-primary/10 via-primary/5 to-primary/0 transition-all hover:-translate-y-1 hover:border-primary/50">
-									<CardContent className="p-4 sm:p-5">
-										<p className="text-sm sm:text-base font-semibold">{t('realEstate.countries.brazil.name')}</p>
-										<p className="mt-1 text-xs sm:text-sm text-muted">{t('realEstate.countries.brazil.description')}</p>
-									</CardContent>
-								</Card>
-							</div>
-						</DialogContent>
-					</Dialog>
 
 
 					{/* 3) Rarity Agency third */}

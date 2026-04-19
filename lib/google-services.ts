@@ -109,16 +109,22 @@ export class GoogleSheetsService {
   }
 
   async appendLeadData(data: Partial<LeadFormData>) {
+    console.log('📊 Attempting to append lead data to Sheets:', { 
+      name: data.name, 
+      email: data.email, 
+      tab: SHEET_TAB 
+    });
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
       // First, check for existing lead with this email to prevent duplicates
       const checkResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: 'Folha1!A:I', // Read all data
+        range: `${SHEET_TAB}!A:I`, // Read all data
       });
 
       const rows = checkResponse.data.values || [];
+      console.log(`📊 Found ${rows.length} existing rows in sheet "${SHEET_TAB}"`);
       const emailIndex = 2; // Column C is index 2
       const whatsappIndex = 1; // Column B is index 1
 
@@ -193,7 +199,7 @@ export class GoogleSheetsService {
 
         await sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
-          range: `Folha1!A${existingRowIndex + 1}:I${existingRowIndex + 1}`,
+          range: `${SHEET_TAB}!A${existingRowIndex + 1}:I${existingRowIndex + 1}`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -204,7 +210,7 @@ export class GoogleSheetsService {
         // Append new row
         const response = await sheets.spreadsheets.values.append({
           spreadsheetId: SPREADSHEET_ID,
-          range: 'Folha1!A:I',
+          range: `${SHEET_TAB}!A:I`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -213,8 +219,11 @@ export class GoogleSheetsService {
         return response.data;
       }
 
-    } catch (error) {
-      console.error('Error appending/updating Google Sheets:', error);
+    } catch (error: any) {
+      console.error('❌ Error appending/updating Google Sheets:', error);
+      if (error.response?.data) {
+        console.error('❌ Google API Error Details:', JSON.stringify(error.response.data, null, 2));
+      }
       throw error;
     }
   }
@@ -226,13 +235,13 @@ export class GoogleSheetsService {
       // Find the row with the user's email
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: 'Folha1!A:I',
+        range: `${SHEET_TAB}!A:I`,
       });
 
       // We no longer update rows in place; new submissions should append new rows
       return this.appendLeadData(data);
     } catch (error) {
-      console.error('Error updating Google Sheets:', error);
+      console.error('❌ Error updating Google Sheets:', error);
       throw error;
     }
   }

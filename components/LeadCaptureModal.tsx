@@ -26,6 +26,10 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   const [availableSlots, setAvailableSlots] = useState<Array<{ iso: string, display: string }>>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('');
+
+  const calNamespace = locale === 'pt' ? "call-estrategica-com-o-caio" : "freeconsultancy";
+  const calLink = locale === 'pt' ? "caiodecamargo/call-estrategica-com-o-caio" : "caiodecamargo/freeconsultancy";
+
   const [userTimeZone, setUserTimeZone] = useState<string>(Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Madrid');
   const [budgetAmount, setBudgetAmount] = useState<number | undefined>();
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
@@ -167,20 +171,20 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   // Cal.com initialization - Initialize immediately on mount
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi();
+      const cal = await getCalApi({ namespace: calNamespace });
       cal("ui", {
         theme: "dark",
         hideEventTypeDetails: false,
         layout: "month_view",
         cssVarsPerTheme: {
           dark: {
-            "cal-brand": "#8b5cf6",
+            "cal-brand": "#9316c0",
             "cal-text": "#ffffff",
             "cal-text-muted": "#9ca3af",
             "cal-bg": "#000000",
           },
           light: {
-            "cal-brand": "#8b5cf6",
+            "cal-brand": "#5f0f65",
             "cal-text": "#111827",
             "cal-text-muted": "#4b5563",
             "cal-bg": "#ffffff",
@@ -226,7 +230,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         }
       });
     })();
-  }, []); // Run ONCE on mount
+  }, [calNamespace]); // Re-run when namespace changes
 
   // Ref to access latest values inside the callback without re-running effect
   const watchedValuesRef = useRef(watchedValues);
@@ -238,7 +242,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   useEffect(() => {
     if (watchedValues.name) {
       (async function () {
-        const cal = await getCalApi();
+        const cal = await getCalApi({ namespace: calNamespace });
         cal("preload", {
           name: watchedValues.name,
           email: watchedValues.email, // Passing email back to Cal.com
@@ -246,7 +250,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         } as any);
       })();
     }
-  }, [watchedValues.name, watchedValues.email, watchedValues.industry, watchedValues.struggle]);
+  }, [watchedValues.name, watchedValues.email, watchedValues.industry, watchedValues.struggle, calNamespace]);
 
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
@@ -819,9 +823,14 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               {currentStep === formSteps.length - 1 && (
                 <div className="w-full h-full min-h-[500px]">
                   <Cal
-                    calLink={process.env.NEXT_PUBLIC_CALCOM_LINK || "caio-camargo-peyctj/30min"}
+                    namespace={calNamespace}
+                    calLink={calLink}
                     style={{ width: "100%", height: "100%", minHeight: "500px", overflow: "scroll" }}
-                    config={{ layout: "month_view", theme: "dark" }}
+                    config={{
+                      layout: "month_view",
+                      useSlotsViewOnSmallScreen: "true",
+                      theme: "dark"
+                    }}
                   />
 
                 </div>

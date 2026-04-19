@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "Caio de Camargo",
-    "subtitle": "Helping you scale with AI, marketing, strategy & real estate investment opportunities."
+    "subtitle": "AI systems, marketing strategies, and scaling frameworks to grow your business faster."
   },
   "cards": {
     "strategyConsultation": {
@@ -11,7 +11,7 @@
     },
     "rarityAgency": {
       "title": "Rarity Agency",
-      "description": "Marketing and AI agency to scale your brand and automate operations.",
+      "description": "We scale brands fast with high-converting paid ads and growth systems.",
       "cta": "Visit Agency →"
     },
     "realEstate": {
@@ -63,7 +63,7 @@
     "es": "Spanish"
   },
   "bio": {
-    "tagline": "Helping you scale with AI, marketing, strategy & real estate investment opportunities.",
+    "tagline": "AI systems, marketing strategies, and scaling frameworks to grow your business faster.",
     "strategy": {
       "title": "Strategy & Consultation",
       "description": "Get personalized AI, automation, and business scaling strategies. Book a strategy call to unlock your business potential.",

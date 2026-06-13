@@ -600,7 +600,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
           {/* Step Counter and Title */}
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-muted font-medium">
+            <span className="text-xs text-zinc-400 font-medium">
               {t('leadCapture.form.stepCounter').replace('{current}', String(currentStep + 1)).replace('{total}', String(formSteps.length))}
             </span>
             <span className="text-xs text-primary font-medium">
@@ -615,7 +615,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
 
         {/* Form Content */}
-        <div className="p-4 sm:p-6 pt-3 sm:pt-4 max-h-[55vh] max-h-[55dvh] overflow-y-auto">
+        <div className={`p-4 sm:p-6 pt-3 sm:pt-4 overflow-y-auto ${currentStep === formSteps.length - 1 ? 'max-h-[85vh] max-h-[85dvh]' : 'max-h-[60vh] max-h-[60dvh]'}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -623,7 +623,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="space-y-6"
+              className={currentStep === formSteps.length - 1 ? "space-y-0 h-full" : "space-y-6"}
             >
               {/* Intro Step */}
               {currentStep === 0 && (
@@ -631,8 +631,8 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                   <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Calendar className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold">{t('leadCapture.intro.title')}</h3>
-                  <p className="text-muted leading-relaxed text-sm">
+                  <h3 className="text-xl font-semibold text-white">{t('leadCapture.intro.title')}</h3>
+                  <p className="text-zinc-400 leading-relaxed text-sm">
                     {t('leadCapture.intro.message')}
                   </p>
                 </div>
@@ -674,7 +674,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                             inputMode="tel"
                             autoComplete="tel"
                             placeholder={selectedCountry.format}
-                            className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
+                            className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-zinc-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                             onChange={(e) => {
                               // Only allow numbers, spaces, parentheses, and dashes (NO +)
                               let value = e.target.value.replace(/[^\d() \-]/g, '');
@@ -694,7 +694,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                           {...register(currentStepData.field!)}
                           type="text"
                           placeholder={currentStepData.placeholder}
-                          className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
+                          className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-zinc-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
@@ -718,7 +718,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         {...register(currentStepData.field!)}
                         type="email"
                         placeholder={currentStepData.placeholder}
-                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
+                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-zinc-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -741,7 +741,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         {...register(currentStepData.field!)}
                         placeholder={currentStepData.placeholder}
                         rows={4}
-                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 resize-none shadow-inner"
+                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-zinc-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 resize-none shadow-inner"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
                             e.preventDefault();
@@ -766,7 +766,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'yes'
                             ? 'bg-primary/20 border-primary text-white'
-                            : 'bg-black/80 border-white/10 text-muted hover:border-primary/50 hover:text-white shadow-inner font-sans'
+                            : 'bg-black/80 border-white/10 text-zinc-400 hover:border-primary/50 hover:text-white shadow-inner font-sans'
                             }`}
                           onClick={() => setValue(currentStepData.field!, 'yes')}
                         >
@@ -786,7 +786,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'no'
                             ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300'
-                            : 'bg-black/80 border-white/10 text-muted hover:border-yellow-500/50 hover:text-yellow-300 shadow-inner font-sans'
+                            : 'bg-black/80 border-white/10 text-zinc-400 hover:border-yellow-500/50 hover:text-yellow-300 shadow-inner font-sans'
                             }`}
                           onClick={() => setValue(currentStepData.field!, 'no')}
                         >
@@ -818,11 +818,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="w-full h-full min-h-[400px] sm:min-h-[500px]">
+                <div className="w-full h-full min-h-[500px] sm:min-h-[600px] flex flex-col">
                   <Cal
                     namespace={calNamespace}
                     calLink={calLink}
-                    style={{ width: "100%", height: "100%", minHeight: "400px", overflow: "scroll" }}
+                    style={{ width: "100%", height: "100%", minHeight: "500px", overflow: "scroll" }}
                     config={{
                       layout: "month_view",
                       useSlotsViewOnSmallScreen: "true",
@@ -949,9 +949,9 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
 
         {/* Navigation Footer */}
-        <div className="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent safe-area-bottom">
+        <div className={`p-4 sm:p-6 pt-3 sm:pt-4 safe-area-bottom z-10 relative ${currentStep === formSteps.length - 1 ? 'bg-transparent border-t-0 -mt-16 pointer-events-none' : 'border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent'}`}>
           <div className="flex justify-between items-center w-full gap-4">
-            <div className={`w-[100px] sm:w-[120px] ${currentStep === 0 ? "opacity-0 pointer-events-none" : ""}`}>
+            <div className={`w-[100px] sm:w-[120px] pointer-events-auto ${currentStep === 0 ? "opacity-0 pointer-events-none" : ""}`}>
               <TextureButton
                 variant="secondary"
                 onClick={handleBack}

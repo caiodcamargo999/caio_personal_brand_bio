@@ -1,7 +1,28 @@
 {
   "hero": {
     "title": "Caio de Camargo",
-    "subtitle": "AI systems, marketing strategies, and scaling frameworks to grow your business faster."
+    "subtitle": "AI systems, marketing strategies, and scaling frameworks to grow your business faster.",
+    "helpsBusinesses": "Caio Helps Businesses",
+    "words": [
+      "Ship",
+      "Scale",
+      "Grow"
+    ],
+    "subheadline": {
+      "prefix": " is a ",
+      "role": "marketing engineer",
+      "middle": " who builds the infrastructure behind rapid growth. I turn complex concepts into revenue-generating systems by combining ",
+      "skill1": "Performance Marketing",
+      "comma1": ", ",
+      "skill2": "AI Implementation",
+      "comma2": " and ",
+      "skill3": "Data Analytics",
+      "suffix": "."
+    },
+    "bookCall": "Book a Call",
+    "seeWork": "See Our Work",
+    "openForProjects": "Open for new projects, book a call today!",
+    "premiumStack": "My Premium Stack"
   },
   "cards": {
     "strategyConsultation": {
@@ -240,6 +261,59 @@
       "budgetAmountRequired": "Please enter a number",
       "budgetAmountNumber": "Please enter a valid number",
       "budgetAmountPositive": "Amount must be greater than 0"
+    }
+  },
+  "services": {
+    "title": "Your Unfair Advantage To Scale",
+    "items": [
+      {
+        "title": "Growth Funnels",
+        "description": "Data-driven conversion architectures designed to turn cold traffic into high-ticket clients with minimal friction."
+      },
+      {
+        "title": "Performance Ads",
+        "description": "Aggressive, ROI-focused media buying across Meta and Google, engineered to scale winning campaigns."
+      },
+      {
+        "title": "CRM Automations",
+        "description": "Seamless backend workflows that eliminate manual follow-ups and plug revenue leaks instantly."
+      },
+      {
+        "title": "AI Implementation",
+        "description": "Integrating LLMs and intelligent agents into your operations to multiply output without adding headcount."
+      },
+      {
+        "title": "Data & Tracking",
+        "description": "Server-side tracking and custom dashboards that give you absolute clarity on your true acquisition costs."
+      },
+      {
+        "title": "Sales Systems",
+        "description": "Optimized sales processes, scripts, and appointment setting frameworks to maximize close rates."
+      }
+    ]
+  },
+  "process": {
+    "title": "The Framework Behind the Growth.",
+    "subtitle": "We don't just execute blindly. Every successful product stems from a rigorous, proven process designed to eliminate risk and maximize impact.",
+    "steps": {
+      "briefing": {
+        "title": "Briefing",
+        "description": "Understanding your vision and constraints."
+      },
+      "brainstorm": {
+        "title": "Brainstorm & Strategy",
+        "description": "Architecting the optimal technical and marketing approach."
+      },
+      "execute": {
+        "title": "Execute Plan",
+        "description": "Building, shipping, and scaling your product."
+      }
+    },
+    "nodes": {
+      "briefing": "Briefing",
+      "brainstorm": "Brainstorm",
+      "strategy": "Strategy",
+      "execute": "Execute"
     }
   }
 }

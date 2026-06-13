@@ -1,7 +1,28 @@
 {
   "hero": {
     "title": "Caio de Camargo",
-    "subtitle": "Sistemas de IA, estratégias de marketing e estruturas de escala para expandir seu negócio mais rápido."
+    "subtitle": "Sistemas de IA, estratégias de marketing e estruturas de escala para expandir seu negócio mais rápido.",
+    "helpsBusinesses": "Caio Ajuda Empresas a",
+    "words": [
+      "Lançar",
+      "Escalar",
+      "Crescer"
+    ],
+    "subheadline": {
+      "prefix": " é o ",
+      "role": "engenheiro de marketing",
+      "middle": " que constrói a infraestrutura por trás do crescimento rápido. Transformo conceitos complexos em sistemas geradores de receita combinando ",
+      "skill1": "Marketing de Performance",
+      "comma1": ", ",
+      "skill2": "Implementação de IA",
+      "comma2": " e ",
+      "skill3": "Análise de Dados",
+      "suffix": "."
+    },
+    "bookCall": "Agendar Reunião",
+    "seeWork": "Ver Nosso Trabalho",
+    "openForProjects": "Aberto para novos projetos, agende uma reunião hoje!",
+    "premiumStack": "Minha Stack Premium"
   },
   "cards": {
     "strategyConsultation": {
@@ -240,6 +261,59 @@
       "budgetAmountRequired": "Por favor, digite um número",
       "budgetAmountNumber": "Por favor, insira um número válido",
       "budgetAmountPositive": "Valor deve ser maior que 0"
+    }
+  },
+  "services": {
+    "title": "Sua Vantagem Injusta Para Escalar",
+    "items": [
+      {
+        "title": "Funis de Crescimento",
+        "description": "Arquiteturas de conversão baseadas em dados, projetadas para transformar tráfego frio em clientes de alto valor com o mínimo de atrito."
+      },
+      {
+        "title": "Anúncios de Performance",
+        "description": "Compra de mídia focada em ROI agressivo no Meta e Google, estruturada para escalar campanhas vencedoras."
+      },
+      {
+        "title": "Automações de CRM",
+        "description": "Fluxos de trabalho integrados que eliminam follow-ups manuais e fecham buracos no faturamento instantaneamente."
+      },
+      {
+        "title": "Implementação de IA",
+        "description": "Integração de LLMs e agentes inteligentes nas suas operações para multiplicar resultados sem aumentar a equipe."
+      },
+      {
+        "title": "Dados & Rastreamento",
+        "description": "Rastreamento server-side e dashboards personalizados que oferecem clareza absoluta sobre o seu custo real de aquisição."
+      },
+      {
+        "title": "Sistemas de Vendas",
+        "description": "Processos de vendas otimizados, roteiros e estruturas de agendamento para maximizar suas taxas de conversão."
+      }
+    ]
+  },
+  "process": {
+    "title": "O Framework Por Trás do Crescimento.",
+    "subtitle": "Nós não executamos às cegas. Todo produto de sucesso nasce de um processo rigoroso e comprovado, desenhado para eliminar riscos e maximizar o impacto.",
+    "steps": {
+      "briefing": {
+        "title": "Briefing",
+        "description": "Entendendo sua visão e restrições."
+      },
+      "brainstorm": {
+        "title": "Brainstorm & Estratégia",
+        "description": "Arquitetando a melhor abordagem técnica e de marketing."
+      },
+      "execute": {
+        "title": "Executar Plano",
+        "description": "Construindo, lançando e escalando seu produto."
+      }
+    },
+    "nodes": {
+      "briefing": "Briefing",
+      "brainstorm": "Brainstorm",
+      "strategy": "Estratégia",
+      "execute": "Executar"
     }
   }
 }

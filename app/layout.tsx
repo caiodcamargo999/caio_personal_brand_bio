@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Source_Sans_3, Roboto } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 
-const sans = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans" });
-const heading = Roboto({ weight: ["300", "400", "500", "700"], subsets: ["latin"], variable: "--font-heading" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
 	title: "Caio de Camargo | AI Strategy Expert & Real Estate Investment Opportunities",

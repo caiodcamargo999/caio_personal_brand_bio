@@ -2,76 +2,169 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--background: #101010;
-	--foreground: #ffffff;
-	--muted: #a0a0a0;
-	--card: #1c1c1c;
-	--card-border: #2d2d2d;
-	--primary: #8b5cf6;
-	--primary-foreground: #ffffff;
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #0a0a0a;
+    --card: #ffffff;
+    --card-foreground: #0a0a0a;
+    --popover: #ffffff;
+    --popover-foreground: #0a0a0a;
+    --primary: #0a0a0a;
+    --primary-foreground: #fafafa;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #0a0a0a;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --accent: #f4f4f5;
+    --accent-foreground: #0a0a0a;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #0a0a0a;
+    --radius: 0rem;
+    --card-border: #e4e4e7;
+  }
+
+  .dark {
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --card: #0a0a0a;
+    --card-foreground: #fafafa;
+    --popover: #0a0a0a;
+    --popover-foreground: #fafafa;
+    --primary: #fafafa;
+    --primary-foreground: #0a0a0a;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+    --accent: #27272a;
+    --accent-foreground: #fafafa;
+    --destructive: #7f1d1d;
+    --destructive-foreground: #fafafa;
+    --border: #27272a;
+    --input: #27272a;
+    --ring: #d4d4d8;
+    --card-border: #27272a;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply text-foreground;
+    background: transparent !important;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-overflow-scrolling: touch;
+    /* Safe area padding for iPhones with notch/dynamic island */
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .dark body {
+    background: transparent !important;
+  }
 }
 
 html { 
-	scroll-behavior: smooth; 
+  scroll-behavior: smooth;
 }
 
-body {
-	background-color: var(--background);
-	color: var(--foreground);
-	font-feature-settings: "rlig" 1, "calt" 1;
+/* Prevent iOS auto-zoom on form inputs (must be >= 16px) */
+@media screen and (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
 }
 
-/* Enhanced scrollbar */
-::-webkit-scrollbar {
-	width: 8px;
-}
-
-::-webkit-scrollbar-track {
-	background: var(--card);
-}
-
-::-webkit-scrollbar-thumb {
-	background: var(--primary);
-	border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #7c3aed;
-}
-
-/* Selection styles */
-::selection {
-	background-color: rgba(139, 92, 246, 0.3);
-	color: var(--foreground);
-}
-
-/* Focus styles */
-.focus-ring {
-	@apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background;
+/* Ensure touch targets are at least 44px (Apple HIG) */
+@media (pointer: coarse) {
+  button, a, [role="button"], input, select, textarea {
+    min-height: 44px;
+  }
 }
 
 /* Custom animations */
-@keyframes float {
-	0%, 100% { transform: translateY(0px); }
-	50% { transform: translateY(-10px); }
+.animate-marquee {
+  animation: marquee var(--duration) linear infinite;
 }
 
-.animate-float {
-	animation: float 3s ease-in-out infinite;
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
 }
 
-/* Glass morphism effect */
-.glass {
-	backdrop-filter: blur(16px) saturate(180%);
-	background-color: rgba(17, 25, 40, 0.25);
-	border: 1px solid rgba(255, 255, 255, 0.125);
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(10vw, -10vh) scale(1.1); }
+  66% { transform: translate(-5vw, 15vh) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
 }
 
-/* Gradient text */
-.gradient-text {
-	background: linear-gradient(135deg, #8b5cf6, #a78bfa, #c4b5fd);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
+@keyframes blob-reverse {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(-10vw, 10vh) scale(1.1); }
+  66% { transform: translate(10vw, -15vh) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 25s infinite alternate ease-in-out;
+}
+
+.animate-blob-reverse {
+  animation: blob-reverse 30s infinite alternate ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animation-delay-6000 {
+  animation-delay: 6s;
+}
+
+input, textarea, select, button, .font-sans, [role="dialog"] * {
+  font-family: var(--font-sans), system-ui, sans-serif !important;
+}
+
+/* iPhone safe area for fixed/sticky elements */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Mobile scrollbar hide (cleaner on iPhone) */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createLeadFormSchema, LeadFormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { TextureButton } from '@/components/ui/texture-button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
@@ -143,7 +144,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     { id: 'name', title: t('leadCapture.steps.name.title'), field: 'name' as keyof LeadFormData, type: 'text' as const, placeholder: t('leadCapture.steps.name.placeholder'), required: true },
     { id: 'whatsapp', title: t('leadCapture.steps.whatsapp.title'), field: 'whatsapp' as keyof LeadFormData, type: 'text' as const, placeholder: t('leadCapture.steps.whatsapp.placeholder'), required: true },
     { id: 'email', title: t('leadCapture.steps.email.title'), field: 'email' as keyof LeadFormData, type: 'email' as const, placeholder: t('leadCapture.steps.email.placeholder'), required: true },
-    { id: 'instagram', title: t('leadCapture.steps.instagram.title'), field: 'instagram' as keyof LeadFormData, type: 'text' as const, placeholder: t('leadCapture.steps.instagram.placeholder'), required: true },
     { id: 'industry', title: t('leadCapture.steps.industry.title'), field: 'industry' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.industry.placeholder'), required: true },
     { id: 'struggle', title: t('leadCapture.steps.struggle.title'), field: 'struggle' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.struggle.placeholder'), required: true },
     { id: 'budget', title: t('leadCapture.steps.budget.title'), field: 'budget' as keyof LeadFormData, type: 'select' as const, options: [{ value: 'yes', label: t('leadCapture.steps.budget.yes') }, { value: 'no', label: t('leadCapture.steps.budget.no') }], required: true },
@@ -277,7 +277,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           name: watchedValues.name,
           whatsapp: fullWhatsApp,
           email: watchedValues.email,
-          instagram: watchedValues.instagram,
           industry: watchedValues.industry,
           struggle: watchedValues.struggle,
           budget: 'no',
@@ -420,10 +419,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           <div class="value">${data.whatsapp}</div>
         </div>
         <div class="row">
-          <div class="label">Instagram</div>
-          <div class="value">${data.instagram}</div>
-        </div>
-        <div class="row">
           <div class="label">When</div>
           <div class="value">${selectedDate.toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} ${new Date(selectedTime).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', timeZone: userTimeZone })} (${userTimeZone})</div>
         </div>
@@ -560,7 +555,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
   if (isSuccess) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl">
+        <DialogContent className="max-w-md border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl font-sans w-[95%] sm:w-[90%]">
           <DialogHeader>
             <DialogTitle className="sr-only">{t('leadCapture.success.title')}</DialogTitle>
           </DialogHeader>
@@ -572,10 +567,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
             <p className="text-muted mb-6">
               {t('leadCapture.success.message')}
             </p>
-            <div className="space-y-3">
-              <Button onClick={onClose} className="w-full">
-                {t('leadCapture.success.close')}
-              </Button>
+            <div className="space-y-3 mt-4 w-full flex justify-center">
+              <div className="w-full max-w-[200px]">
+                <TextureButton variant="primary" onClick={onClose}>
+                  {t('leadCapture.success.close')}
+                </TextureButton>
+              </div>
             </div>
           </div>
         </DialogContent>
@@ -585,12 +582,12 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[520px] p-0 border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl overflow-hidden">
+      <DialogContent className="max-w-[520px] w-[95%] sm:w-[90%] p-0 border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl overflow-hidden font-sans">
         <DialogHeader className="sr-only">
           <DialogTitle>{t('leadCapture.intro.title')}</DialogTitle>
         </DialogHeader>
         {/* Header with Progress */}
-        <div className="p-6 pb-4 border-b border-primary/20">
+        <div className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-primary/20">
           {/* Progress Bar */}
           <div className="w-full bg-card/20 rounded-full h-2 mb-4">
             <motion.div
@@ -612,13 +609,13 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           </div>
 
           {/* Current Step Title */}
-          <h2 className="text-lg font-semibold text-center bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">
+          <h2 className="text-base sm:text-lg font-semibold text-center bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">
             {currentStepData.title}
           </h2>
         </div>
 
         {/* Form Content */}
-        <div className="p-6 pt-4 max-h-[60vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 pt-3 sm:pt-4 max-h-[55vh] max-h-[55dvh] overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -655,7 +652,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                               const country = countries.find(c => c.code === e.target.value);
                               if (country) setSelectedCountry(country);
                             }}
-                            className="h-[50px] w-[110px] pl-3 pr-9 bg-card/50 border border-cardBorder rounded-xl text-white hover:border-primary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all duration-200 cursor-pointer appearance-none text-base font-medium shadow-sm hover:shadow-md"
+                            className="h-[50px] w-[90px] sm:w-[110px] pl-2 sm:pl-3 pr-7 sm:pr-9 bg-black/80 border-2 border-white/10 rounded-xl text-white font-sans font-medium text-base sm:text-lg hover:border-primary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all duration-200 cursor-pointer appearance-none shadow-inner"
                             style={{
                               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='rgba(168,85,247,0.6)' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E")`,
                               backgroundRepeat: 'no-repeat',
@@ -677,7 +674,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                             inputMode="tel"
                             autoComplete="tel"
                             placeholder={selectedCountry.format}
-                            className="flex-1 px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                            className="flex-1 min-w-0 px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                             onChange={(e) => {
                               // Only allow numbers, spaces, parentheses, and dashes (NO +)
                               let value = e.target.value.replace(/[^\d() \-]/g, '');
@@ -697,7 +694,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                           {...register(currentStepData.field!)}
                           type="text"
                           placeholder={currentStepData.placeholder}
-                          className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                          className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
@@ -721,7 +718,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         {...register(currentStepData.field!)}
                         type="email"
                         placeholder={currentStepData.placeholder}
-                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-inner"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
                             e.preventDefault();
@@ -744,7 +741,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         {...register(currentStepData.field!)}
                         placeholder={currentStepData.placeholder}
                         rows={4}
-                        className="w-full px-4 py-3 bg-card/50 border border-cardBorder rounded-lg text-white placeholder-muted focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all duration-200 resize-none"
+                        className="w-full px-3 sm:px-4 py-3 bg-black/80 border-2 border-white/10 rounded-lg text-white font-sans font-medium text-base sm:text-lg placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all duration-200 resize-none shadow-inner"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
                             e.preventDefault();
@@ -769,7 +766,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'yes'
                             ? 'bg-primary/20 border-primary text-white'
-                            : 'bg-card/50 border-cardBorder text-muted hover:border-primary/30 hover:text-white'
+                            : 'bg-black/80 border-white/10 text-muted hover:border-primary/50 hover:text-white shadow-inner font-sans'
                             }`}
                           onClick={() => setValue(currentStepData.field!, 'yes')}
                         >
@@ -789,7 +786,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
                         <div
                           className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${watchedValues[currentStepData.field!] === 'no'
                             ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300'
-                            : 'bg-card/50 border-cardBorder text-muted hover:border-yellow-500/30 hover:text-yellow-300'
+                            : 'bg-black/80 border-white/10 text-muted hover:border-yellow-500/50 hover:text-yellow-300 shadow-inner font-sans'
                             }`}
                           onClick={() => setValue(currentStepData.field!, 'no')}
                         >
@@ -821,11 +818,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="w-full h-full min-h-[500px]">
+                <div className="w-full h-full min-h-[400px] sm:min-h-[500px]">
                   <Cal
                     namespace={calNamespace}
                     calLink={calLink}
-                    style={{ width: "100%", height: "100%", minHeight: "500px", overflow: "scroll" }}
+                    style={{ width: "100%", height: "100%", minHeight: "400px", overflow: "scroll" }}
                     config={{
                       layout: "month_view",
                       useSlotsViewOnSmallScreen: "true",
@@ -952,30 +949,31 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
 
         {/* Navigation Footer */}
-        <div className="p-6 pt-4 border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent">
-          <div className="flex justify-between items-center">
-            <Button
-              type="button"
-              onClick={handleBack}
-              disabled={currentStep === 0}
-              variant="outline"
-              className="flex items-center gap-2 border-cardBorder hover:border-primary/50 hover:bg-primary/10 transition-all duration-200"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('leadCapture.navigation.back')}</span>
-            </Button>
+        <div className="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent safe-area-bottom">
+          <div className="flex justify-between items-center w-full gap-4">
+            <div className={`w-[100px] sm:w-[120px] ${currentStep === 0 ? "opacity-0 pointer-events-none" : ""}`}>
+              <TextureButton
+                variant="secondary"
+                onClick={handleBack}
+                disabled={currentStep === 0}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">{t('leadCapture.navigation.back')}</span>
+              </TextureButton>
+            </div>
 
             {currentStep === formSteps.length - 1 ? (
               <></> // Hidden on calendar step
             ) : (
-              <Button
-                type="button"
-                onClick={handleNext}
-                className="flex items-center gap-2 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                <span>{t('leadCapture.navigation.next')}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="w-[100px] sm:w-[120px]">
+                <TextureButton
+                  variant="primary"
+                  onClick={handleNext}
+                >
+                  <span>{t('leadCapture.navigation.next')}</span>
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </TextureButton>
+              </div>
             )}
           </div>
         </div>

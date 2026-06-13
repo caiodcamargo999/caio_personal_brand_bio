@@ -51,12 +51,7 @@ const nextConfig = {
         source: '/home',
         destination: '/',
         permanent: true,
-      },
-      {
-        source: '/about',
-        destination: '/en/bio',
-        permanent: true,
-      },
+      }
     ];
   },
 };

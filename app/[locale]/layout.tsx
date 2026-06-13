@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { Source_Sans_3, Roboto } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { I18nProvider } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import { monitorPerformance } from "../analytics";
 
-const sans = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans" });
-const heading = Roboto({ weight: ["300", "400", "500", "700"], subsets: ["latin"], variable: "--font-heading" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 // Define supported locales
 const locales = ["en", "pt", "es"] as const;
@@ -22,54 +22,54 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       title: "Caio de Camargo | AI Strategy Expert & Real Estate Investment Opportunities",
       description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation, business scaling, and exclusive real estate investment opportunities in Dubai, Bali, and Brazil. Book your free strategy consultation today.",
       keywords: [
+        "Ads Management",
+        "Marketing Agency",
+        "Data Expert",
+        "AI Specialist",
+        "Website Specialist",
         "AI Strategy Consultant",
         "Business Strategy Expert",
-        "Real Estate Investment Dubai",
-        "Real Estate Investment Bali",
-        "Real Estate Investment Brazil",
-        "AI Business Solutions",
-        "Digital Transformation",
+        "Real Estate Investment",
         "Business Scaling Expert",
-        "Strategy Consultation",
-        "AI Implementation",
-        "Business Growth",
-        "Investment Opportunities"
+        "Digital Transformation",
+        "Growth Marketing Agency",
+        "Data Analytics Consultant"
       ]
     },
     pt: {
       title: "Caio de Camargo | Especialista em Estratégia com IA e Oportunidades de Investimento Imobiliário",
       description: "Transforme seu negócio com consultoria estratégica alimentada por IA. Orientação especializada em implementação de IA, escalonamento de negócios e oportunidades exclusivas de investimento imobiliário em Dubai, Bali e Brasil. Agende sua consultoria estratégica gratuita hoje.",
       keywords: [
+        "Gestão de Anúncios",
+        "Agência de Marketing",
+        "Especialista em Dados",
+        "Especialista em IA",
+        "Especialista em Sites",
         "Consultor de Estratégia com IA",
         "Especialista em Estratégia de Negócios",
-        "Investimento Imobiliário Dubai",
-        "Investimento Imobiliário Bali",
-        "Investimento Imobiliário Brasil",
-        "Soluções de IA para Negócios",
-        "Transformação Digital",
+        "Investimento Imobiliário",
         "Especialista em Escalonamento de Negócios",
-        "Consultoria Estratégica",
-        "Implementação de IA",
-        "Crescimento de Negócios",
-        "Oportunidades de Investimento"
+        "Transformação Digital",
+        "Agência de Growth Marketing",
+        "Consultor de Análise de Dados"
       ]
     },
     es: {
       title: "Caio de Camargo | Experto en Estrategia con IA y Oportunidades de Inversión Inmobiliaria",
       description: "Transforma tu negocio con consultoría estratégica impulsada por IA. Orientación experta en implementación de IA, escalado de negocios y oportunidades exclusivas de inversión inmobiliaria en Dubai, Bali y Brasil. Reserva tu consultoría estratégica gratuita hoy.",
       keywords: [
+        "Gestión de Anuncios",
+        "Agencia de Marketing",
+        "Experto en Datos",
+        "Especialista en IA",
+        "Especialista en Sitios Web",
         "Consultor de Estrategia con IA",
         "Experto en Estrategia de Negocios",
-        "Inversión Inmobiliaria Dubai",
-        "Inversión Inmobiliaria Bali",
-        "Inversión Inmobiliaria Brasil",
-        "Soluciones de IA para Negocios",
-        "Transformación Digital",
+        "Inversión Inmobiliaria",
         "Experto en Escalado de Negocios",
-        "Consultoría Estratégica",
-        "Implementación de IA",
-        "Crecimiento de Negocios",
-        "Oportunidades de Inversión"
+        "Transformación Digital",
+        "Agencia de Growth Marketing",
+        "Consultor de Análisis de Datos"
       ]
     }
   };
@@ -132,6 +132,9 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
   };
 }
 
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { UnicornBackground } from "@/components/UnicornBackground";
+
 // Generate static params for all locales
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -150,13 +153,24 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} className={`${sans.variable} ${heading.variable}`}>
-      <body className="min-h-screen bg-[radial-gradient(circle_at_center,rgba(88,28,135,0.4)_0%,rgba(67,56,202,0.3)_25%,rgba(30,27,75,0.2)_50%,transparent_75%),radial-gradient(ellipse_at_top,rgba(109,40,217,0.25)_0%,transparent_60%),radial-gradient(ellipse_at_bottom,rgba(76,29,149,0.2)_0%,transparent_60%),linear-gradient(180deg,#0a0510_0%,#150a28_30%,#1e1142_50%,#150a28_70%,#0a0510_100%)] text-white antialiased font-sans">
-        <I18nProvider initialLocale={locale}>
-          {children}
-        </I18nProvider>
-        {/* Analytics script removed to fix import error */}
+    <html lang={locale} className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="format-detection" content="telephone=no" />
+      </head>
+      <body className="min-h-screen min-h-[100dvh] text-foreground antialiased font-sans w-full max-w-[100vw]">
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
+          <I18nProvider initialLocale={locale}>
+            <UnicornBackground />
+            <div className="relative z-10">
+              {children}
+            </div>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+

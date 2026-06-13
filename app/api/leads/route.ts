@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     // Trello Integration
     try {
-      const { name, email, whatsapp, instagram, industry, struggle, budget, budgetAmount, source, bookingDetails } = body;
+      const { name, email, whatsapp, industry, struggle, budget, budgetAmount, source, bookingDetails } = body;
 
       const description = `
 **📋 DETALHES DO LEAD**
@@ -36,7 +36,6 @@ export async function POST(request: NextRequest) {
 **Nome:** ${name}
 ${email ? `**Email:** ${email}` : ''}
 **WhatsApp:** ${whatsapp}
-**Instagram:** ${instagram}
 **Indústria:** ${industry}
 **Dificuldade:** ${struggle}
 **Orçamento:** ${budget}

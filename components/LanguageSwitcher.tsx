@@ -39,9 +39,9 @@ export function LanguageSwitcher() {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="h-9 w-auto px-3 py-2 bg-card/80 backdrop-blur-sm border border-cardBorder hover:bg-card/90 hover:border-primary/30 transition-all duration-200 rounded-lg text-white hover:text-white"
+          className="h-9 w-auto px-3 py-2 bg-background backdrop-blur-sm hover:bg-accent hover:text-accent-foreground transition-all duration-200 rounded-md"
         >
           <Globe className="h-4 w-4 mr-2" />
           <span className="hidden sm:inline text-sm font-medium">
@@ -55,7 +55,7 @@ export function LanguageSwitcher() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-48 bg-card/95 backdrop-blur-xl border border-cardBorder rounded-lg shadow-xl"
+        className="w-48 bg-background border-border rounded-md shadow-lg"
       >
         {languages.map((language) => (
           <DropdownMenuItem
@@ -63,8 +63,8 @@ export function LanguageSwitcher() {
             onClick={() => handleLanguageChange(language.code)}
             className={`flex items-center px-3 py-2 cursor-pointer transition-colors duration-150 ${
               locale === language.code
-                ? "bg-primary/20 text-white border-l-2 border-primary"
-                : "text-muted hover:text-white hover:bg-card/50"
+                ? "bg-accent text-accent-foreground font-semibold"
+                : "text-muted-foreground hover:text-accent-foreground hover:bg-accent"
             }`}
           >
             <span className="text-lg mr-3">{language.flag}</span>

@@ -120,7 +120,7 @@ export class GoogleSheetsService {
       // First, check for existing lead with this email to prevent duplicates
       const checkResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: `${SHEET_TAB}!A:I`, // Read all data
+        range: `${SHEET_TAB}!A:H`, // Read all data
       });
 
       const rows = checkResponse.data.values || [];
@@ -182,7 +182,6 @@ export class GoogleSheetsService {
         data.name || '',
         data.whatsapp || '',
         data.email || '',
-        data.instagram || '',
         data.industry || '',
         data.struggle || '',
         budgetCell,
@@ -199,7 +198,7 @@ export class GoogleSheetsService {
 
         await sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${SHEET_TAB}!A${existingRowIndex + 1}:I${existingRowIndex + 1}`,
+          range: `${SHEET_TAB}!A${existingRowIndex + 1}:H${existingRowIndex + 1}`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -210,7 +209,7 @@ export class GoogleSheetsService {
         // Append new row
         const response = await sheets.spreadsheets.values.append({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${SHEET_TAB}!A:I`,
+          range: `${SHEET_TAB}!A:H`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -235,7 +234,7 @@ export class GoogleSheetsService {
       // Find the row with the user's email
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: `${SHEET_TAB}!A:I`,
+        range: `${SHEET_TAB}!A:H`,
       });
 
       // We no longer update rows in place; new submissions should append new rows
@@ -295,7 +294,6 @@ export class GoogleCalendarService {
           `- Name: ${data.name}`,
           `- WhatsApp: ${data.whatsapp}`,
           `- Email: ${data.email}`,
-          `- Instagram: ${data.instagram}`,
           `- Industry: ${data.industry}`,
           `- Main Struggle: ${data.struggle}`,
           `- Budget: ${budgetDisplay}`,

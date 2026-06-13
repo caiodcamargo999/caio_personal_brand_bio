@@ -7,7 +7,7 @@ export type Locale = 'en' | 'pt' | 'es';
 interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string) => any;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -31,7 +31,7 @@ export function I18nProvider({ children, initialLocale = 'en' }: { children: Rea
     setLocale(initialLocale);
   }, [initialLocale]);
 
-  const t = (key: string): string => {
+  const t = (key: string): any => {
     const keys = key.split('.');
     let value: any = messages[locale];
     
@@ -43,7 +43,7 @@ export function I18nProvider({ children, initialLocale = 'en' }: { children: Rea
       }
     }
     
-    return typeof value === 'string' ? value : key;
+    return value;
   };
 
   return (

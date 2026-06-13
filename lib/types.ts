@@ -15,7 +15,6 @@ export function createLeadFormSchema(t: (key: string) => string) {
         message: t('leadCapture.validation.whatsappRequired'),
       }),
     email: z.string().email(t('leadCapture.validation.emailRequired')),
-    instagram: z.string().min(1, t('leadCapture.validation.instagramRequired')),
     industry: z.string().min(2, t('leadCapture.validation.industryRequired')),
     struggle: z.string().min(10, t('leadCapture.validation.struggleRequired')),
     budget: z.enum(["yes", "no"]),
@@ -29,7 +28,6 @@ export type LeadFormData = {
   name: string;
   whatsapp: string;
   email: string;
-  instagram: string;
   industry: string;
   struggle: string;
   budget: "yes" | "no";

@@ -53,10 +53,10 @@ const DESKTOP_CARD_POSITIONS = [
 ];
 
 const MOBILE_CARD_POSITIONS = [
-  { from: { x: -420, y: -260, rotate: -10, scale: 0.5 }, to: { x: -110, y: -230, rotate: -2 } },
-  { from: { x: 420, y: -260, rotate: 10, scale: 0.5 }, to: { x: 110, y: -230, rotate: 2 } },
-  { from: { x: -420, y: 320, rotate: 8, scale: 0.5 }, to: { x: -110, y: 260, rotate: 2 } },
-  { from: { x: 420, y: 320, rotate: -8, scale: 0.5 }, to: { x: 110, y: 260, rotate: -2 } },
+  { from: { x: -420, y: -260, rotate: -10, scale: 0.5 }, to: { x: -95, y: -230, rotate: -2 } },
+  { from: { x: 420, y: -260, rotate: 10, scale: 0.5 }, to: { x: 95, y: -230, rotate: 2 } },
+  { from: { x: -420, y: 320, rotate: 8, scale: 0.5 }, to: { x: -95, y: 260, rotate: 2 } },
+  { from: { x: 420, y: 320, rotate: -8, scale: 0.5 }, to: { x: 95, y: 260, rotate: -2 } },
 ];
 
 export function ProjectsShowcaseSection() {

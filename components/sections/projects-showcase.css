@@ -241,12 +241,6 @@
   -webkit-mask-image: radial-gradient(ellipse at top right, white, transparent 70%);
 }
 
-@media (max-width: 640px) {
-  .showcase-phone-device {
-    display: none;
-  }
-}
-
 /* SCROLL-DRIVEN STAGE */
 .showcase-section {
   position: relative;
@@ -421,5 +415,28 @@
 
   .showcase-card-description {
     font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .showcase-device-wrap {
+    width: min(640px, 80vw);
+  }
+
+  .showcase-phone-device {
+    right: 0;
+    bottom: -9%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 480px) {
+  .showcase-device-wrap {
+    width: min(560px, 78vw);
+  }
+
+  .showcase-phone-device {
+    width: 32%;
+    bottom: -10%;
   }
 }

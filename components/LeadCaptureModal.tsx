@@ -623,7 +623,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className={currentStep === formSteps.length - 1 ? "space-y-0 h-full" : "space-y-6"}
+              className={currentStep === formSteps.length - 1 ? "space-y-0" : "space-y-6"}
             >
               {/* Intro Step */}
               {currentStep === 0 && (
@@ -818,11 +818,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="w-full h-full min-h-[500px] sm:min-h-[600px] flex flex-col">
+                <div className="w-full h-[600px] sm:h-[700px] flex flex-col">
                   <Cal
                     namespace={calNamespace}
                     calLink={calLink}
-                    style={{ width: "100%", height: "100%", minHeight: "500px", overflow: "scroll" }}
+                    style={{ width: "100%", height: "100%", overflow: "scroll" }}
                     config={{
                       layout: "month_view",
                       useSlotsViewOnSmallScreen: "true",
@@ -949,9 +949,9 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
 
         {/* Navigation Footer */}
-        <div className={`p-4 sm:p-6 pt-3 sm:pt-4 safe-area-bottom z-10 relative ${currentStep === formSteps.length - 1 ? 'bg-transparent border-t-0 -mt-16 pointer-events-none' : 'border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent'}`}>
+        <div className={`p-4 sm:p-6 pt-3 sm:pt-4 safe-area-bottom ${currentStep === formSteps.length - 1 ? 'bg-transparent border-t-0' : 'border-t border-primary/20 bg-gradient-to-t from-black/50 to-transparent'}`}>
           <div className="flex justify-between items-center w-full gap-4">
-            <div className={`w-[100px] sm:w-[120px] pointer-events-auto ${currentStep === 0 ? "opacity-0 pointer-events-none" : ""}`}>
+            <div className={`w-[100px] sm:w-[120px] ${currentStep === 0 ? "opacity-0 pointer-events-none" : ""}`}>
               <TextureButton
                 variant="secondary"
                 onClick={handleBack}

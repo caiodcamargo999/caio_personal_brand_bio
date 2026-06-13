@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Caio de Camargo - AI Strategy Expert',
     short_name: 'Caio de Camargo',
-    description: 'AI Strategy Expert & Real Estate Investment Opportunities',
+    description: 'AI Strategy Expert',
     start_url: '/',
     display: 'standalone',
     background_color: '#0a0a0a',

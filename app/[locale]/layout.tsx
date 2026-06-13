@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
   // Localized metadata
   const metadata = {
     en: {
-      title: "Caio de Camargo | AI Strategy Expert & Real Estate Investment Opportunities",
-      description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation, business scaling, and exclusive real estate investment opportunities in Dubai, Bali, and Brazil. Book your free strategy consultation today.",
+      title: "Caio de Camargo | AI Strategy Expert",
+      description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation and business scaling. Book your free strategy consultation today.",
       keywords: [
         "Ads Management",
         "Marketing Agency",
@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
         "Website Specialist",
         "AI Strategy Consultant",
         "Business Strategy Expert",
-        "Real Estate Investment",
         "Business Scaling Expert",
         "Digital Transformation",
         "Growth Marketing Agency",
@@ -38,8 +37,8 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       ]
     },
     pt: {
-      title: "Caio de Camargo | Especialista em Estratégia com IA e Oportunidades de Investimento Imobiliário",
-      description: "Transforme seu negócio com consultoria estratégica alimentada por IA. Orientação especializada em implementação de IA, escalonamento de negócios e oportunidades exclusivas de investimento imobiliário em Dubai, Bali e Brasil. Agende sua consultoria estratégica gratuita hoje.",
+      title: "Caio de Camargo | Especialista em Estratégia com IA",
+      description: "Transforme seu negócio com consultoria estratégica alimentada por IA. Orientação especializada em implementação de IA e escalonamento de negócios. Agende sua consultoria estratégica gratuita hoje.",
       keywords: [
         "Gestão de Anúncios",
         "Agência de Marketing",
@@ -48,7 +47,6 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
         "Especialista em Sites",
         "Consultor de Estratégia com IA",
         "Especialista em Estratégia de Negócios",
-        "Investimento Imobiliário",
         "Especialista em Escalonamento de Negócios",
         "Transformação Digital",
         "Agência de Growth Marketing",
@@ -56,8 +54,8 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       ]
     },
     es: {
-      title: "Caio de Camargo | Experto en Estrategia con IA y Oportunidades de Inversión Inmobiliaria",
-      description: "Transforma tu negocio con consultoría estratégica impulsada por IA. Orientación experta en implementación de IA, escalado de negocios y oportunidades exclusivas de inversión inmobiliaria en Dubai, Bali y Brasil. Reserva tu consultoría estratégica gratuita hoy.",
+      title: "Caio de Camargo | Experto en Estrategia con IA",
+      description: "Transforma tu negocio con consultoría estratégica impulsada por IA. Orientación experta en implementación de IA y escalado de negocios. Reserva tu consultoría estratégica gratuita hoy.",
       keywords: [
         "Gestión de Anuncios",
         "Agencia de Marketing",
@@ -66,7 +64,6 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
         "Especialista en Sitios Web",
         "Consultor de Estrategia con IA",
         "Experto en Estrategia de Negocios",
-        "Inversión Inmobiliaria",
         "Experto en Escalado de Negocios",
         "Transformación Digital",
         "Agencia de Growth Marketing",
@@ -127,9 +124,6 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       },
     },
     metadataBase: new URL("https://caiodcamargo.com"),
-    icons: {
-      shortcut: '/favicon.ico',
-    },
   };
 }
 

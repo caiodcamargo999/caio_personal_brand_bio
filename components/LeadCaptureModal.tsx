@@ -615,7 +615,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         </div>
 
         {/* Form Content */}
-        <div className={`p-4 sm:p-6 pt-3 sm:pt-4 overflow-y-auto ${currentStep === formSteps.length - 1 ? 'max-h-[85vh] max-h-[85dvh]' : 'max-h-[60vh] max-h-[60dvh]'}`}>
+        <div className="p-4 sm:p-6 pt-3 sm:pt-4 max-h-[55vh] max-h-[55dvh] overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -623,7 +623,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className={currentStep === formSteps.length - 1 ? "space-y-0" : "space-y-6"}
+              className="space-y-6"
             >
               {/* Intro Step */}
               {currentStep === 0 && (
@@ -818,11 +818,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
               {/* Calendar Step */}
               {currentStep === formSteps.length - 1 && (
-                <div className="w-full h-[600px] sm:h-[700px] flex flex-col">
+                <div className="w-full h-full min-h-[400px] sm:min-h-[500px]">
                   <Cal
                     namespace={calNamespace}
                     calLink={calLink}
-                    style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                    style={{ width: "100%", height: "100%", minHeight: "400px", overflow: "scroll" }}
                     config={{
                       layout: "month_view",
                       useSlotsViewOnSmallScreen: "true",

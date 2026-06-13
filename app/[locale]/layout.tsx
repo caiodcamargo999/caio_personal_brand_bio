@@ -4,6 +4,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { I18nProvider } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import { monitorPerformance } from "../analytics";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
@@ -167,6 +168,7 @@ export default async function LocaleLayout({
             <div className="relative z-10">
               {children}
             </div>
+            <Analytics />
           </I18nProvider>
         </ThemeProvider>
       </body>

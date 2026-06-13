@@ -60,7 +60,7 @@ export function ProcessSection() {
 
         {/* Circuit Board Visualization */}
         <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[500px] overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.65] sm:scale-100 md:scale-125 transform">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.85] sm:scale-100 md:scale-125 transform">
             <CircuitBoard
               nodes={[
                 { id: "briefing", x: 75, y: 150, label: t('process.nodes.briefing'), icon: <MessageSquare className="w-4 h-4" /> },

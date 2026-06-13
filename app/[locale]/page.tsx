@@ -3,17 +3,19 @@
 import React from "react";
 import { Header } from "@/components/layout/Header";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { ProjectsShowcaseSection } from "@/components/sections/ProjectsShowcaseSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen relative overflow-hidden">
+    <div className="flex flex-col min-h-screen relative">
       <Header />
       
       <main className="flex-1 w-full flex flex-col items-center">
         <HeroSection />
+        <ProjectsShowcaseSection />
         <ServicesSection />
         <ProcessSection />
       </main>

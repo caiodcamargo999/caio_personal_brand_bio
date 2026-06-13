@@ -1,22 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Import the WhatsApp service
-let whatsappService: any = null;
-
-// Dynamic import to avoid issues in Next.js
-async function getWhatsAppService() {
-  if (!whatsappService) {
-    try {
-      const { whatsappService: service } = await import('@/whatsapp-service');
-      whatsappService = service;
-    } catch (error) {
-      console.error('Failed to import WhatsApp service:', error);
-      return null;
-    }
-  }
-  return whatsappService;
-}
-
 export async function POST(request: NextRequest) {
   try {
     const { phone, message } = await request.json();
@@ -28,28 +11,51 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const service = await getWhatsAppService();
-    if (!service) {
+    const {
+      EVOLUTION_API_URL,
+      EVOLUTION_API_KEY,
+      EVOLUTION_INSTANCE_NAME
+    } = process.env;
+
+    if (!EVOLUTION_API_URL || !EVOLUTION_API_KEY || !EVOLUTION_INSTANCE_NAME) {
+      console.error('Missing Evolution API credentials in environment variables');
       return NextResponse.json({ 
         success: false, 
-        error: 'WhatsApp service not available' 
-      }, { status: 503 });
-    }
-    
-    if (!service.isReady()) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'WhatsApp not connected' 
+        error: 'WhatsApp service is not configured correctly' 
       }, { status: 503 });
     }
 
-    const success = await service.sendMessage(phone, message);
-    
-    if (!success) {
+    // Format phone number properly for Evolution API
+    let formattedPhone = phone.replace(/\D/g, '');
+    if (!formattedPhone.startsWith('55') && formattedPhone.length <= 11) {
+      formattedPhone = '55' + formattedPhone;
+    }
+
+    const response = await fetch(`${EVOLUTION_API_URL}/message/sendText/${EVOLUTION_INSTANCE_NAME}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': EVOLUTION_API_KEY
+      },
+      body: JSON.stringify({
+        number: formattedPhone,
+        options: {
+          delay: 1200,
+          presence: 'composing'
+        },
+        textMessage: {
+          text: message
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Evolution API error:', response.status, errorData);
       return NextResponse.json({ 
         success: false, 
-        error: 'Failed to send message' 
-      }, { status: 500 });
+        error: 'Failed to send message via Evolution API' 
+      }, { status: response.status });
     }
 
     return NextResponse.json({ success: true });
@@ -57,8 +63,7 @@ export async function POST(request: NextRequest) {
     console.error('whatsapp send error', e);
     return NextResponse.json({ 
       success: false, 
-      error: 'internal' 
+      error: 'internal server error' 
     }, { status: 500 });
   }
 }
-

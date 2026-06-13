@@ -227,6 +227,25 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalData)
           }).catch(err => console.error("Error saving lead:", err));
+
+          // Send immediate WhatsApp confirmation
+          let waMessage = '';
+          if (locale === 'pt') {
+            waMessage = `🎉 Olá ${watchedValuesRef.current.name}, sua Call Estratégica está confirmada!\n\nSeu horário está reservado na agenda. Você receberá o link do Google Meet 1 hora antes de começarmos.\n\nEstou ansioso para batermos um papo! - Caio`;
+          } else if (locale === 'es') {
+            waMessage = `🎉 ¡Hola ${watchedValuesRef.current.name}, tu Llamada Estratégica está confirmada!\n\nHe reservado tu hora en el calendario. Recibirás el enlace de Google Meet 1 hora antes de que comencemos.\n\n¡Espero con ansias nuestra charla! - Caio`;
+          } else {
+            waMessage = `🎉 Hey ${watchedValuesRef.current.name}, your Strategy Call is confirmed!\n\nI have locked your time in the calendar. You will receive the Google Meet link 1 hour before we start.\n\nLooking forward to our chat! - Caio`;
+          }
+
+          fetch('/api/whatsapp/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: fullWhatsApp,
+              message: waMessage
+            })
+          }).catch(err => console.error("Error sending WhatsApp confirmation:", err));
         }
       });
     })();
@@ -246,7 +265,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         cal("preload", {
           name: watchedValues.name,
           email: watchedValues.email, // Passing email back to Cal.com
-          notes: `Industry: ${watchedValues.industry}\nStruggle: ${watchedValues.struggle}`
+          notes: `Industry: ${watchedValues.industry}\nStruggle: ${watchedValues.struggle}\nLanguage: ${locale.toUpperCase()}`
         } as any);
       })();
     }

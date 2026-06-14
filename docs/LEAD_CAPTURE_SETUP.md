@@ -46,32 +46,6 @@ Triggered on budget step drop-off, calendar step pre-load, and booking completio
 
 ---
 
-## 🔧 **Environment Variables Required**
-To run all the integrations, your `.env.local` must have:
-
-```bash
-# Google APIs (Sheets append & Calendar read/write for reminders)
-GOOGLE_APPLICATION_CREDENTIALS=./google-credentials.json
-GOOGLE_SPREADSHEET_ID=your_spreadsheet_id_here
-GOOGLE_CALENDAR_ID=your_calendar_id_here
-
-# Trello Integration
-TRELLO_API_KEY=your_trello_api_key
-TRELLO_API_TOKEN=your_trello_api_token
-TRELLO_LIST_ID=your_trello_list_id
-
-# Email (Gmail SMTP for Caio's notifications)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your_gmail@gmail.com
-SMTP_PASS=your_16_char_app_password
-MAIL_FROM=your_gmail@gmail.com
-
-# Feature Flags
-NEXT_PUBLIC_EMAIL_ENABLED=true
-```
-
 ---
 
 ## 📋 **Testing Checklist**

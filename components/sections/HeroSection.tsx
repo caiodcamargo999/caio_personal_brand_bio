@@ -122,41 +122,14 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="w-full max-w-[100vw] sm:max-w-5xl flex flex-col items-center mt-12 sm:mt-16 opacity-80 px-2 sm:px-0"
+        className="w-full max-w-[100vw] sm:max-w-5xl flex flex-col items-center mt-8 sm:mt-10 opacity-80 px-2 sm:px-0"
       >
-        <h3 className="text-sm sm:text-base font-bold tracking-widest uppercase text-muted-foreground mb-6 sm:mb-8 text-center">
+        <h3 className="text-sm sm:text-base font-bold tracking-widest uppercase text-muted-foreground mb-4 sm:mb-6 text-center">
           {t('hero.premiumStack')}
         </h3>
-        <InteractiveMarquee speed={80} className="mt-12 sm:mt-16">
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiReact size={40} className="text-[#61DAFB] sm:hidden shrink-0" />
-            <SiReact size={60} className="text-[#61DAFB] hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">React</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiNextdotjs size={40} className="sm:hidden shrink-0" />
-            <SiNextdotjs size={60} className="hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Next.js</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiTypescript size={40} className="text-[#3178C6] sm:hidden shrink-0" />
-            <SiTypescript size={60} className="text-[#3178C6] hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">TypeScript</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiShadcnui size={40} className="sm:hidden shrink-0" />
-            <SiShadcnui size={60} className="hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">shadcn/ui</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiVercel size={40} className="sm:hidden shrink-0" />
-            <SiVercel size={60} className="hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Vercel</span>
-          </div>
-        </InteractiveMarquee>
 
-        {/* Second Marquee Line for Ads and AI */}
-        <InteractiveMarquee speed={80} reverse={true} className="mt-8">
+        {/* Marquee Line for Ads and AI */}
+        <InteractiveMarquee speed={80} className="mt-2">
           <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
             <GoogleAds className="h-[40px] sm:h-[60px] w-auto shrink-0" />
             <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Google Ads</span>

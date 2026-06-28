@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
   // Localized metadata
   const metadata = {
     en: {
-      title: "Caio de Camargo | AI Strategy Expert",
+      title: "Caio de Camargo | Scale Your Business",
       description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation and business scaling. Book your free strategy consultation today.",
       keywords: [
         "Ads Management",
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       ]
     },
     pt: {
-      title: "Caio de Camargo | Especialista em Estratégia com IA",
+      title: "Caio de Camargo | Escale Seu Negócio",
       description: "Transforme seu negócio com consultoria estratégica alimentada por IA. Orientação especializada em implementação de IA e escalonamento de negócios. Agende sua consultoria estratégica gratuita hoje.",
       keywords: [
         "Gestão de Anúncios",
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
       ]
     },
     es: {
-      title: "Caio de Camargo | Experto en Estrategia con IA",
+      title: "Caio de Camargo | Escala Tu Negocio",
       description: "Transforma tu negocio con consultoría estratégica impulsada por IA. Orientación experta en implementación de IA y escalado de negocios. Reserva tu consultoría estratégica gratuita hoy.",
       keywords: [
         "Gestión de Anuncios",

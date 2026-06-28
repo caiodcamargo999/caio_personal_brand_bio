@@ -1,28 +1,36 @@
 {
   "hero": {
-    "title": "Caio de Camargo",
-    "subtitle": "AI systems, marketing strategies, and scaling frameworks to grow your business faster.",
-    "helpsBusinesses": "Caio Helps Businesses",
+    "title": "I turn everyday businesses into profit machines.",
+    "subtitle": "Through high converting offers, aggressive acquisition systems, and strategic copywriting, I help business owners scale faster, convert better, and unlock more revenue.",
+    "helpsBusinesses": "I turn everyday businesses into",
     "words": [
-      "Ship",
-      "Scale",
-      "Grow"
+      "profit machines.",
+      "high converting ops.",
+      "scalable systems."
     ],
     "subheadline": {
-      "prefix": " is a ",
-      "role": "marketing engineer",
-      "middle": " who builds the infrastructure behind rapid growth. I turn complex concepts into revenue-generating systems by combining ",
-      "skill1": "Performance Marketing",
+      "prefix": "Through ",
+      "role": "strategic copywriting",
+      "middle": ", ",
+      "skill1": "insanely persuasive offers",
       "comma1": ", ",
-      "skill2": "AI Implementation",
-      "comma2": " and ",
-      "skill3": "Data Analytics",
-      "suffix": "."
+      "skill2": "traffic and optimized funnels",
+      "comma2": ", ",
+      "skill3": "I unlock scale",
+      "suffix": ", boost conversions, and double your results in record time."
     },
-    "bookCall": "Book a Call",
+    "bookCall": "Scale My Business",
     "seeWork": "See Our Work",
-    "openForProjects": "Open for new projects, book a call today!",
+    "openForProjects": "If your business is already making money but feels stuck, I can probably find the bottleneck.",
     "premiumStack": "My Premium Stack"
+  },
+  "about": {
+    "title": "I'm Caio.",
+    "subtitle": "And my job is simple:",
+    "highlight": "make your business more money.",
+    "text1": "No fluff. No theory. No guessing.",
+    "text2": "I step into your business, identify what's slowing growth, and fix it. Whether that's: acquisition, offer, copy, or funnel.",
+    "text3": "Because at the end of the day... traffic means nothing if it doesn't convert. Revenue is what matters."
   },
   "cards": {
     "strategyConsultation": {
@@ -32,12 +40,12 @@
     },
     "rarityAgency": {
       "title": "Rarity Agency",
-      "description": "We scale brands fast with high-converting paid ads and growth systems.",
+      "description": "We scale brands fast with high converting paid ads and growth systems.",
       "cta": "Visit Agency →"
     },
     "realEstate": {
       "title": "Exclusive Real Estate Opportunities",
-      "description": "Discover high-yield investment opportunities in emerging markets. Limited spots available for serious investors.",
+      "description": "Discover high yield investment opportunities in emerging markets. Limited spots available for serious investors.",
       "cta": "Explore Investments →"
     },
     "consulting": {
@@ -61,7 +69,7 @@
       },
       "dubai": {
         "name": "Dubai",
-        "description": "Luxury real estate hub with tax advantages and world-class infrastructure"
+        "description": "Luxury real estate hub with tax advantages and world class infrastructure"
       },
       "brazil": {
         "name": "Brazil",
@@ -92,7 +100,7 @@
     },
     "realEstate": {
       "title": "Exclusive Real Estate Opportunities",
-      "description": "Discover high-yield investment opportunities in emerging markets. Limited spots available for serious investors.",
+      "description": "Discover high yield investment opportunities in emerging markets. Limited spots available for serious investors.",
       "cta": "Explore Investments"
     },
     "contact": {
@@ -101,47 +109,48 @@
   },
   "leadCapture": {
     "intro": {
-      "title": "Strategy & Consultation",
-      "message": "I'll help you with Automation, AI, and Software implementation, as well as scaling your company's marketing and sales processes. But before we jump on a video call, I need to know a few things from you.",
+      "title": "Scale Diagnostic",
+      "message": "I'll dive deep into your operation and pinpoint exactly what's bottlenecking your growth, whether it's traffic, your offer, copy, or the funnel itself.\n\nIf I see real potential, I'll show you the exact playbook to unlock more sales, fatter margins, and serious scale.",
       "nextButton": "Next"
     },
     "steps": {
       "name": {
         "title": "What's your name?",
-        "placeholder": "Enter your full name"
+        "placeholder": "First and last name"
       },
       "whatsapp": {
-        "title": "What's your WhatsApp?",
-        "placeholder": "+1 (555) 123-4567"
+        "title": "What's the best number to text you?",
+        "placeholder": "+1 (555) 123 4567"
       },
       "email": {
-        "title": "What's your email?",
-        "placeholder": "Enter your email address"
+        "title": "Where should I send the details?",
+        "placeholder": "Your best email address"
       },
       "instagram": {
-        "title": "What's your @ on Instagram?",
+        "title": "What's your IG handle?",
         "placeholder": "@username"
       },
       "industry": {
-        "title": "What is your industry/business?",
-        "placeholder": "Describe your industry or business"
+        "title": "Give me the elevator pitch for your business.",
+        "placeholder": "What are you selling and who are you selling to?"
       },
       "struggle": {
-        "title": "Tell me more about your project/business?",
-        "placeholder": "Describe your main challenge or goal"
+        "title": "What's the biggest bottleneck holding you back right now?",
+        "placeholder": "Be specific about what's stalling your growth"
       },
       "budget": {
-        "title": "Are you able to invest money to achieve your business goals?",
-        "yes": "Yes",
-        "no": "No",
-        "noNotice": "No problem! We'll redirect you to resources that don't require investment."
+        "title": "Do you have capital to deploy to scale this up?",
+        "yes": "Yes, let's do this",
+        "no": "Not right now",
+        "noNotice": "No worries! We'll redirect you to some free resources to get you started."
       },
       "calendar": {
-        "title": "Choose the best day and time in my schedule, and see you there!",
+        "title": "Lock in a time below. Let's make it happen.",
         "timezoneLabel": "Your timezone",
         "dateSelection": "Select a Date",
         "timeSlots": "Available Time Slots",
-        "noSlots": "No available slots for this date. Please select another date."
+        "noSlots": "No available slots for this date. Please select another date.",
+        "submit": "Confirm Call"
       }
     },
     "navigation": {
@@ -174,7 +183,7 @@
     },
     "emails": {
       "confirmation": {
-        "subject": "🎯 Strategy Call Confirmed - Let's Scale Your Business",
+        "subject": "🎯 Strategy Call Confirmed",
         "title": "You're Booked! 🚀",
         "greeting": "Hi {name},",
         "mainMessage": "Congratulations! Your Strategy & Consultation call has been confirmed. This is where we'll unlock the growth potential of your business through AI, automation, and strategic marketing.",
@@ -188,7 +197,7 @@
         "preparation": "What to Prepare",
         "prepItems": [
           "Your main goal for the next 90 days",
-          "Top 1-2 bottlenecks holding you back",
+          "Top 1 to 2 bottlenecks holding you back",
           "Current tools and sales process overview",
           "Specific results you want to achieve"
         ],
@@ -196,15 +205,15 @@
         "valueItems": [
           "Custom AI & automation strategy for your business",
           "Marketing & sales process optimization plan",
-          "90-day roadmap with clear milestones",
+          "90 day roadmap with clear milestones",
           "Implementation priorities and next steps"
         ],
         "reminders": "We'll send reminders 24h and 2h before the call. Need to reschedule? Just reply to this email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Strategic Growth Partner | AI & Automation Expert"
       },
       "preCall": {
-        "subject": "🚀 Your Strategy Call is Tomorrow - Here's What to Expect",
+        "subject": "🚀 Your Strategy Call is Tomorrow",
         "title": "Your Strategy Call is Tomorrow!",
         "greeting": "Hi {name},",
         "mainMessage": "I'm excited for our strategy session tomorrow! I've been reviewing your business details and have some powerful insights ready to share.",
@@ -224,16 +233,16 @@
           "Deep dive into your business model",
           "AI & automation opportunities",
           "Marketing strategy optimization",
-          "90-day action plan"
+          "90 day action plan"
         ],
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Strategic Growth Partner | AI & Automation Expert"
       },
       "followUp": {
-        "subject": "📈 Your 90-Day Growth Plan is Ready",
+        "subject": "📈 Your 90 Day Growth Plan is Ready",
         "title": "Your Growth Plan is Ready!",
         "greeting": "Hi {name},",
-        "mainMessage": "It was great connecting with you yesterday! I've put together your personalized 90-day growth roadmap based on our strategy session.",
+        "mainMessage": "It was great connecting with you yesterday! I've put together your personalized 90 day growth roadmap based on our strategy session.",
         "nextSteps": "Your Next Steps",
         "step1": "Review the action plan I've attached",
         "step2": "Schedule your first implementation call",
@@ -246,13 +255,13 @@
           "Weekly progress tracking sheet"
         ],
         "support": "I'm here to support your growth journey. Questions? Just reply to this email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Strategic Growth Partner | AI & Automation Expert"
       }
     },
     "validation": {
       "nameRequired": "Name must be at least 2 characters",
-      "whatsappRequired": "Please include country code, e.g. +34911122334, +1 (555) 123-4567",
+      "whatsappRequired": "Please include country code, e.g. +34911122334, +1 (555) 123 4567",
       "emailRequired": "Please enter a valid email address",
       "instagramRequired": "Instagram handle is required",
       "industryRequired": "Please describe your industry/business",
@@ -264,56 +273,87 @@
     }
   },
   "services": {
-    "title": "Your Unfair Advantage To Scale",
+    "title": "I build growth machines.",
+    "subtitle": "Scaling isn’t random. It’s engineered. And it comes down to four things:",
     "items": [
       {
-        "title": "Growth Funnels",
-        "description": "Data-driven conversion architectures designed to turn cold traffic into high-ticket clients with minimal friction."
+        "title": "Offer",
+        "description": "A strong offer makes buying feel obvious. Most businesses don't have one. I fix that."
       },
       {
-        "title": "Performance Ads",
-        "description": "Aggressive, ROI-focused media buying across Meta and Google, engineered to scale winning campaigns."
+        "title": "Copy",
+        "description": "The right message can multiply conversions overnight. Most businesses are bleeding money because their messaging is weak. I fix that too."
       },
       {
-        "title": "CRM Automations",
-        "description": "Seamless backend workflows that eliminate manual follow-ups and plug revenue leaks instantly."
+        "title": "Acquisition",
+        "description": "Even the best offer dies without the right traffic. I make sure your message gets in front of the right people. At scale."
       },
       {
-        "title": "AI Implementation",
-        "description": "Integrating LLMs and intelligent agents into your operations to multiply output without adding headcount."
+        "title": "Funnel",
+        "description": "Every broken step costs you money. I optimize the entire journey so your business grows faster and cleaner."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projects I built",
+    "highlight": "end to end",
+    "items": [
+      {
+        "category": "TRAVEL & HOSPITALITY",
+        "description": "Brand site for curated Ibiza travel experiences"
       },
       {
-        "title": "Data & Tracking",
-        "description": "Server-side tracking and custom dashboards that give you absolute clarity on your true acquisition costs."
+        "category": "FITNESS & COACHING",
+        "description": "Elicoach.com Personal trainer booking and coaching site"
       },
       {
-        "title": "Sales Systems",
-        "description": "Optimized sales processes, scripts, and appointment setting frameworks to maximize close rates."
+        "category": "EVENT LANDING PAGE",
+        "description": "High ticket event funnel for dental professionals"
+      },
+      {
+        "category": "ECOMMERCE",
+        "description": "Jewelry brand online store and catalog"
       }
     ]
   },
   "process": {
-    "title": "The Framework Behind the Growth.",
-    "subtitle": "We don't just execute blindly. Every successful product stems from a rigorous, proven process designed to eliminate risk and maximize impact.",
+    "title": "RESULTS",
+    "subtitle": "What changes when I step in:",
     "steps": {
       "briefing": {
-        "title": "Briefing",
-        "description": "Understanding your vision and constraints."
+        "title": "Higher conversion rates",
+        "description": "More people taking action."
       },
       "brainstorm": {
-        "title": "Brainstorm & Strategy",
-        "description": "Architecting the optimal technical and marketing approach."
+        "title": "Lower CAC",
+        "description": "Cheaper customer acquisition."
       },
       "execute": {
-        "title": "Execute Plan",
-        "description": "Building, shipping, and scaling your product."
+        "title": "Better ROAS",
+        "description": "Higher return on ad spend."
       }
     },
+    "extraList": [
+      "More qualified leads",
+      "Higher profit margins",
+      "Faster scale",
+      "More predictable growth"
+    ],
+    "conclusion": "Because scaling isn’t about doing more. It’s about fixing what’s broken.",
     "nodes": {
-      "briefing": "Briefing",
-      "brainstorm": "Brainstorm",
-      "strategy": "Strategy",
-      "execute": "Execute"
+      "briefing": "Conversion",
+      "brainstorm": "CAC",
+      "strategy": "Profit",
+      "execute": "Scale"
     }
+  },
+  "finalCta": {
+    "title": "If your business is already moving, but you know there's another level... Let's find it.",
+    "description": "I'll break down your business and identify where you're leaking money, losing conversions, or slowing growth. And if there's room to scale, I'll show you exactly how.",
+    "button": "Book a Growth Call",
+    "footer": "More revenue. Better margins. Faster scale."
+  },
+  "footer": {
+    "rights": "All rights reserved."
   }
 }

@@ -6,8 +6,11 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-	title: "Caio de Camargo | AI Strategy Expert",
+	title: "Caio de Camargo | Scale Your Business",
 	description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation and business scaling. Book your free strategy consultation today.",
+	icons: {
+		icon: '/images/favicon_rarity.png',
+	},
 	keywords: [
 		"AI Strategy Consultant",
 		"Business Strategy Expert",
@@ -39,7 +42,7 @@ export const metadata: Metadata = {
 		type: "website",
 		locale: "en_US",
 		url: "https://caiodcamargo.com",
-		title: "Caio de Camargo | AI Strategy Expert",
+		title: "Caio de Camargo | Scale Your Business",
 		description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation and business scaling.",
 		siteName: "Caio de Camargo",
 		images: [
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Caio de Camargo | AI Strategy Expert",
+		title: "Caio de Camargo | Scale Your Business",
 		description: "Transform your business with AI-powered strategy consulting. Expert guidance in AI implementation and business scaling.",
 		images: ["https://caiodcamargo.com/caio-profile-2026.jpg"],
 		creator: "@caiodcamargo",

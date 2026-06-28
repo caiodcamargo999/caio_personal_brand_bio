@@ -117,10 +117,18 @@ export class GoogleSheetsService {
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
+      // First, get spreadsheet metadata to find the correct tab name
+      const metaResponse = await sheets.spreadsheets.get({ spreadsheetId: SPREADSHEET_ID });
+      const availableSheets = metaResponse.data.sheets || [];
+      const sheetExists = availableSheets.some(s => s.properties?.title === SHEET_TAB);
+      const activeTab = sheetExists ? SHEET_TAB : (availableSheets[0]?.properties?.title || 'Sheet1');
+
+      console.log(`📊 Using tab: "${activeTab}" (Env requested: "${SHEET_TAB}")`);
+
       // First, check for existing lead with this email to prevent duplicates
       const checkResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: `${SHEET_TAB}!A:H`, // Read all data
+        range: `${activeTab}!A:H`, // Read all data
       });
 
       const rows = checkResponse.data.values || [];
@@ -198,7 +206,7 @@ export class GoogleSheetsService {
 
         await sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${SHEET_TAB}!A${existingRowIndex + 1}:H${existingRowIndex + 1}`,
+          range: `${activeTab}!A${existingRowIndex + 1}:H${existingRowIndex + 1}`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -209,7 +217,7 @@ export class GoogleSheetsService {
         // Append new row
         const response = await sheets.spreadsheets.values.append({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${SHEET_TAB}!A:H`,
+          range: `${activeTab}!A:H`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -231,10 +239,15 @@ export class GoogleSheetsService {
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
+      const metaResponse = await sheets.spreadsheets.get({ spreadsheetId: SPREADSHEET_ID });
+      const availableSheets = metaResponse.data.sheets || [];
+      const sheetExists = availableSheets.some(s => s.properties?.title === SHEET_TAB);
+      const activeTab = sheetExists ? SHEET_TAB : (availableSheets[0]?.properties?.title || 'Sheet1');
+
       // Find the row with the user's email
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: `${SHEET_TAB}!A:H`,
+        range: `${activeTab}!A:H`,
       });
 
       // We no longer update rows in place; new submissions should append new rows

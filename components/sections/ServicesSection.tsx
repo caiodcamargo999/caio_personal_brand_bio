@@ -9,10 +9,8 @@ export function ServicesSection() {
   const icons = [
     <Target key="target" className="w-6 h-6" />,
     <TrendingUp key="trending" className="w-6 h-6" />,
-    <LineChart key="linechart" className="w-6 h-6" />,
-    <Code key="code" className="w-6 h-6" />,
-    <Paintbrush key="paintbrush" className="w-6 h-6" />,
-    <Users key="users" className="w-6 h-6" />
+    <Users key="users" className="w-6 h-6" />,
+    <LineChart key="linechart" className="w-6 h-6" />
   ];
 
   const services = t('services.items') as Array<{ title: string, description: string }>;
@@ -43,8 +41,11 @@ export function ServicesSection() {
           t('services.title')
         )}
       </h2>
+      <p className="text-muted-foreground text-center text-lg sm:text-xl font-light max-w-3xl mx-auto mt-4 sm:mt-6">
+        {t('services.subtitle')}
+      </p>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-16 max-w-7xl items-start justify-center mx-auto mt-10 sm:mt-16 md:mt-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 max-w-5xl items-start justify-center mx-auto mt-10 sm:mt-16 md:mt-20">
         {services.map((service, index) => (
           <div key={index} className="relative overflow-hidden p-4 sm:p-6 group h-full">
             {/* Grid Pattern Background */}

@@ -1,28 +1,36 @@
 {
   "hero": {
-    "title": "Caio de Camargo",
-    "subtitle": "Sistemas de IA, estratégias de marketing e estruturas de escala para expandir seu negócio mais rápido.",
-    "helpsBusinesses": "Caio Ajuda Empresas a",
+    "title": "Eu pego negócios comuns e transformo em máquinas de imprimir lucro.",
+    "subtitle": "Através de copywriting estratégico, ofertas absurdamente persuasivas, tráfego e funis otimizados, eu destravo escala, aumento conversão e dobro seus resultados em tempo recorde.",
+    "helpsBusinesses": "Eu pego negócios comuns e transformo em",
     "words": [
-      "Lançar",
-      "Escalar",
-      "Crescer"
+      "máquinas de imprimir lucro.",
+      "operações de alta conversão.",
+      "sistemas escaláveis."
     ],
     "subheadline": {
-      "prefix": " é o ",
-      "role": "engenheiro de marketing",
-      "middle": " que constrói a infraestrutura por trás do crescimento rápido. Transformo conceitos complexos em sistemas geradores de receita combinando ",
-      "skill1": "Marketing de Performance",
+      "prefix": "Através de ",
+      "role": "copywriting estratégico",
+      "middle": ", ",
+      "skill1": "ofertas absurdamente persuasivas",
       "comma1": ", ",
-      "skill2": "Implementação de IA",
-      "comma2": " e ",
-      "skill3": "Análise de Dados",
-      "suffix": "."
+      "skill2": "tráfego e funis otimizados",
+      "comma2": ", ",
+      "skill3": "eu destravo escala",
+      "suffix": ", aumento conversão e dobro seus resultados em tempo recorde."
     },
-    "bookCall": "Agendar Reunião",
+    "bookCall": "Quero escalar meu negócio",
     "seeWork": "Ver Nosso Trabalho",
-    "openForProjects": "Aberto para novos projetos, agende uma reunião hoje!",
+    "openForProjects": "Se seu negócio já vende, mas ainda não chegou no nível que deveria… eu posso destravar isso.",
     "premiumStack": "Minha Stack Premium"
+  },
+  "about": {
+    "title": "Prazer, eu sou o Caio.",
+    "subtitle": "Meu trabalho é simples:",
+    "highlight": "fazer seu negócio vender mais.",
+    "text1": "Sem enrolação. Sem teoria bonita. Sem achismo.",
+    "text2": "Eu entro na sua operação, encontro os gargalos e ajusto o que está travando seu crescimento. Seja no tráfego, na oferta, na copy ou no funil.",
+    "text3": "Porque no final… não importa quantas pessoas chegam. O que importa é quanto dinheiro entra."
   },
   "cards": {
     "strategyConsultation": {
@@ -75,7 +83,7 @@
     "cta": "Agendar uma chamada"
   },
   "footer": {
-    "copyright": "© 2026 Caio de Camargo. Todos os Direitos Reservados."
+    "rights": "Todos os direitos reservados."
   },
   "bio": {
     "tagline": "Sistemas de IA, estratégias de marketing e estruturas de escala para expandir seu negócio mais rápido.",
@@ -101,8 +109,8 @@
   },
   "leadCapture": {
     "intro": {
-      "title": "Estratégia e Consultoria",
-      "message": "Ajudarei você com a implementação de Automações, IA e Software ao seu projeto/negócio, além de escalar os processos de marketing e vendas do mesmo. Mas antes de fazermos uma videochamada, preciso saber algumas coisas sobre você.",
+      "title": "Diagnóstico de Escala",
+      "message": "Vou analisar sua operação e identificar exatamente onde seu negócio está travando crescimento, seja no tráfego, oferta, copy ou funil.\n\nSe eu enxergar potencial, te mostro como destravar mais vendas, mais lucro e mais escala.",
       "nextButton": "Próximo"
     },
     "steps": {
@@ -112,7 +120,7 @@
       },
       "whatsapp": {
         "title": "Qual é o seu WhatsApp?",
-        "placeholder": "+55 (11) 99999-9999"
+        "placeholder": "+55 (11) 99999 9999"
       },
       "email": {
         "title": "Qual é o seu email?",
@@ -123,11 +131,11 @@
         "placeholder": "@usuario"
       },
       "industry": {
-        "title": "Qual é a sua indústria/negócio?",
+        "title": "Me conte um pouco sobre seu negócio?",
         "placeholder": "Descreva sua indústria ou negócio"
       },
       "struggle": {
-        "title": "Conte-me mais sobre seu projeto/negócio?",
+        "title": "Conte me mais sobre seu projeto/negócio?",
         "placeholder": "Descreva seu principal desafio ou objetivo"
       },
       "budget": {
@@ -141,7 +149,8 @@
         "timezoneLabel": "Seu fuso horário",
         "dateSelection": "Selecionar uma Data",
         "timeSlots": "Horários Disponíveis",
-        "noSlots": "Nenhum horário disponível para esta data. Por favor, selecione outra data."
+        "noSlots": "Nenhum horário disponível para esta data. Por favor, selecione outra data.",
+        "submit": "Confirmar Chamada"
       }
     },
     "navigation": {
@@ -174,7 +183,7 @@
     },
     "emails": {
       "confirmation": {
-        "subject": "🎯 Chamada de Estratégia Confirmada - Vamos Escalar Seu Negócio",
+        "subject": "🎯 Chamada de Estratégia Confirmada",
         "title": "Você Está Agendado! 🚀",
         "greeting": "Olá {name},",
         "mainMessage": "Parabéns! Sua chamada de Estratégia & Consultoria foi confirmada. É aqui que vamos desbloquear o potencial de crescimento do seu negócio através de IA, automação e marketing estratégico.",
@@ -188,7 +197,7 @@
         "preparation": "O Que Preparar",
         "prepItems": [
           "Seu principal objetivo para os próximos 90 dias",
-          "Top 1-2 gargalos que estão te segurando",
+          "Top 1 a 2 gargalos que estão te segurando",
           "Visão geral das ferramentas e processo de vendas atuais",
           "Resultados específicos que você quer alcançar"
         ],
@@ -200,11 +209,11 @@
           "Prioridades de implementação e próximos passos"
         ],
         "reminders": "Enviaremos lembretes 24h e 2h antes da chamada. Precisa reagendar? Apenas responda este email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
       },
       "preCall": {
-        "subject": "🚀 Sua Chamada de Estratégia é Amanhã - Aqui Está o Que Esperar",
+        "subject": "🚀 Sua Chamada de Estratégia é Amanhã",
         "title": "Sua Chamada de Estratégia é Amanhã!",
         "greeting": "Olá {name},",
         "mainMessage": "Estou animado para nossa sessão de estratégia amanhã! Revisei os detalhes do seu negócio e tenho algumas percepções poderosas prontas para compartilhar.",
@@ -226,7 +235,7 @@
           "Otimização de estratégia de marketing",
           "Plano de ação de 90 dias"
         ],
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
       },
       "followUp": {
@@ -237,7 +246,7 @@
         "nextSteps": "Seus Próximos Passos",
         "step1": "Revise o plano de ação que anexei",
         "step2": "Agende sua primeira chamada de implementação",
-        "step3": "Junte-se à nossa comunidade exclusiva de crescimento",
+        "step3": "Junte se à nossa comunidade exclusiva de crescimento",
         "resources": "Recursos Adicionais",
         "resourceItems": [
           "Lista de verificação de implementação de IA",
@@ -246,13 +255,13 @@
           "Planilha de acompanhamento semanal de progresso"
         ],
         "support": "Estou aqui para apoiar sua jornada de crescimento. Perguntas? Apenas responda este email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Parceiro de Crescimento Estratégico | Especialista em IA e Automação"
       }
     },
     "validation": {
       "nameRequired": "Nome deve ter pelo menos 2 caracteres",
-      "whatsappRequired": "Por favor, inclua o código do país, ex: +5511999999999, +55 (11) 99999-9999",
+      "whatsappRequired": "Por favor, inclua o código do país, ex: +5511999999999, +55 (11) 99999 9999",
       "emailRequired": "Por favor, digite um endereço de email válido",
       "instagramRequired": "Handle do Instagram é obrigatório",
       "industryRequired": "Por favor, descreva sua indústria/negócio",
@@ -264,56 +273,84 @@
     }
   },
   "services": {
-    "title": "Sua Vantagem Injusta Para Escalar",
+    "title": "Eu construo máquinas de crescimento.",
+    "subtitle": "Pra escalar um negócio de verdade, algumas peças precisam estar alinhadas. E é exatamente nisso que eu trabalho:",
     "items": [
       {
-        "title": "Funis de Crescimento",
-        "description": "Arquiteturas de conversão baseadas em dados, projetadas para transformar tráfego frio em clientes de alto valor com o mínimo de atrito."
+        "title": "Copy",
+        "description": "A mensagem certa aumenta desejo, conversão e faz seu produto parecer impossível de ignorar."
       },
       {
-        "title": "Anúncios de Performance",
-        "description": "Compra de mídia focada em ROI agressivo no Meta e Google, estruturada para escalar campanhas vencedoras."
+        "title": "Oferta",
+        "description": "Uma oferta forte faz o cliente sentir que comprar é a decisão óbvia."
       },
       {
-        "title": "Automações de CRM",
-        "description": "Fluxos de trabalho integrados que eliminam follow-ups manuais e fecham buracos no faturamento instantaneamente."
+        "title": "Tráfego",
+        "description": "Sem tráfego certo, até a melhor oferta morre. Eu coloco sua mensagem na frente das pessoas certas."
       },
       {
-        "title": "Implementação de IA",
-        "description": "Integração de LLMs e agentes inteligentes nas suas operações para multiplicar resultados sem aumentar a equipe."
+        "title": "Funil",
+        "description": "Toda operação perde dinheiro quando o funil está quebrado. Eu ajusto o caminho inteiro para sua escala acontecer."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projetos que fiz",
+    "highlight": "de ponta a ponta",
+    "items": [
+      {
+        "category": "VIAGEM & HOSPITALIDADE",
+        "description": "Site da marca para experiências curadas de viagem em Ibiza"
       },
       {
-        "title": "Dados & Rastreamento",
-        "description": "Rastreamento server-side e dashboards personalizados que oferecem clareza absoluta sobre o seu custo real de aquisição."
+        "category": "FITNESS & COACHING",
+        "description": "Elicoach.com Site de reservas e consultoria para personal trainer"
       },
       {
-        "title": "Sistemas de Vendas",
-        "description": "Processos de vendas otimizados, roteiros e estruturas de agendamento para maximizar suas taxas de conversão."
+        "category": "LANDING PAGE PARA EVENTO",
+        "description": "Funil de evento high ticket para profissionais de odontologia"
+      },
+      {
+        "category": "ECOMMERCE",
+        "description": "Loja online e catálogo de marca de joias"
       }
     ]
   },
   "process": {
-    "title": "O Framework Por Trás do Crescimento.",
-    "subtitle": "Nós não executamos às cegas. Todo produto de sucesso nasce de um processo rigoroso e comprovado, desenhado para eliminar riscos e maximizar o impacto.",
+    "title": "O Que Muda Quando Eu Entro",
+    "subtitle": "Quando tudo começa a funcionar:",
     "steps": {
       "briefing": {
-        "title": "Briefing",
-        "description": "Entendendo sua visão e restrições."
+        "title": "Mais vendas",
+        "description": "Aumento direto na receita."
       },
       "brainstorm": {
-        "title": "Brainstorm & Estratégia",
-        "description": "Arquitetando a melhor abordagem técnica e de marketing."
+        "title": "Mais conversão",
+        "description": "Mais clientes com o mesmo tráfego."
       },
       "execute": {
-        "title": "Executar Plano",
-        "description": "Construindo, lançando e escalando seu produto."
+        "title": "Mais lucro",
+        "description": "CAC mais saudável e previsível."
       }
     },
+    "extraList": [
+      "CAC mais saudável",
+      "Escala mais previsível",
+      "Uma operação muito mais eficiente",
+      "Crescimento mais previsível"
+    ],
+    "conclusion": "Porque crescimento não acontece no acaso. Ele é construído.",
     "nodes": {
-      "briefing": "Briefing",
-      "brainstorm": "Brainstorm",
-      "strategy": "Estratégia",
-      "execute": "Executar"
+      "briefing": "Vendas",
+      "brainstorm": "Conversão",
+      "strategy": "Lucro",
+      "execute": "Escala"
     }
+  },
+  "finalCta": {
+    "title": "Se seu negócio já vende, mas você sabe que poderia estar muito maior… fala comigo.",
+    "description": "Eu vou analisar sua operação e identificar exatamente o que está travando sua escala. Seja tráfego, oferta, copy ou funil. E te mostrar onde está o dinheiro que você ainda não está capturando.",
+    "button": "Quero destravar meu negócio",
+    "footer": "Mais lucro. Mais escala. Menos desperdício."
   }
 }

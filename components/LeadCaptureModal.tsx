@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { TextureButton } from '@/components/ui/texture-button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, ArrowRight, Check, Calendar, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Calendar, MapPin, X } from 'lucide-react';
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useI18n } from '@/lib/i18n';
 
@@ -583,7 +583,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               <Check className="w-8 h-8 text-green-400" />
             </div>
             <h2 className="text-xl font-semibold mb-2">{t('leadCapture.success.title')}</h2>
-            <p className="text-muted mb-6">
+            <p className="text-zinc-300 mb-6 text-sm">
               {t('leadCapture.success.message')}
             </p>
             <div className="space-y-3 mt-4 w-full flex justify-center">
@@ -606,9 +606,18 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           <DialogTitle>{t('leadCapture.intro.title')}</DialogTitle>
         </DialogHeader>
         {/* Header with Progress */}
-        <div className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-primary/20">
+        <div className="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-primary/20 relative">
+          
+          {/* Close Button */}
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 text-zinc-400 hover:text-white transition-colors bg-black/40 hover:bg-black/60 rounded-full p-1"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
           {/* Progress Bar */}
-          <div className="w-full bg-card/20 rounded-full h-2 mb-4">
+          <div className="w-full bg-card/20 rounded-full h-2 mb-4 mt-2">
             <motion.div
               className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full shadow-lg"
               initial={{ width: 0 }}

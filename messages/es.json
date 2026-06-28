@@ -75,7 +75,7 @@
     "cta": "Agendar una llamada"
   },
   "footer": {
-    "copyright": "© 2026 Caio de Camargo. Todos los Derechos Reservados."
+    "rights": "Todos los derechos reservados."
   },
   "bio": {
     "tagline": "Sistemas de IA, estrategias de marketing y marcos de escalado para hacer crecer tu negocio más rápido.",
@@ -101,8 +101,8 @@
   },
   "leadCapture": {
     "intro": {
-      "title": "Estrategia y Consultoría",
-      "message": "Te ayudaré a implementar automatización, IA y software en tu proyecto/negocio, así como a optimizar tus procesos de marketing y ventas. Pero antes de nuestra videollamada, necesito saber algunas cosas sobre ti.",
+      "title": "Diagnóstico de Escala",
+      "message": "Analizaré tu operación e identificaré exactamente dónde tu negocio está estancando el crecimiento, ya sea en tráfico, oferta, copy o embudo.\n\nSi veo potencial, te mostraré cómo desbloquear más ventas, más ganancias y más escala.",
       "nextButton": "Siguiente"
     },
     "steps": {
@@ -112,7 +112,7 @@
       },
       "whatsapp": {
         "title": "¿Cuál es tu WhatsApp?",
-        "placeholder": "+34 (91) 123-4567"
+        "placeholder": "+34 (91) 123 4567"
       },
       "email": {
         "title": "¿Cuál es tu email?",
@@ -123,7 +123,7 @@
         "placeholder": "@usuario"
       },
       "industry": {
-        "title": "¿Cuál es tu industria/negocio?",
+        "title": "¿Cuéntame un poco sobre tu negocio?",
         "placeholder": "Describe tu industria o negocio"
       },
       "struggle": {
@@ -141,7 +141,8 @@
         "timezoneLabel": "Tu zona horaria",
         "dateSelection": "Seleccionar una Fecha",
         "timeSlots": "Horarios Disponibles",
-        "noSlots": "No hay horarios disponibles para esta fecha. Por favor, selecciona otra fecha."
+        "noSlots": "No hay horarios disponibles para esta fecha. Por favor, selecciona otra fecha.",
+        "submit": "Confirmar Llamada"
       }
     },
     "navigation": {
@@ -174,7 +175,7 @@
     },
     "emails": {
       "confirmation": {
-        "subject": "🎯 Llamada de Estrategia Confirmada - Vamos a Escalar Tu Negocio",
+        "subject": "🎯 Llamada de Estrategia Confirmada",
         "title": "¡Estás Agendado! 🚀",
         "greeting": "Hola {name},",
         "mainMessage": "¡Felicitaciones! Tu llamada de Estrategia & Consultoría ha sido confirmada. Aquí es donde desbloquearemos el potencial de crecimiento de tu negocio a través de IA, automatización y marketing estratégico.",
@@ -188,7 +189,7 @@
         "preparation": "Qué Preparar",
         "prepItems": [
           "Tu objetivo principal para los próximos 90 días",
-          "Top 1-2 cuellos de botella que te están frenando",
+          "Top 1 a 2 cuellos de botella que te están frenando",
           "Descripción general de herramientas y proceso de ventas actuales",
           "Resultados específicos que quieres lograr"
         ],
@@ -200,11 +201,11 @@
           "Prioridades de implementación y próximos pasos"
         ],
         "reminders": "Enviaremos recordatorios 24h y 2h antes de la llamada. ¿Necesitas reagendar? Solo responde este email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Socio de Crecimiento Estratégico | Experto en IA y Automatización"
       },
       "preCall": {
-        "subject": "🚀 Tu Llamada de Estrategia es Mañana - Aquí Está Qué Esperar",
+        "subject": "🚀 Tu Llamada de Estrategia es Mañana",
         "title": "¡Tu Llamada de Estrategia es Mañana!",
         "greeting": "Hola {name},",
         "mainMessage": "¡Estoy emocionado por nuestra sesión de estrategia mañana! He revisado los detalles de tu negocio y tengo algunas percepciones poderosas listas para compartir.",
@@ -226,7 +227,7 @@
           "Optimización de estrategia de marketing",
           "Plan de acción de 90 días"
         ],
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Socio de Crecimiento Estratégico | Experto en IA y Automatización"
       },
       "followUp": {
@@ -246,13 +247,13 @@
           "Hoja de seguimiento semanal de progreso"
         ],
         "support": "Estoy aquí para apoyar tu viaje de crecimiento. ¿Preguntas? Solo responde este email.",
-        "signature": "— Caio de Camargo",
+        "signature": "Caio de Camargo",
         "tagline": "Socio de Crecimiento Estratégico | Experto en IA y Automatización"
       }
     },
     "validation": {
       "nameRequired": "El nombre debe tener al menos 2 caracteres",
-      "whatsappRequired": "Por favor, incluye el código del país, ej: +34911122334, +34 (91) 123-4567",
+      "whatsappRequired": "Por favor, incluye el código del país, ej: +34911122334, +34 (91) 123 4567",
       "emailRequired": "Por favor, ingresa una dirección de email válida",
       "instagramRequired": "El handle de Instagram es obligatorio",
       "industryRequired": "Por favor, describe tu industria/negocio",
@@ -284,11 +285,34 @@
       },
       {
         "title": "Datos y Rastreo",
-        "description": "Rastreo server-side y paneles personalizados que te brindan absoluta claridad sobre tu verdadero costo de adquisición."
+        "description": "Rastreo server side y paneles personalizados que te brindan absoluta claridad sobre tu verdadero costo de adquisición."
       },
       {
         "title": "Sistemas de Ventas",
         "description": "Procesos de ventas optimizados, guiones y marcos de agendamiento para maximizar tus tasas de cierre."
+      }
+    ],
+    "subtitle": "Escalar no es aleatorio. Está diseñado. Y se reduce a cuatro cosas:"
+  },
+  "projects": {
+    "title": "Proyectos que hice",
+    "highlight": "de principio a fin",
+    "items": [
+      {
+        "category": "VIAJES Y HOSPITALIDAD",
+        "description": "Sitio de marca para experiencias seleccionadas de viaje en Ibiza"
+      },
+      {
+        "category": "FITNESS Y COACHING",
+        "description": "Elicoach.com - Sitio de reservas y asesoramiento para entrenador personal"
+      },
+      {
+        "category": "LANDING PAGE PARA EVENTO",
+        "description": "Embudo de evento high ticket para profesionales dentales"
+      },
+      {
+        "category": "ECOMMERCE",
+        "description": "Tienda en línea y catálogo de marca de joyas"
       }
     ]
   },
@@ -309,11 +333,32 @@
         "description": "Construyendo, lanzando y escalando tu producto."
       }
     },
+    "extraList": [
+      "CAC más saludable",
+      "Escala más predecible",
+      "Una operación mucho más eficiente",
+      "Crecimiento más predecible"
+    ],
+    "conclusion": "Porque el crecimiento no ocurre por casualidad. Se construye.",
     "nodes": {
       "briefing": "Briefing",
       "brainstorm": "Brainstorm",
       "strategy": "Estrategia",
       "execute": "Ejecutar"
     }
+  },
+  "finalCta": {
+    "title": "Si tu negocio ya vende, pero sabes que podría ser mucho más grande... hablemos.",
+    "description": "Analizaré tu operación e identificaré exactamente qué está frenando tu escala. Ya sea tráfico, oferta, copy o embudo. Y te mostraré dónde está el dinero que aún no estás capturando.",
+    "button": "Quiero desbloquear mi negocio",
+    "footer": "Más ganancias. Más escala. Menos desperdicio."
+  },
+  "about": {
+    "title": "Soy Caio.",
+    "subtitle": "Y mi trabajo es simple:",
+    "highlight": "hacer que tu negocio gane más dinero.",
+    "text1": "Sin rodeos. Sin teoría. Sin adivinanzas.",
+    "text2": "Analizo tu negocio, identifico qué está frenando el crecimiento y lo soluciono. Ya sea: adquisición, oferta, copy o embudo.",
+    "text3": "Porque al final del día... el tráfico no significa nada si no convierte. Lo que importa son los ingresos."
   }
 }

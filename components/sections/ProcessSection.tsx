@@ -55,6 +55,21 @@ export function ProcessSection() {
                 <p className="text-muted-foreground text-sm">{t('process.steps.execute.description')}</p>
               </div>
             </div>
+
+            <div className="flex flex-col gap-3 mt-4">
+              {(t('process.extraList') as string[]).map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                    <svg className="w-3 h-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <span className="text-white/90 text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+            
+            <p className="text-primary font-medium mt-2">
+              {t('process.conclusion')}
+            </p>
           </div>
         </div>
 

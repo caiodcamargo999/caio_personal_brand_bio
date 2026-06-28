@@ -12,7 +12,7 @@ export function ProcessSection() {
   return (
     <section className="w-full mt-8 sm:mt-10 lg:mt-16 mb-0" id="process">
       <BackgroundImageTexture variant="grid-noise" opacity={0.2} className="relative w-full">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between py-10 sm:py-16 px-4 sm:px-6 lg:px-8 gap-8 sm:gap-12">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between pt-10 pb-4 sm:py-16 px-4 sm:px-6 lg:px-8 gap-8 sm:gap-12">
         
         {/* Text Content */}
         <div className="flex-1 z-10 flex flex-col gap-6">
@@ -74,7 +74,7 @@ export function ProcessSection() {
         </div>
 
         {/* Circuit Board Visualization */}
-        <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[500px] overflow-hidden">
+        <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center min-h-[200px] sm:min-h-[400px] md:min-h-[500px] overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.65] sm:scale-100 md:scale-125 transform">
             <CircuitBoard
               nodes={[

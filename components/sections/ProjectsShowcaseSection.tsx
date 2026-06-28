@@ -23,7 +23,7 @@ const PROJECTS: Project[] = [
     title: "Cilex Ibiza",
     description: "Brand site for curated Ibiza travel experiences",
     image: "/images/showcase/project-one.png",
-    mobileImage: "/images/showcase/cilex_whatsapp_v3.jpeg",
+    mobileImage: "/images/showcase/cilex_ibiza_v3.jpeg",
   },
   {
     id: "project-two",
@@ -163,7 +163,7 @@ export function ProjectsShowcaseSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="showcase-section flex flex-col gap-4 mt-8 sm:mt-12 lg:mt-16 px-4 sm:px-6" id="work">
+    <section ref={sectionRef} className="showcase-section flex flex-col mt-20 sm:mt-24 lg:mt-32 px-4 sm:px-6" id="work">
       <div className="showcase-intro">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center font-semibold tracking-tight">
           {t('projects.title')}{" "}
@@ -205,7 +205,7 @@ export function ProjectsShowcaseSection() {
                   <div className="showcase-phone-screen">
                     <div className="showcase-media" aria-label="Mobile preview">
                       <Image
-                        src="/images/showcase/cilex_whatsapp_v3.jpeg"
+                        src="/images/showcase/cilex_ibiza_v3.jpeg"
                         alt="Mobile preview"
                         fill
                         sizes="60vw"
@@ -239,7 +239,7 @@ export function ProjectsShowcaseSection() {
                     <div className="showcase-phone-glass" />
                     <div className="showcase-home-indicator" />
                   </div>
-                  <div className="relative z-10 w-full">
+                  <div className="relative z-10 w-full hidden md:block">
                     <span className="showcase-card-category text-[10px] sm:text-xs text-muted-foreground font-bold tracking-[0.18em] mb-2 block">{t(`projects.items.${i}.category`)}</span>
                     <h3 className="showcase-card-title text-base sm:text-lg font-semibold text-foreground">{project.title}</h3>
                     <p className="showcase-card-description text-xs sm:text-sm font-light text-muted-foreground mt-1">{t(`projects.items.${i}.description`)}</p>

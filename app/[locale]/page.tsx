@@ -26,7 +26,7 @@ export default function HomePage() {
         <ContactFooter />
       </main>
 
-      <footer className="w-full py-4 sm:py-6 text-center text-muted-foreground text-xs sm:text-sm border-t border-border/10 mt-0 safe-area-bottom px-4">
+      <footer className="w-full pt-4 pb-12 sm:py-6 text-center text-muted-foreground text-xs sm:text-sm border-t border-border/10 mt-0 px-4">
         © {new Date().getFullYear()} Caio de Camargo. {t('footer.rights')}
       </footer>
     </div>

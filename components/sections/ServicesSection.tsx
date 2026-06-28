@@ -16,7 +16,7 @@ export function ServicesSection() {
   const services = t('services.items') as Array<{ title: string, description: string }>;
 
   return (
-    <section className="flex flex-col gap-4 mt-8 sm:mt-12 lg:mt-16 px-4 sm:px-6" id="services">
+    <section className="flex flex-col gap-4 mt-20 sm:mt-24 lg:mt-32 px-4 sm:px-6" id="services">
       <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center font-semibold tracking-tight">
         {/* Render highlight based on language */}
         {t('services.title').includes('Unfair Advantage') ? (

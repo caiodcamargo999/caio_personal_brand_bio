@@ -263,8 +263,16 @@
   position: relative;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 2rem;
   justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .showcase-sticky {
+    align-items: center;
+    padding-top: 0;
+  }
 }
 
 .showcase-stage {
@@ -311,7 +319,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .showcase-sticky-boundary {
     min-height: 320vh;
-    margin-top: 4rem;
+    margin-top: -4rem; /* Reduced for mobile */
+  }
+
+  @media (min-width: 768px) {
+    .showcase-sticky-boundary {
+      margin-top: 4rem;
+    }
   }
 
   .showcase-sticky {

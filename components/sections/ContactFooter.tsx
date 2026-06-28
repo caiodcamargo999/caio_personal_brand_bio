@@ -10,7 +10,7 @@ export function ContactFooter() {
   const { t } = useI18n();
 
   return (
-    <div className="relative flex w-full items-center justify-center p-4 my-20">
+    <div className="relative flex w-full items-center justify-center p-4 mt-0 mb-8 md:my-20">
       <div className="mx-auto max-w-4xl w-full text-center">
         <div className="bg-card/40 backdrop-blur-md border border-border relative flex flex-col items-center p-10 md:p-16 rounded-3xl">
           <h2 className="text-3xl font-semibold md:text-4xl lg:text-5xl tracking-tight mb-6">

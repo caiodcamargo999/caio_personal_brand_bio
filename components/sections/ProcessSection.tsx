@@ -91,14 +91,14 @@ export function ProcessSection() {
           </div>
 
           {/* Circuit Board Visualization */}
-          <div className="relative z-10 w-full lg:w-[48%] flex items-center justify-center p-3 sm:p-8 rounded-2xl bg-black/50 border border-white/[0.08] overflow-visible">
-            <div className="w-full flex justify-center items-center py-2">
+          <div className="relative z-10 w-full lg:w-[48%] flex items-center justify-center p-2 sm:p-6 rounded-2xl bg-black/50 border border-white/[0.08] overflow-hidden">
+            <div className="w-full flex justify-center items-center">
               <CircuitBoard
                 nodes={[
-                  { id: "briefing", x: 80, y: 160, label: t('process.nodes.briefing'), labelPosition: "bottom", icon: <MessageSquare className="w-4 h-4 text-white" /> },
-                  { id: "brainstorm", x: 280, y: 75, label: t('process.nodes.brainstorm'), labelPosition: "top", icon: <Lightbulb className="w-4 h-4 text-white" /> },
-                  { id: "strategy", x: 280, y: 245, label: t('process.nodes.strategy'), labelPosition: "bottom", icon: <Target className="w-4 h-4 text-white" /> },
-                  { id: "execute", x: 480, y: 160, label: t('process.nodes.execute'), labelPosition: "bottom", icon: <Rocket className="w-4 h-4 text-white" /> },
+                  { id: "briefing", x: 70, y: 120, label: t('process.nodes.briefing'), labelPosition: "bottom", icon: <MessageSquare className="w-4 h-4 text-white" /> },
+                  { id: "brainstorm", x: 240, y: 55, label: t('process.nodes.brainstorm'), labelPosition: "top", icon: <Lightbulb className="w-4 h-4 text-white" /> },
+                  { id: "strategy", x: 240, y: 185, label: t('process.nodes.strategy'), labelPosition: "bottom", icon: <Target className="w-4 h-4 text-white" /> },
+                  { id: "execute", x: 410, y: 120, label: t('process.nodes.execute'), labelPosition: "bottom", icon: <Rocket className="w-4 h-4 text-white" /> },
                 ]}
                 connections={[
                   { from: "briefing", to: "brainstorm", animated: true },
@@ -106,12 +106,12 @@ export function ProcessSection() {
                   { from: "brainstorm", to: "execute", animated: true },
                   { from: "strategy", to: "execute", animated: true },
                 ]}
-                width={560}
-                height={320}
+                width={480}
+                height={240}
                 traceColor="rgba(255, 75, 23, 0.35)"
                 pulseColor="rgba(255, 255, 255, 1)"
                 nodeColor="rgba(255, 255, 255, 0.9)"
-                className="max-w-full"
+                className="w-full"
               />
             </div>
           </div>

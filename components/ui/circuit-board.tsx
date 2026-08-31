@@ -7,6 +7,7 @@ interface CircuitNode {
   x: number
   y: number
   label?: string
+  labelPosition?: "top" | "bottom" | "left" | "right"
   icon?: React.ReactNode
   status?: "active" | "inactive" | "processing" | "error"
   size?: "sm" | "md" | "lg"
@@ -357,7 +358,16 @@ function CircuitBoard({
             {/* Label */}
             {node.label && (
               <div
-                className="absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-xs font-medium font-mono"
+                className={cn(
+                  "absolute whitespace-nowrap text-[11px] sm:text-xs font-semibold font-mono tracking-wider",
+                  node.labelPosition === "top"
+                    ? "-top-5 sm:-top-6 left-1/2 -translate-x-1/2"
+                    : node.labelPosition === "left"
+                    ? "right-full mr-2 top-1/2 -translate-y-1/2"
+                    : node.labelPosition === "right"
+                    ? "left-full ml-2 top-1/2 -translate-y-1/2"
+                    : "-bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2"
+                )}
                 style={{ color: statusColor }}
               >
                 {node.label}

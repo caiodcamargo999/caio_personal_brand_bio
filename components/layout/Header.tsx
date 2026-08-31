@@ -14,7 +14,7 @@ export function Header() {
   }[locale] || "OPEN FOR CLIENTS";
 
   return (
-    <header className="fixed top-3 sm:top-5 inset-x-0 mx-auto w-fit z-50 pointer-events-none px-2 safe-area-top flex justify-center items-center">
+    <header className="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none w-fit max-w-[calc(100vw-1.5rem)] flex items-center justify-center safe-area-top">
       <div className="flex items-center justify-center gap-2 sm:gap-4 bg-[#0d0d0d]/90 backdrop-blur-xl border border-white/[0.12] rounded-full py-1 px-3 sm:px-4 shadow-2xl shadow-black/90 pointer-events-auto transition-all duration-300 hover:border-white/25">
         {/* Availability Badge */}
         <div className="flex items-center gap-2 pr-1 sm:pr-2 py-0.5">

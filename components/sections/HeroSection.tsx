@@ -81,30 +81,30 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-col gap-4 sm:gap-6 items-center justify-center w-full max-w-3xl text-center mx-auto px-2 sm:px-4"
+            className="flex flex-col gap-4 sm:gap-6 items-center justify-center w-full max-w-2xl text-center mx-auto px-4"
           >
-            <div className="text-sm sm:text-base lg:text-lg font-normal leading-relaxed sm:leading-loose text-zinc-300 text-center">
+            <p className="text-sm sm:text-base lg:text-lg font-normal leading-relaxed sm:leading-loose text-zinc-300 text-center">
               <span className="font-mono text-zinc-200 bg-white/[0.08] border border-white/[0.12] rounded px-2 py-0.5 text-xs sm:text-sm mr-1.5 inline-block">
                 [ caio de camargo ]
               </span>
               {t('hero.subheadline.prefix')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-0.5 inline">
                 {t('hero.subheadline.role')}
               </span>
               {t('hero.subheadline.middle')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-0.5 inline">
                 {t('hero.subheadline.skill1')}
               </span>
               {t('hero.subheadline.comma1')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-0.5 inline">
                 {t('hero.subheadline.skill2')}
               </span>
               {t('hero.subheadline.comma2')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-0.5 inline">
                 {t('hero.subheadline.skill3')}
               </span>
               {t('hero.subheadline.suffix')}
-            </div>
+            </p>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center mt-3 sm:mt-6 w-full px-2 sm:px-0">
@@ -127,12 +127,12 @@ export function HeroSection() {
             </div>
 
             {/* Availability Indicator */}
-            <div className="flex items-center justify-center gap-2.5 mt-3 max-w-lg mx-auto text-center px-4">
-              <div className="relative shrink-0 flex items-center justify-center">
-                <div className="absolute h-2.5 w-2.5 bg-emerald-400 rounded-full animate-ping opacity-60"></div>
-                <div className="h-2 w-2 bg-emerald-400 rounded-full"></div>
-              </div>
-              <p className="text-zinc-400 font-mono text-[10px] sm:text-xs tracking-wider uppercase leading-snug">
+            <div className="flex items-center justify-center gap-2 mt-4 max-w-md mx-auto text-center px-2">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <p className="text-zinc-400 font-mono text-[10.5px] sm:text-xs tracking-wider uppercase leading-tight text-center">
                 {t('hero.openForProjects')}
               </p>
             </div>

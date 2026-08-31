@@ -38,30 +38,10 @@ export function GlobalOperationSection() {
               </span>
             </p>
 
-            <div className="space-y-3.5 text-zinc-400 text-sm sm:text-base leading-relaxed font-light">
+            <div className="space-y-4 text-zinc-300 text-sm sm:text-base lg:text-lg leading-relaxed font-light mt-6">
               <p>{t('about.text1')}</p>
               <p>{t('about.text2')}</p>
-              <p className="text-zinc-200 font-normal pt-1">{t('about.text3')}</p>
-            </div>
-          </div>
-
-          {/* Bento Stats / Performance Metrics */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-white/[0.08]">
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 text-center">
-              <span className="text-lg sm:text-xl font-bold font-mono text-white block">+350%</span>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mt-0.5">Avg ROAS</span>
-            </div>
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 text-center">
-              <span className="text-lg sm:text-xl font-bold font-mono text-white block">$10M+</span>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mt-0.5">Revenue</span>
-            </div>
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 text-center">
-              <span className="text-lg sm:text-xl font-bold font-mono text-white block">14+</span>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mt-0.5">Niches</span>
-            </div>
-            <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-3 text-center">
-              <span className="text-lg sm:text-xl font-bold font-mono text-white block">98%</span>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block mt-0.5">Retention</span>
+              <p className="text-white font-medium pt-2 text-base sm:text-lg lg:text-xl leading-snug">{t('about.text3')}</p>
             </div>
           </div>
 

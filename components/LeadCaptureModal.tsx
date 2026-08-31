@@ -599,7 +599,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[520px] w-[95%] sm:w-[90%] p-0 border-primary/30 bg-gradient-to-tr from-primary/10 via-black/90 to-primary/5 text-white backdrop-blur-2xl overflow-hidden font-sans">
+      <DialogContent className="max-w-[500px] w-[92vw] sm:w-[90%] p-0 border-primary/30 bg-gradient-to-tr from-primary/10 via-black/95 to-primary/5 text-white backdrop-blur-2xl overflow-hidden font-sans shadow-2xl">
         <DialogHeader className="sr-only">
           <DialogTitle>{t('leadCapture.intro.title')}</DialogTitle>
         </DialogHeader>
@@ -609,13 +609,13 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           {/* Close Button */}
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 text-zinc-400 hover:text-white transition-colors bg-black/40 hover:bg-black/60 rounded-full p-1"
+            className="absolute top-3 right-3 sm:top-5 sm:right-5 text-zinc-400 hover:text-white transition-colors bg-black/50 hover:bg-black/80 rounded-full p-1.5 z-20"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {/* Progress Bar */}
-          <div className="w-full bg-card/20 rounded-full h-2 mb-4 mt-2">
+          <div className="w-full bg-card/20 rounded-full h-2 mb-3 mt-1 pr-6 sm:pr-8">
             <motion.div
               className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full shadow-lg"
               initial={{ width: 0 }}
@@ -625,23 +625,23 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           </div>
 
           {/* Step Counter and Title */}
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-zinc-400 font-medium">
+          <div className="flex items-center justify-between mb-1 gap-2 pr-6 sm:pr-8">
+            <span className="text-[11px] sm:text-xs text-zinc-400 font-medium whitespace-nowrap">
               {t('leadCapture.form.stepCounter').replace('{current}', String(currentStep + 1)).replace('{total}', String(formSteps.length))}
             </span>
-            <span className="text-xs text-primary font-medium">
+            <span className="text-[11px] sm:text-xs text-primary font-medium whitespace-nowrap">
               {Math.round(progress)}% {t('leadCapture.progress.complete')}
             </span>
           </div>
 
           {/* Current Step Title */}
-          <h2 className="text-base sm:text-lg font-semibold text-center bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent">
+          <h2 className="text-sm sm:text-lg font-semibold text-center bg-gradient-to-tr from-white via-indigo-100 to-indigo-200 bg-clip-text text-transparent px-4">
             {currentStepData.title}
           </h2>
         </div>
 
         {/* Form Content */}
-        <div className="p-4 sm:p-6 pt-3 sm:pt-4 max-h-[55vh] max-h-[55dvh] overflow-y-auto">
+        <div className="p-4 sm:p-6 pt-3 sm:pt-4 max-h-[60vh] max-h-[60dvh] overflow-y-auto overflow-x-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -649,16 +649,16 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="space-y-6"
+              className="space-y-5"
             >
               {/* Intro Step */}
               {currentStep === 0 && (
-                <div className="text-center space-y-6 py-4">
-                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="w-10 h-10 text-primary" />
+                <div className="text-center space-y-4 py-2 sm:py-4 px-1">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Calendar className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white">{t('leadCapture.intro.title')}</h3>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
+                  <h3 className="text-lg sm:text-xl font-semibold text-white">{t('leadCapture.intro.title')}</h3>
+                  <p className="text-zinc-300 leading-relaxed text-xs sm:text-sm max-w-sm mx-auto px-1 break-words">
                     {t('leadCapture.intro.message')}
                   </p>
                 </div>

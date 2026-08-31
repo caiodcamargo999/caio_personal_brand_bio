@@ -168,7 +168,7 @@ function CircuitBoard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden",
+        "relative overflow-visible",
         className
       )}
       style={{ width, height }}

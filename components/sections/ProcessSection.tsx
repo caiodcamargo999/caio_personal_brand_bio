@@ -91,14 +91,14 @@ export function ProcessSection() {
           </div>
 
           {/* Circuit Board Visualization */}
-          <div className="relative z-10 w-full lg:w-[45%] flex items-center justify-center min-h-[260px] sm:min-h-[380px] overflow-hidden rounded-2xl bg-black/40 border border-white/[0.05]">
-            <div className="scale-[0.7] sm:scale-95 md:scale-110 transform">
+          <div className="relative z-10 w-full lg:w-[48%] flex items-center justify-center p-4 sm:p-8 rounded-2xl bg-black/40 border border-white/[0.05] overflow-visible">
+            <div className="w-full flex justify-center items-center">
               <CircuitBoard
                 nodes={[
-                  { id: "briefing", x: 75, y: 150, label: t('process.nodes.briefing'), icon: <MessageSquare className="w-4 h-4 text-white" /> },
-                  { id: "brainstorm", x: 275, y: 80, label: t('process.nodes.brainstorm'), icon: <Lightbulb className="w-4 h-4 text-white" /> },
-                  { id: "strategy", x: 275, y: 220, label: t('process.nodes.strategy'), icon: <Target className="w-4 h-4 text-white" /> },
-                  { id: "execute", x: 475, y: 150, label: t('process.nodes.execute'), icon: <Rocket className="w-4 h-4 text-white" /> },
+                  { id: "briefing", x: 90, y: 150, label: t('process.nodes.briefing'), icon: <MessageSquare className="w-4 h-4 text-white" /> },
+                  { id: "brainstorm", x: 260, y: 75, label: t('process.nodes.brainstorm'), icon: <Lightbulb className="w-4 h-4 text-white" /> },
+                  { id: "strategy", x: 260, y: 225, label: t('process.nodes.strategy'), icon: <Target className="w-4 h-4 text-white" /> },
+                  { id: "execute", x: 430, y: 150, label: t('process.nodes.execute'), icon: <Rocket className="w-4 h-4 text-white" /> },
                 ]}
                 connections={[
                   { from: "briefing", to: "brainstorm", animated: true },
@@ -106,11 +106,12 @@ export function ProcessSection() {
                   { from: "brainstorm", to: "execute", animated: true },
                   { from: "strategy", to: "execute", animated: true },
                 ]}
-                width={550}
+                width={520}
                 height={300}
                 traceColor="rgba(255, 75, 23, 0.35)"
                 pulseColor="rgba(255, 255, 255, 1)"
                 nodeColor="rgba(255, 255, 255, 0.9)"
+                className="max-w-full h-auto"
               />
             </div>
           </div>

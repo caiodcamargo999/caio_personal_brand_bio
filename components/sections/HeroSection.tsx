@@ -45,20 +45,20 @@ export function HeroSection() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-2"
+            className="flex items-center justify-center w-full px-2"
           >
-            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400 bg-white/[0.03] border border-white/[0.08] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md shadow-inner">
-              [ GROWTH ARCHITECT // PAID MEDIA // AI WORKFLOWS ]
+            <span className="font-mono text-[9.5px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-[0.22em] text-zinc-300 bg-white/[0.04] border border-white/[0.1] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md shadow-inner text-center whitespace-nowrap">
+              [ GROWTH ARCHITECT // PAID MEDIA // AI ]
             </span>
           </motion.div>
 
           {/* Main Display Headline */}
-          <div className="flex flex-col gap-4 sm:gap-5 items-center text-center w-full max-w-5xl">
+          <div className="flex flex-col gap-3 sm:gap-5 items-center text-center w-full max-w-5xl">
             <motion.span
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold text-center leading-[1.08] tracking-tight text-white"
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold text-center leading-[1.12] sm:leading-[1.08] tracking-tight text-white"
             >
               {t('hero.helpsBusinesses')}
             </motion.span>
@@ -67,7 +67,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="flex flex-wrap relative px-4 sm:px-6 md:px-8 bg-gradient-to-r from-zinc-900 via-[#141414] to-zinc-900 text-white border border-white/[0.12] rounded-xl text-3xl sm:text-5xl lg:text-7xl overflow-hidden py-2 sm:py-3 items-center justify-center text-center font-black shadow-2xl shadow-black/80 leading-none"
+              className="flex flex-wrap relative px-3 sm:px-6 md:px-8 bg-gradient-to-r from-zinc-900 via-[#141414] to-zinc-900 text-white border border-white/[0.12] rounded-xl text-2xl sm:text-5xl lg:text-7xl overflow-hidden py-1.5 sm:py-3 items-center justify-center text-center font-black shadow-2xl shadow-black/80 leading-none"
             >
               <Typewriter 
                 words={t('hero.words') as string[]}
@@ -81,33 +81,33 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="flex flex-col gap-4 sm:gap-6 items-center justify-center w-full max-w-4xl text-center mx-auto px-2 sm:px-4"
+            className="flex flex-col gap-4 sm:gap-6 items-center justify-center w-full max-w-3xl text-center mx-auto px-2 sm:px-4"
           >
-            <div className="text-sm md:text-base lg:text-lg font-normal leading-relaxed sm:leading-loose max-w-3xl mx-auto text-center text-zinc-300">
-              <span className="font-mono text-zinc-200 bg-white/[0.06] border border-white/[0.1] rounded px-2 py-0.5 text-xs sm:text-sm md:text-base inline-block mb-1 sm:mb-0 mr-1.5">
+            <div className="text-sm sm:text-base lg:text-lg font-normal leading-relaxed sm:leading-loose text-zinc-300 text-center">
+              <span className="font-mono text-zinc-200 bg-white/[0.08] border border-white/[0.12] rounded px-2 py-0.5 text-xs sm:text-sm mr-1.5 inline-block">
                 [ caio de camargo ]
               </span>
               {t('hero.subheadline.prefix')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
                 {t('hero.subheadline.role')}
               </span>
               {t('hero.subheadline.middle')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
                 {t('hero.subheadline.skill1')}
               </span>
               {t('hero.subheadline.comma1')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
                 {t('hero.subheadline.skill2')}
               </span>
               {t('hero.subheadline.comma2')}
-              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-1.5 py-0.5 rounded mx-1 inline whitespace-nowrap">
                 {t('hero.subheadline.skill3')}
               </span>
               {t('hero.subheadline.suffix')}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center mt-4 sm:mt-6 w-full px-2 sm:px-0">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center mt-3 sm:mt-6 w-full px-2 sm:px-0">
               <TextureButton
                 variant="primary"
                 size="lg"
@@ -127,12 +127,14 @@ export function HeroSection() {
             </div>
 
             {/* Availability Indicator */}
-            <div className="flex gap-2.5 items-center mt-2">
+            <div className="flex items-center justify-center gap-2.5 mt-3 max-w-lg mx-auto text-center px-4">
               <div className="relative shrink-0 flex items-center justify-center">
                 <div className="absolute h-2.5 w-2.5 bg-emerald-400 rounded-full animate-ping opacity-60"></div>
                 <div className="h-2 w-2 bg-emerald-400 rounded-full"></div>
               </div>
-              <p className="text-zinc-400 font-mono text-xs tracking-wider uppercase">{t('hero.openForProjects')}</p>
+              <p className="text-zinc-400 font-mono text-[10px] sm:text-xs tracking-wider uppercase leading-snug">
+                {t('hero.openForProjects')}
+              </p>
             </div>
           </motion.div>
 

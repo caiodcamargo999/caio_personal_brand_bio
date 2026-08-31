@@ -67,7 +67,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6 }}
-              className="flex flex-wrap relative px-3 sm:px-6 md:px-8 bg-gradient-to-r from-zinc-900 via-[#141414] to-zinc-900 text-white border border-white/[0.12] rounded-xl text-2xl sm:text-5xl lg:text-7xl overflow-hidden py-1.5 sm:py-3 items-center justify-center text-center font-black shadow-2xl shadow-black/80 leading-none"
+              className="flex flex-wrap relative px-3 sm:px-6 md:px-8 bg-gradient-to-r from-zinc-900 via-[#141414] to-zinc-900 text-white border border-white/[0.12] rounded-xl text-xl sm:text-4xl md:text-5xl lg:text-7xl py-2 sm:py-3 items-center justify-center text-center font-black shadow-2xl shadow-black/80 leading-tight max-w-[95vw] sm:max-w-full"
             >
               <Typewriter 
                 words={t('hero.words') as string[]}

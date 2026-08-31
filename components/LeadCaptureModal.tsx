@@ -144,7 +144,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     { id: 'name', title: t('leadCapture.steps.name.title'), field: 'name' as keyof LeadFormData, type: 'text' as const, placeholder: t('leadCapture.steps.name.placeholder'), required: true },
     { id: 'whatsapp', title: t('leadCapture.steps.whatsapp.title'), field: 'whatsapp' as keyof LeadFormData, type: 'text' as const, placeholder: t('leadCapture.steps.whatsapp.placeholder'), required: true },
     { id: 'email', title: t('leadCapture.steps.email.title'), field: 'email' as keyof LeadFormData, type: 'email' as const, placeholder: t('leadCapture.steps.email.placeholder'), required: true },
-    { id: 'industry', title: t('leadCapture.steps.industry.title'), field: 'industry' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.industry.placeholder'), required: true },
     { id: 'struggle', title: t('leadCapture.steps.struggle.title'), field: 'struggle' as keyof LeadFormData, type: 'textarea' as const, placeholder: t('leadCapture.steps.struggle.placeholder'), required: true },
     { id: 'budget', title: t('leadCapture.steps.budget.title'), field: 'budget' as keyof LeadFormData, type: 'select' as const, options: [{ value: 'yes', label: t('leadCapture.steps.budget.yes') }, { value: 'no', label: t('leadCapture.steps.budget.no') }], required: true },
     { id: 'calendar', title: t('leadCapture.steps.calendar.title'), field: null, type: 'calendar' as const, required: false },
@@ -265,11 +264,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         cal("preload", {
           name: watchedValues.name,
           email: watchedValues.email, // Passing email back to Cal.com
-          notes: `Industry: ${watchedValues.industry}\nStruggle: ${watchedValues.struggle}\nLanguage: ${locale.toUpperCase()}`
+          notes: `Struggle: ${watchedValues.struggle}\nLanguage: ${locale.toUpperCase()}`
         } as any);
       })();
     }
-  }, [watchedValues.name, watchedValues.email, watchedValues.industry, watchedValues.struggle, calNamespace]);
+  }, [watchedValues.name, watchedValues.email, watchedValues.struggle, calNamespace]);
 
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
@@ -296,7 +295,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           name: watchedValues.name,
           whatsapp: fullWhatsApp,
           email: watchedValues.email,
-          industry: watchedValues.industry,
           struggle: watchedValues.struggle,
           budget: 'no',
           budgetAmount: undefined,

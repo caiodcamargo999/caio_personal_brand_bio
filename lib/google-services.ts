@@ -190,7 +190,6 @@ export class GoogleSheetsService {
         data.name || '',
         data.whatsapp || '',
         data.email || '',
-        data.industry || '',
         data.struggle || '',
         budgetCell,
         scheduledCell,
@@ -206,7 +205,7 @@ export class GoogleSheetsService {
 
         await sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${activeTab}!A${existingRowIndex + 1}:H${existingRowIndex + 1}`,
+          range: `${activeTab}!A${existingRowIndex + 1}:G${existingRowIndex + 1}`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -217,7 +216,7 @@ export class GoogleSheetsService {
         // Append new row
         const response = await sheets.spreadsheets.values.append({
           spreadsheetId: SPREADSHEET_ID,
-          range: `${activeTab}!A:H`,
+          range: `${activeTab}!A:G`,
           valueInputOption: 'USER_ENTERED',
           requestBody: {
             values: [rowValues],
@@ -307,7 +306,6 @@ export class GoogleCalendarService {
           `- Name: ${data.name}`,
           `- WhatsApp: ${data.whatsapp}`,
           `- Email: ${data.email}`,
-          `- Industry: ${data.industry}`,
           `- Main Struggle: ${data.struggle}`,
           `- Budget: ${budgetDisplay}`,
         ].join('\n'),

@@ -34,10 +34,8 @@ export async function POST(request: NextRequest) {
 **📋 DETALHES DO LEAD**
 
 **Nome:** ${name}
-${email ? `**Email:** ${email}` : ''}
-**WhatsApp:** ${whatsapp}
-**Indústria:** ${industry}
-**Dificuldade:** ${struggle}
+${email ? `**Email:** ${email}\n` : ''}**WhatsApp:** ${whatsapp}
+${industry ? `**Indústria:** ${industry}\n` : ''}**Dificuldade:** ${struggle}
 **Orçamento:** ${budget}
 ${budgetAmount ? `**Valor do Orçamento:** ${budgetAmount}` : ''}
 

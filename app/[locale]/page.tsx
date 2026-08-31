@@ -3,7 +3,6 @@
 import React from "react";
 import { Header } from "@/components/layout/Header";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { ProjectsShowcaseSection } from "@/components/sections/ProjectsShowcaseSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { GlobalOperationSection } from "@/components/sections/GlobalOperationSection";
@@ -20,7 +19,6 @@ export default function HomePage() {
       <main className="flex-1 w-full flex flex-col items-center">
         <HeroSection />
         <GlobalOperationSection />
-        <ProjectsShowcaseSection />
         <ServicesSection />
         <ProcessSection />
         <ContactFooter />

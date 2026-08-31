@@ -9,12 +9,9 @@ import { Typewriter } from "@/components/ui/typewriter";
 import { InteractiveMarquee } from "@/components/ui/interactive-marquee";
 import { BackgroundImageTexture } from "@/components/ui/bg-image-texture";
 import {
-  ClaudeAI,
-  Cursor,
   GoogleAds,
-  OpenAI,
 } from "@aliimam/logos";
-import { SiReact, SiNextdotjs, SiTypescript, SiVercel, SiShadcnui, SiTiktok, SiMeta, SiGoogle } from "react-icons/si";
+import { SiTiktok, SiMeta } from "react-icons/si";
 
 export function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,11 +121,7 @@ export function HeroSection() {
         transition={{ delay: 0.3 }}
         className="w-full max-w-[100vw] sm:max-w-5xl flex flex-col items-center mt-8 sm:mt-10 opacity-80 px-2 sm:px-0"
       >
-        <h3 className="text-sm sm:text-base font-bold tracking-widest uppercase text-muted-foreground mb-4 sm:mb-6 text-center">
-          {t('hero.premiumStack')}
-        </h3>
-
-        {/* Marquee Line for Ads and AI */}
+        {/* Marquee Line for Ads */}
         <InteractiveMarquee speed={80} className="mt-2">
           <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
             <GoogleAds className="h-[40px] sm:h-[60px] w-auto shrink-0" />
@@ -143,23 +136,6 @@ export function HeroSection() {
             <SiTiktok size={40} className="text-[#000000] dark:text-white sm:hidden shrink-0" style={{ filter: "drop-shadow(2px 2px 0 #FE2C55) drop-shadow(-2px -2px 0 #25F4EE)" }} />
             <SiTiktok size={60} className="text-[#000000] dark:text-white hidden sm:block shrink-0" style={{ filter: "drop-shadow(2px 2px 0 #FE2C55) drop-shadow(-2px -2px 0 #25F4EE)" }} />
             <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">TikTok Ads</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <ClaudeAI className="h-[40px] sm:h-[60px] w-auto shrink-0 text-[#D97757]" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Claude</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <OpenAI className="h-[40px] sm:h-[60px] w-auto shrink-0 text-[#10A37F]" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">OpenAI</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <Cursor className="h-[40px] sm:h-[60px] w-auto shrink-0 text-black dark:text-white" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Cursor</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiGoogle size={40} className="text-[#4285F4] sm:hidden shrink-0" />
-            <SiGoogle size={60} className="text-[#4285F4] hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 whitespace-nowrap">Antigravity</span>
           </div>
         </InteractiveMarquee>
       </motion.div>

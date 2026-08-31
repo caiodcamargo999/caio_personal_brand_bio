@@ -168,17 +168,14 @@ function CircuitBoard({
   return (
     <div
       className={cn(
-        "relative overflow-visible",
+        "relative w-full aspect-[520/300] max-w-[520px] overflow-visible mx-auto",
         className
       )}
-      style={{ width, height }}
       {...props}
     >
       <svg
-        width={width}
-        height={height}
-        className="absolute inset-0"
-        style={{ overflow: "visible" }}
+        viewBox={`0 0 ${width} ${height}`}
+        className="w-full h-full absolute inset-0 overflow-visible"
       >
         <defs>
           {/* Glow filter for the pulse effect */}
@@ -290,25 +287,25 @@ function CircuitBoard({
                   }}
                 />
               )}
-
-
             </g>
           )
         })}
       </svg>
 
-      {/* Nodes */}
+      {/* Nodes with fluid percentage-based positioning */}
       {nodes.map((node, i) => {
         const size = getNodeSize(node.size)
         const statusColor = getStatusColor(node.status)
+        const leftPercent = (node.x / width) * 100
+        const topPercent = (node.y / height) * 100
 
         return (
           <motion.div
             key={node.id}
-            className="absolute flex items-center justify-center"
+            className="absolute flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
             style={{
-              left: node.x - size / 2,
-              top: node.y - size / 2,
+              left: `${leftPercent}%`,
+              top: `${topPercent}%`,
               width: size,
               height: size,
             }}
@@ -351,7 +348,7 @@ function CircuitBoard({
             )}
 
             {/* Node content */}
-            <div className="relative z-10 flex flex-col items-center justify-center">
+            <div className="relative z-10 flex flex-col items-center justify-center scale-90 sm:scale-100">
               {node.icon && (
                 <div style={{ color: statusColor }}>{node.icon}</div>
               )}
@@ -360,7 +357,7 @@ function CircuitBoard({
             {/* Label */}
             {node.label && (
               <div
-                className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-medium"
+                className="absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-xs font-medium font-mono"
                 style={{ color: statusColor }}
               >
                 {node.label}

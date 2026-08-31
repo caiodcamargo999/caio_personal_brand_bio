@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CircuitBoard } from "@/components/ui/circuit-board";
-import { MessageSquare, Lightbulb, Target, Rocket } from "lucide-react";
+import { MessageSquare, Lightbulb, Target, Rocket, CheckCircle2 } from "lucide-react";
 import { BackgroundImageTexture } from "@/components/ui/bg-image-texture";
 import { useI18n } from "@/lib/i18n";
 
@@ -10,96 +10,114 @@ export function ProcessSection() {
   const { t } = useI18n();
 
   return (
-    <section className="w-full mt-8 sm:mt-10 lg:mt-16 mb-0" id="process">
-      <BackgroundImageTexture variant="grid-noise" opacity={0.2} className="relative w-full">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between pt-10 pb-4 sm:py-16 px-4 sm:px-6 lg:px-8 gap-8 sm:gap-12">
+    <section className="w-full mt-16 sm:mt-24 lg:mt-32 mb-0 max-w-7xl mx-auto px-4 sm:px-6" id="process">
+      <div className="relative w-full border border-white/[0.08] rounded-3xl bg-[#0d0d0d]/80 backdrop-blur-xl p-6 sm:p-10 lg:p-14 overflow-hidden shadow-2xl shadow-black/80">
         
-        {/* Text Content */}
-        <div className="flex-1 z-10 flex flex-col gap-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
-            {t('process.title').split('Framework')[0]}
-            <span className="bg-primary text-primary-foreground px-2 py-1 inline-block rounded">Framework</span>
-            {t('process.title').split('Framework')[1]}
-          </h2>
-          <p className="text-muted-foreground text-base sm:text-lg font-light leading-relaxed max-w-md">
-            {t('process.subtitle')}
-          </p>
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#ff4b17]/[0.06] blur-[120px] rounded-full pointer-events-none -z-10" />
+
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-14">
           
-          <div className="flex flex-col gap-8 mt-8">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                <MessageSquare className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <h4 className="text-white font-medium">1. {t('process.steps.briefing.title')}</h4>
-                <p className="text-muted-foreground text-sm">{t('process.steps.briefing.description')}</p>
-              </div>
-            </div>
+          {/* Text & Steps Content */}
+          <div className="flex-1 z-10 flex flex-col gap-6 w-full lg:max-w-[52%]">
             
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                <Lightbulb className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <h4 className="text-white font-medium">2. {t('process.steps.brainstorm.title')}</h4>
-                <p className="text-muted-foreground text-sm">{t('process.steps.brainstorm.description')}</p>
-              </div>
+            {/* Top Monospace Tag */}
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400 bg-white/[0.03] border border-white/[0.08] px-3.5 py-1 rounded-full">
+                [ 03 // EXECUTION FRAMEWORK ]
+              </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center shrink-0">
-                <Rocket className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <h4 className="text-white font-medium">3. {t('process.steps.execute.title')}</h4>
-                <p className="text-muted-foreground text-sm">{t('process.steps.execute.description')}</p>
-              </div>
-            </div>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
+              {t('process.title').split('Framework')[0]}
+              <span className="text-white border-b-2 border-[#ff4b17] pb-0.5 inline-block">Framework</span>
+              {t('process.title').split('Framework')[1]}
+            </h2>
 
-            <div className="flex flex-col gap-3 mt-4">
-              {(t('process.extraList') as string[]).map((item, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                    <svg className="w-3 h-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                  <span className="text-white/90 text-sm">{item}</span>
-                </div>
-              ))}
-            </div>
-            
-            <p className="text-primary font-medium mt-2">
-              {t('process.conclusion')}
+            <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed">
+              {t('process.subtitle')}
             </p>
-          </div>
-        </div>
+            
+            {/* 3 Step Timeline Cards */}
+            <div className="flex flex-col gap-4 mt-2">
+              
+              {/* Step 1 */}
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/15 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="font-mono text-xs font-bold text-white">01</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-medium text-base">{t('process.steps.briefing.title')}</h4>
+                  <p className="text-zinc-400 text-xs sm:text-sm font-light mt-1 leading-relaxed">{t('process.steps.briefing.description')}</p>
+                </div>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/15 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="font-mono text-xs font-bold text-[#ff4b17]">02</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-medium text-base">{t('process.steps.brainstorm.title')}</h4>
+                  <p className="text-zinc-400 text-xs sm:text-sm font-light mt-1 leading-relaxed">{t('process.steps.brainstorm.description')}</p>
+                </div>
+              </div>
 
-        {/* Circuit Board Visualization */}
-        <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center min-h-[200px] sm:min-h-[400px] md:min-h-[500px] overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 scale-[0.65] sm:scale-100 md:scale-125 transform">
-            <CircuitBoard
-              nodes={[
-                { id: "briefing", x: 75, y: 150, label: t('process.nodes.briefing'), icon: <MessageSquare className="w-4 h-4" /> },
-                { id: "brainstorm", x: 275, y: 80, label: t('process.nodes.brainstorm'), icon: <Lightbulb className="w-4 h-4" /> },
-                { id: "strategy", x: 275, y: 220, label: t('process.nodes.strategy'), icon: <Target className="w-4 h-4" /> },
-                { id: "execute", x: 475, y: 150, label: t('process.nodes.execute'), icon: <Rocket className="w-4 h-4" /> },
-              ]}
-              connections={[
-                { from: "briefing", to: "brainstorm", animated: true },
-                { from: "briefing", to: "strategy", animated: true },
-                { from: "brainstorm", to: "execute", animated: true },
-                { from: "strategy", to: "execute", animated: true },
-              ]}
-              width={550}
-              height={300}
-              traceColor="rgba(215, 215, 220, 0.5)"
-              pulseColor="rgba(255, 255, 255, 1)"
-              nodeColor="rgba(230, 230, 240, 0.9)"
-            />
+              {/* Step 3 */}
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-white/15 transition-all">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="font-mono text-xs font-bold text-emerald-400">03</span>
+                </div>
+                <div>
+                  <h4 className="text-white font-medium text-base">{t('process.steps.execute.title')}</h4>
+                  <p className="text-zinc-400 text-xs sm:text-sm font-light mt-1 leading-relaxed">{t('process.steps.execute.description')}</p>
+                </div>
+              </div>
+
+              {/* Deliverable Checkpoints */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-2 pt-2">
+                {(t('process.extraList') as string[]).map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-zinc-300 text-xs sm:text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-[#ff4b17] shrink-0" />
+                    <span className="font-light">{item}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <p className="text-xs sm:text-sm font-mono text-zinc-400 uppercase tracking-wider pt-2 border-t border-white/[0.06]">
+                {t('process.conclusion')}
+              </p>
+            </div>
           </div>
-        </div>
+
+          {/* Circuit Board Visualization */}
+          <div className="relative z-10 w-full lg:w-[45%] flex items-center justify-center min-h-[260px] sm:min-h-[380px] overflow-hidden rounded-2xl bg-black/40 border border-white/[0.05]">
+            <div className="scale-[0.7] sm:scale-95 md:scale-110 transform">
+              <CircuitBoard
+                nodes={[
+                  { id: "briefing", x: 75, y: 150, label: t('process.nodes.briefing'), icon: <MessageSquare className="w-4 h-4 text-white" /> },
+                  { id: "brainstorm", x: 275, y: 80, label: t('process.nodes.brainstorm'), icon: <Lightbulb className="w-4 h-4 text-white" /> },
+                  { id: "strategy", x: 275, y: 220, label: t('process.nodes.strategy'), icon: <Target className="w-4 h-4 text-white" /> },
+                  { id: "execute", x: 475, y: 150, label: t('process.nodes.execute'), icon: <Rocket className="w-4 h-4 text-white" /> },
+                ]}
+                connections={[
+                  { from: "briefing", to: "brainstorm", animated: true },
+                  { from: "briefing", to: "strategy", animated: true },
+                  { from: "brainstorm", to: "execute", animated: true },
+                  { from: "strategy", to: "execute", animated: true },
+                ]}
+                width={550}
+                height={300}
+                traceColor="rgba(255, 75, 23, 0.35)"
+                pulseColor="rgba(255, 255, 255, 1)"
+                nodeColor="rgba(255, 255, 255, 0.9)"
+              />
+            </div>
+          </div>
 
         </div>
-      </BackgroundImageTexture>
+      </div>
     </section>
   );
 }
+

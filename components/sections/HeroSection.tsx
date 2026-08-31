@@ -33,114 +33,134 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <BackgroundImageTexture variant="grid-noise" opacity={0.4} className="relative w-full my-4 sm:my-6 lg:my-10 flex flex-col items-center justify-center pt-20 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 px-0 sm:px-0 lg:px-0">
-        <div className="flex flex-col items-center justify-center gap-8 sm:gap-12 lg:gap-16 w-full max-w-[100vw] px-4 sm:px-6 lg:px-32">
-      <div className="flex flex-col gap-4 items-center text-center w-full">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold text-center leading-tight"
-        >
-          {t('hero.helpsBusinesses')}
-        </motion.span>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="flex flex-wrap relative px-3 sm:px-4 md:px-6 bg-primary text-primary-foreground text-4xl sm:text-5xl lg:text-7xl overflow-hidden py-1 sm:py-2 items-center justify-center text-center font-black shadow-xl leading-none"
-        >
-          <Typewriter 
-            words={t('hero.words') as string[]}
-            delayBetweenWords={2500}
-          />
-        </motion.div>
-      </div>
+      {/* Darkroom Ambient Background Glows */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] sm:w-[850px] sm:h-[500px] bg-gradient-to-b from-[#ff4b17]/10 via-[#ff4b17]/[0.03] to-transparent blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-1/3 w-[400px] h-[400px] bg-purple-600/[0.05] blur-[120px] rounded-full pointer-events-none -z-10" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col gap-3 sm:gap-4 items-center justify-center w-full max-w-4xl text-center mx-auto px-2 sm:px-4"
-        >
-        <div className="text-sm md:text-base lg:text-lg font-medium leading-relaxed sm:leading-loose max-w-3xl mx-auto text-center w-full">
-          <span className="font-mono text-primary bg-primary/10 rounded px-1.5 sm:px-2 py-0.5 text-sm sm:text-base md:text-lg inline-block mb-1 sm:mb-0 leading-tight">
-            [ caio ]
-          </span>
-          {t('hero.subheadline.prefix')}
-          <span className="bg-primary text-primary-foreground px-1.5 sm:px-2 py-0 rounded-sm inline-block mx-1 whitespace-normal leading-tight">
-            {t('hero.subheadline.role')}
-          </span>
-          {t('hero.subheadline.middle')}
-          <span className="bg-primary text-primary-foreground px-1.5 sm:px-2 py-0 rounded-sm inline-block mx-1 whitespace-normal leading-tight">
-            {t('hero.subheadline.skill1')}
-          </span>
-          {t('hero.subheadline.comma1')}
-          <span className="bg-primary text-primary-foreground px-1.5 sm:px-2 py-0 rounded-sm inline-block mx-1 whitespace-normal leading-tight">
-            {t('hero.subheadline.skill2')}
-          </span>
-          {t('hero.subheadline.comma2')}
-          <span className="bg-primary text-primary-foreground px-1.5 sm:px-2 py-0 rounded-sm inline-block mx-1 whitespace-normal leading-tight">
-            {t('hero.subheadline.skill3')}
-          </span>
-          {t('hero.subheadline.suffix')}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center mt-6 sm:mt-8 w-full px-2 sm:px-0">
-          <TextureButton
-            variant="primary"
-            size="lg"
-            className="w-full sm:w-auto min-w-[200px]"
-            onClick={() => setIsModalOpen(true)}
+      <BackgroundImageTexture variant="grid-noise" opacity={0.35} className="relative w-full my-2 sm:my-4 lg:my-6 flex flex-col items-center justify-center pt-24 sm:pt-28 lg:pt-36 pb-8 sm:pb-12 px-0">
+        <div className="flex flex-col items-center justify-center gap-8 sm:gap-10 lg:gap-14 w-full max-w-[100vw] px-4 sm:px-6 lg:px-32">
+          
+          {/* Top Monospace Technical Tag */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2"
           >
-            {t('hero.bookCall')} <span className="text-xs opacity-70 ml-2 hidden sm:inline-block">⌘K</span>
-          </TextureButton>
-          <TextureButton
-            variant="secondary"
-            size="lg"
-            className="w-full sm:w-auto min-w-[200px]"
-            onClick={() => window.open('https://rarityagency.io', '_blank')}
+            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-400 bg-white/[0.03] border border-white/[0.08] px-3 sm:px-4 py-1 sm:py-1.5 rounded-full backdrop-blur-md shadow-inner">
+              [ GROWTH ARCHITECT // PAID MEDIA // AI WORKFLOWS ]
+            </span>
+          </motion.div>
+
+          {/* Main Display Headline */}
+          <div className="flex flex-col gap-4 sm:gap-5 items-center text-center w-full max-w-5xl">
+            <motion.span
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-semibold text-center leading-[1.08] tracking-tight text-white"
+            >
+              {t('hero.helpsBusinesses')}
+            </motion.span>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className="flex flex-wrap relative px-4 sm:px-6 md:px-8 bg-gradient-to-r from-zinc-900 via-[#141414] to-zinc-900 text-white border border-white/[0.12] rounded-xl text-3xl sm:text-5xl lg:text-7xl overflow-hidden py-2 sm:py-3 items-center justify-center text-center font-black shadow-2xl shadow-black/80 leading-none"
+            >
+              <Typewriter 
+                words={t('hero.words') as string[]}
+                delayBetweenWords={2500}
+              />
+            </motion.div>
+          </div>
+
+          {/* Subheadline Narrative */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="flex flex-col gap-4 sm:gap-6 items-center justify-center w-full max-w-4xl text-center mx-auto px-2 sm:px-4"
           >
-            {t('hero.seeWork')}
-          </TextureButton>
-        </div>
+            <div className="text-sm md:text-base lg:text-lg font-normal leading-relaxed sm:leading-loose max-w-3xl mx-auto text-center text-zinc-300">
+              <span className="font-mono text-zinc-200 bg-white/[0.06] border border-white/[0.1] rounded px-2 py-0.5 text-xs sm:text-sm md:text-base inline-block mb-1 sm:mb-0 mr-1.5">
+                [ caio de camargo ]
+              </span>
+              {t('hero.subheadline.prefix')}
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+                {t('hero.subheadline.role')}
+              </span>
+              {t('hero.subheadline.middle')}
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+                {t('hero.subheadline.skill1')}
+              </span>
+              {t('hero.subheadline.comma1')}
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+                {t('hero.subheadline.skill2')}
+              </span>
+              {t('hero.subheadline.comma2')}
+              <span className="text-white font-medium bg-white/[0.08] border border-white/[0.1] px-2 py-0.5 rounded inline-block mx-1 whitespace-normal">
+                {t('hero.subheadline.skill3')}
+              </span>
+              {t('hero.subheadline.suffix')}
+            </div>
 
-        <div className="flex gap-2 items-center mt-4">
-          <div className="relative shrink-0">
-            <div className="absolute h-3 w-3 bg-emerald-400 rounded-full animate-ping opacity-50"></div>
-            <div className="h-3 w-3 bg-emerald-400 rounded-full"></div>
-          </div>
-          <p className="text-muted-foreground text-sm">{t('hero.openForProjects')}</p>
-        </div>
-      </motion.div>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center mt-4 sm:mt-6 w-full px-2 sm:px-0">
+              <TextureButton
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto min-w-[220px] shadow-xl shadow-white/5"
+                onClick={() => setIsModalOpen(true)}
+              >
+                {t('hero.bookCall')} <span className="text-xs opacity-60 ml-2 hidden sm:inline-block font-mono">⌘K</span>
+              </TextureButton>
+              <TextureButton
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto min-w-[220px] border border-white/[0.12] hover:border-white/30"
+                onClick={() => window.open('https://rarityagency.io', '_blank')}
+              >
+                {t('hero.seeWork')}
+              </TextureButton>
+            </div>
 
-      {/* Marquee Ticker */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="w-full max-w-[100vw] sm:max-w-5xl flex flex-col items-center mt-8 sm:mt-10 opacity-80 px-2 sm:px-0"
-      >
-        {/* Marquee Line for Ads */}
-        <InteractiveMarquee speed={80} className="mt-2">
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <GoogleAds className="h-[40px] sm:h-[60px] w-auto shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Google Ads</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiMeta size={40} className="text-[#0668E1] sm:hidden shrink-0" />
-            <SiMeta size={60} className="text-[#0668E1] hidden sm:block shrink-0" />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">Meta Ads</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-zinc-800 dark:text-zinc-200 pr-12 sm:pr-24">
-            <SiTiktok size={40} className="text-[#000000] dark:text-white sm:hidden shrink-0" style={{ filter: "drop-shadow(2px 2px 0 #FE2C55) drop-shadow(-2px -2px 0 #25F4EE)" }} />
-            <SiTiktok size={60} className="text-[#000000] dark:text-white hidden sm:block shrink-0" style={{ filter: "drop-shadow(2px 2px 0 #FE2C55) drop-shadow(-2px -2px 0 #25F4EE)" }} />
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight whitespace-nowrap">TikTok Ads</span>
-          </div>
-        </InteractiveMarquee>
-      </motion.div>
-      </div>
-      <LeadCaptureModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {/* Availability Indicator */}
+            <div className="flex gap-2.5 items-center mt-2">
+              <div className="relative shrink-0 flex items-center justify-center">
+                <div className="absolute h-2.5 w-2.5 bg-emerald-400 rounded-full animate-ping opacity-60"></div>
+                <div className="h-2 w-2 bg-emerald-400 rounded-full"></div>
+              </div>
+              <p className="text-zinc-400 font-mono text-xs tracking-wider uppercase">{t('hero.openForProjects')}</p>
+            </div>
+          </motion.div>
+
+          {/* Marquee Ticker: Ads Platforms in Dark Glass Pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="w-full max-w-[100vw] sm:max-w-5xl flex flex-col items-center mt-6 sm:mt-8 px-2 sm:px-0"
+          >
+            <InteractiveMarquee speed={70} className="py-2">
+              <div className="flex items-center gap-3 bg-[#111111]/80 hover:bg-[#161616] border border-white/[0.08] hover:border-white/20 transition-all rounded-2xl py-3 px-6 text-zinc-200 mx-3 shadow-lg shadow-black/60">
+                <GoogleAds className="h-[28px] sm:h-[34px] w-auto shrink-0" />
+                <span className="text-lg sm:text-xl font-semibold tracking-tight whitespace-nowrap text-white">Google Ads</span>
+              </div>
+              <div className="flex items-center gap-3 bg-[#111111]/80 hover:bg-[#161616] border border-white/[0.08] hover:border-white/20 transition-all rounded-2xl py-3 px-6 text-zinc-200 mx-3 shadow-lg shadow-black/60">
+                <SiMeta size={28} className="text-[#0668E1] shrink-0" />
+                <span className="text-lg sm:text-xl font-semibold tracking-tight whitespace-nowrap text-white">Meta Ads</span>
+              </div>
+              <div className="flex items-center gap-3 bg-[#111111]/80 hover:bg-[#161616] border border-white/[0.08] hover:border-white/20 transition-all rounded-2xl py-3 px-6 text-zinc-200 mx-3 shadow-lg shadow-black/60">
+                <SiTiktok size={28} className="text-white shrink-0" style={{ filter: "drop-shadow(2px 2px 0 #FE2C55) drop-shadow(-2px -2px 0 #25F4EE)" }} />
+                <span className="text-lg sm:text-xl font-semibold tracking-tight whitespace-nowrap text-white">TikTok Ads</span>
+              </div>
+            </InteractiveMarquee>
+          </motion.div>
+
+        </div>
+        <LeadCaptureModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </BackgroundImageTexture>
     </section>
   );

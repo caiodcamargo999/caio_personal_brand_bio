@@ -149,8 +149,6 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     { id: 'calendar', title: t('leadCapture.steps.calendar.title'), field: null, type: 'calendar' as const, required: false },
   ];
 
-
-
   const schema = createLeadFormSchema(t);
 
   const {
@@ -167,10 +165,37 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   const watchedValues = watch();
 
-  // Cal.com initialization - Initialize immediately on mount
+  // Helper to format WhatsApp number with country prefix without duplicating code
+  const formatFullWhatsApp = (prefix: string, rawNumber: string | undefined): string => {
+    if (!rawNumber) return '';
+    const digits = rawNumber.replace(/\D/g, '');
+    const prefixDigits = prefix.replace(/\D/g, '');
+    if (!digits) return '';
+    if (prefixDigits && digits.startsWith(prefixDigits)) {
+      return `+${digits}`;
+    }
+    return `+${prefixDigits}${digits}`;
+  };
+
+  const isProcessingBookingRef = useRef(false);
+
+  // Reset booking lock when modal opens or closes
   useEffect(() => {
+    if (!isOpen) {
+      isProcessingBookingRef.current = false;
+    }
+  }, [isOpen]);
+
+  // Cal.com initialization - only when modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let isMounted = true;
+
     (async function () {
       const cal = await getCalApi({ namespace: calNamespace });
+      if (!isMounted) return;
+
       cal("ui", {
         theme: "dark",
         hideEventTypeDetails: false,
@@ -197,20 +222,27 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         callback: (e: any) => {
           console.log("Cal.com Booking Event Received:", e);
 
-          // Cal.com events can sometimes be nested in detail.data or just data depending on version/context
-          const eventData = e.detail?.data || e.data || e;
-
-          if (!eventData) {
-            console.error("No data found in booking event");
-            setIsSuccess(true); // Still show success UI to avoid getting stuck
+          // Prevent duplicate executions for the same booking session
+          if (isProcessingBookingRef.current) {
+            console.log("Booking already processed, skipping duplicate callback.");
             return;
           }
 
-          const fullWhatsApp = `${selectedCountry.prefix}${watchedValuesRef.current.whatsapp}`;
+          const currentForm = watchedValuesRef.current;
+          // Guard: only proceed if this modal has actual form data
+          if (!currentForm?.name?.trim() || (!currentForm?.email?.trim() && !currentForm?.whatsapp?.trim())) {
+            console.warn("Ignoring booking event on unpopulated modal instance.");
+            return;
+          }
+
+          isProcessingBookingRef.current = true;
+
+          const eventData = e.detail?.data || e.data || e;
+          const fullWhatsApp = formatFullWhatsApp(selectedCountry.prefix, currentForm.whatsapp);
           const finalData = {
-            ...watchedValuesRef.current,
-            // We trust our form email more than Cal.com's potential extraction
-            email: watchedValuesRef.current.email,
+            ...currentForm,
+            name: currentForm.name.trim(),
+            email: currentForm.email?.trim(),
             whatsapp: fullWhatsApp,
             budgetAmount,
             scheduledDateTime: eventData?.date || eventData?.startTime || new Date().toISOString(),
@@ -230,25 +262,31 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
           // Send immediate WhatsApp confirmation
           let waMessage = '';
           if (locale === 'pt') {
-            waMessage = `🎉 Olá ${watchedValuesRef.current.name}, sua Call Estratégica está confirmada!\n\nSeu horário está reservado na agenda. Você receberá o link do Google Meet 1 hora antes de começarmos.\n\nEstou ansioso para batermos um papo! - Caio`;
+            waMessage = `🎉 Olá ${currentForm.name}, sua Call Estratégica está confirmada!\n\nSeu horário está reservado na agenda. Você receberá o link do Google Meet 1 hora antes de começarmos.\n\nEstou ansioso para batermos um papo! - Caio`;
           } else if (locale === 'es') {
-            waMessage = `🎉 ¡Hola ${watchedValuesRef.current.name}, tu Llamada Estratégica está confirmada!\n\nHe reservado tu hora en el calendario. Recibirás el enlace de Google Meet 1 hora antes de que comencemos.\n\n¡Espero con ansias nuestra charla! - Caio`;
+            waMessage = `🎉 ¡Hola ${currentForm.name}, tu Llamada Estratégica está confirmada!\n\nHe reservado tu hora en el calendario. Recibirás el enlace de Google Meet 1 hora antes de que comencemos.\n\n¡Espero con ansias nossa charla! - Caio`;
           } else {
-            waMessage = `🎉 Hey ${watchedValuesRef.current.name}, your Strategy Call is confirmed!\n\nI have locked your time in the calendar. You will receive the Google Meet link 1 hour before we start.\n\nLooking forward to our chat! - Caio`;
+            waMessage = `🎉 Hey ${currentForm.name}, your Strategy Call is confirmed!\n\nI have locked your time in the calendar. You will receive the Google Meet link 1 hour before we start.\n\nLooking forward to our chat! - Caio`;
           }
 
-          fetch('/api/whatsapp/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              phone: fullWhatsApp,
-              message: waMessage
-            })
-          }).catch(err => console.error("Error sending WhatsApp confirmation:", err));
+          if (fullWhatsApp) {
+            fetch('/api/whatsapp/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone: fullWhatsApp,
+                message: waMessage
+              })
+            }).catch(err => console.error("Error sending WhatsApp confirmation:", err));
+          }
         }
       });
     })();
-  }, [calNamespace]); // Re-run when namespace changes
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, calNamespace, locale, selectedCountry.prefix, budgetAmount]);
 
   // Ref to access latest values inside the callback without re-running effect
   const watchedValuesRef = useRef(watchedValues);
@@ -258,7 +296,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
 
   // Preload data when values change, but don't re-initialize the whole API
   useEffect(() => {
-    if (watchedValues.name) {
+    if (watchedValues.name && isOpen) {
       (async function () {
         const cal = await getCalApi({ namespace: calNamespace });
         cal("preload", {
@@ -268,7 +306,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         } as any);
       })();
     }
-  }, [watchedValues.name, watchedValues.email, watchedValues.struggle, calNamespace]);
+  }, [watchedValues.name, watchedValues.email, watchedValues.struggle, calNamespace, isOpen, locale]);
 
   const handleNext = async () => {
     const currentField = formSteps[currentStep].field;
@@ -288,14 +326,13 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
     if (currentStepData.id === 'budget' && watchedValues['budget'] === 'no') {
       console.log('Redirecting to WhatsApp - no budget selected');
       try {
-        // Concatenate country prefix with WhatsApp number
-        const fullWhatsApp = `${selectedCountry.prefix}${watchedValues.whatsapp}`;
+        const fullWhatsApp = formatFullWhatsApp(selectedCountry.prefix, watchedValues.whatsapp);
 
         const leadData = {
-          name: watchedValues.name,
+          name: watchedValues.name?.trim(),
           whatsapp: fullWhatsApp,
-          email: watchedValues.email,
-          struggle: watchedValues.struggle,
+          email: watchedValues.email?.trim(),
+          struggle: watchedValues.struggle?.trim(),
           budget: 'no',
           budgetAmount: undefined,
         };
@@ -311,7 +348,7 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
         const messages = {
           en: "Hey Caio, I filled the form but I don't have budget to invest.",
           pt: 'Oi Caio, preenchi o formulário mas não tenho orçamento para investir.',
-          es: 'Hola Caio, completé el formulario pero no tengo presupuesto para invertir.',
+          es: 'Hola Caio, completé el formulario pero no tengo presupuesto para investir.',
         } as const;
         const whatsappMessage = (messages as any)[locale] || messages.en;
         const whatsappUrl = `https://wa.me/5551993288772?text=${encodeURIComponent(whatsappMessage)}`;
@@ -327,9 +364,11 @@ export function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalProps) {
       // This ensures we capture the lead even if they don't complete the Cal.com booking.
       if (currentStep + 1 === formSteps.length - 1) {
         console.log("Pre-saving lead data before Calendar...");
-        const fullWhatsApp = `${selectedCountry.prefix}${watchedValues.whatsapp}`;
+        const fullWhatsApp = formatFullWhatsApp(selectedCountry.prefix, watchedValues.whatsapp);
         const leadData = {
           ...watchedValues,
+          name: watchedValues.name?.trim(),
+          email: watchedValues.email?.trim(),
           whatsapp: fullWhatsApp,
           budgetAmount,
           source: 'Form Completion (Pre-Booking)'

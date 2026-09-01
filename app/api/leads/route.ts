@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Simple validation - ensure we have at least some data
+    // Strict validation - ensure we have name and contact info
     if (!body || typeof body !== 'object') {
       return NextResponse.json(
         { success: false, message: 'Invalid request body' },
@@ -13,11 +13,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const email = typeof body.email === 'string' ? body.email.trim() : '';
+    const whatsapp = typeof body.whatsapp === 'string' ? body.whatsapp.trim() : '';
+
+    if (!name || (!email && !whatsapp)) {
+      console.warn('⚠️ Rejected invalid lead submission: missing name or contact info', { name, email, whatsapp });
+      return NextResponse.json(
+        { success: false, message: 'Lead name and at least one contact method (email or WhatsApp) are required' },
+        { status: 400 }
+      );
+    }
+
+    const sanitizedBody = {
+      ...body,
+      name,
+      email,
+      whatsapp,
+    };
+
     // Google Sheets Integration (Non-blocking)
     try {
       const auth = await getGoogleAuth();
       const sheets = new GoogleSheetsService(auth);
-      await sheets.appendLeadData(body);
+      await sheets.appendLeadData(sanitizedBody);
     } catch (sheetsError: any) {
       console.error('❌ Failed to append to Google Sheets:', sheetsError.message);
       if (sheetsError.response?.data) {
@@ -28,28 +47,26 @@ export async function POST(request: NextRequest) {
 
     // Trello Integration
     try {
-      const { name, email, whatsapp, industry, struggle, budget, budgetAmount, source, bookingDetails } = body;
+      const { industry, struggle, budget, budgetAmount, source, bookingDetails } = sanitizedBody;
 
       const description = `
 **📋 DETALHES DO LEAD**
 
 **Nome:** ${name}
 ${email ? `**Email:** ${email}\n` : ''}**WhatsApp:** ${whatsapp}
-${industry ? `**Indústria:** ${industry}\n` : ''}**Dificuldade:** ${struggle}
-**Orçamento:** ${budget}
-${budgetAmount ? `**Valor do Orçamento:** ${budgetAmount}` : ''}
-
+${industry ? `**Indústria:** ${industry}\n` : ''}**Dificuldade:** ${struggle || 'Não informado'}
+**Orçamento:** ${budget || 'Não informado'}
+${budgetAmount ? `**Valor do Orçamento:** ${budgetAmount} USD\n` : ''}
 _____________________
 **ℹ️ OUTRAS INFOS**
 **Status:** ${bookingDetails ? '✅ BOOKING CONFIRMED' : '📝 LEAD CAPTURED (FORM ONLY)'}
-${source ? `**Origem:** ${source}` : ''}
-${bookingDetails ? `**Data do Booking:** ${bookingDetails.date}` : ''}
+${source ? `**Origem:** ${source}\n` : ''}${bookingDetails ? `**Data do Booking:** ${bookingDetails.date || bookingDetails.startTime || 'Confirmado'}` : ''}
       `.trim();
 
       // "NOME DO CARD: NOME DA LEAD"
       const cardTitle = name;
 
-      console.log('Attempting Trello card creation...');
+      console.log('Attempting Trello card sync for:', cardTitle);
 
       if (!process.env.TRELLO_API_KEY || !process.env.TRELLO_API_TOKEN || !process.env.TRELLO_LIST_ID) {
         console.error('Missing Trello credentials in environment variables');
@@ -67,15 +84,32 @@ ${bookingDetails ? `**Data do Booking:** ${bookingDetails.date}` : ''}
           const checkRes = await fetch(checkUrl, { method: 'GET' });
           if (checkRes.ok) {
             const cards = await checkRes.json();
-            // Check if any card has the same name
-            const foundCard = cards.find((c: any) => c.name.toLowerCase() === cardTitle.toLowerCase());
+            const normalizeDigits = (str: string) => str?.replace(/\D/g, '') || '';
+            const targetEmail = email.toLowerCase();
+            const targetDigits = normalizeDigits(whatsapp);
+            const targetTitle = name.toLowerCase();
+
+            // Match by name, or by email in description, or by phone in description
+            const foundCard = cards.find((c: any) => {
+              const cName = (c.name || '').toLowerCase().trim();
+              const cDesc = (c.desc || '').toLowerCase();
+
+              if (cName && cName === targetTitle) return true;
+              if (targetEmail && cDesc.includes(targetEmail)) return true;
+              if (targetDigits && targetDigits.length >= 8) {
+                const descDigits = normalizeDigits(cDesc);
+                if (descDigits.includes(targetDigits)) return true;
+              }
+              return false;
+            });
+
             if (foundCard) {
               existingCardId = foundCard.id;
-              console.log(`Card "${cardTitle}" already exists (ID: ${existingCardId}). Updating description instead of creating new.`);
+              console.log(`Card "${foundCard.name}" already exists in Trello (ID: ${existingCardId}). Updating description...`);
             }
           }
         } catch (checkErr) {
-          console.error("Error checking existing cards:", checkErr);
+          console.error("Error checking existing Trello cards:", checkErr);
         }
 
         const trelloParams = new URLSearchParams({
@@ -85,6 +119,7 @@ ${bookingDetails ? `**Data do Booking:** ${bookingDetails.date}` : ''}
 
         if (existingCardId) {
           // Update existing card
+          trelloParams.append('name', cardTitle);
           trelloParams.append('desc', description);
           const updateUrl = `https://api.trello.com/1/cards/${existingCardId}?${trelloParams.toString()}`;
 
@@ -117,7 +152,6 @@ ${bookingDetails ? `**Data do Booking:** ${bookingDetails.date}` : ''}
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    // This catch block handles catastrophic failures outside the specific integrations
     console.error('Unexpected error in leads API:', error);
     return NextResponse.json(
       { success: false, message: 'Internal Server Error' },

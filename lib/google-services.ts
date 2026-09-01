@@ -114,6 +114,12 @@ export class GoogleSheetsService {
       email: data.email, 
       tab: SHEET_TAB 
     });
+
+    if (!data.name?.trim() || (!data.email?.trim() && !data.whatsapp?.trim())) {
+      console.warn('⚠️ Skipping Sheets append: missing name or contact information', data);
+      return { skipped: true, reason: 'Missing name or contact information' };
+    }
+
     try {
       const sheets = google.sheets({ version: 'v4', auth: this.auth });
 
@@ -125,43 +131,59 @@ export class GoogleSheetsService {
 
       console.log(`📊 Using tab: "${activeTab}" (Env requested: "${SHEET_TAB}")`);
 
-      // First, check for existing lead with this email to prevent duplicates
+      // Check for existing lead to prevent duplicates
       const checkResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
         range: `${activeTab}!A:H`, // Read all data
       });
 
       const rows = checkResponse.data.values || [];
-      console.log(`📊 Found ${rows.length} existing rows in sheet "${SHEET_TAB}"`);
-      const emailIndex = 2; // Column C is index 2
+      console.log(`📊 Found ${rows.length} existing rows in sheet "${activeTab}"`);
+      const nameIndex = 0; // Column A is index 0
       const whatsappIndex = 1; // Column B is index 1
+      const emailIndex = 2; // Column C is index 2
 
       const normalizePhone = (phone: string) => phone?.replace(/\D/g, '') || '';
+      const inputWhatsappDigits = normalizePhone(data.whatsapp?.toString() || '');
+      const inputEmail = data.email?.toString().toLowerCase()?.trim();
+      const inputName = data.name?.toString().toLowerCase()?.trim();
 
       const existingRowIndex = rows.findIndex((row, index) => {
         // Skip header row
         if (index === 0) return false;
 
         const rowEmail = row[emailIndex]?.toString().toLowerCase()?.trim();
-        const inputEmail = data.email?.toString().toLowerCase()?.trim();
-
         // Match by Email if both exist
         if (rowEmail && inputEmail && rowEmail === inputEmail) return true;
 
-        // Match by WhatsApp if Email didn't match (or wasn't present)
-        const rowWhatsapp = normalizePhone(row[whatsappIndex]?.toString() || '');
-        const inputWhatsapp = normalizePhone(data.whatsapp?.toString() || '');
+        // Match by WhatsApp if both exist (match exact or suffix for numbers >= 8 digits)
+        const rowWhatsappDigits = normalizePhone(row[whatsappIndex]?.toString() || '');
+        if (rowWhatsappDigits && inputWhatsappDigits) {
+          if (rowWhatsappDigits === inputWhatsappDigits) return true;
+          if (rowWhatsappDigits.length >= 8 && inputWhatsappDigits.length >= 8) {
+            if (rowWhatsappDigits.endsWith(inputWhatsappDigits) || inputWhatsappDigits.endsWith(rowWhatsappDigits)) {
+              return true;
+            }
+          }
+        }
 
-        if (rowWhatsapp && inputWhatsapp && rowWhatsapp === inputWhatsapp) return true;
+        // Match by Name if both exist and neither email nor phone contradicts
+        const rowName = row[nameIndex]?.toString().toLowerCase()?.trim();
+        if (rowName && inputName && rowName === inputName) {
+          // If neither has differing emails or phones, treat as match
+          if (!rowEmail || !inputEmail || rowEmail === inputEmail) return true;
+        }
 
         return false;
       });
+
+      const existingRow = existingRowIndex !== -1 ? rows[existingRowIndex] : null;
 
       const budgetCell = (() => {
         if (data.budget === 'no') return 'no budget';
         if (data.budget === 'yes' && data.budgetAmount) return `${data.budgetAmount} USD`;
         if (data.budget === 'yes') return 'yes';
-        return '';
+        return existingRow?.[4] || '';
       })();
 
       const scheduledCell = data.scheduledDateTime
@@ -173,7 +195,7 @@ export class GoogleSheetsService {
           minute: '2-digit',
           timeZone: 'America/Sao_Paulo'
         })
-        : '';
+        : (existingRow?.[5] || '');
 
       // Timestamp in Brasilia timezone
       const timestamp = new Date().toLocaleString('en-US', {
@@ -186,23 +208,22 @@ export class GoogleSheetsService {
         timeZone: 'America/Sao_Paulo'
       });
 
+      // Format whatsapp cleanly for Sheets to avoid formula errors like #ERROR!
+      const rawWhatsapp = data.whatsapp?.trim() || existingRow?.[1] || '';
+      const formattedWhatsapp = rawWhatsapp ? `'${rawWhatsapp.replace(/^'+/, '')}` : '';
+
       const rowValues = [
-        data.name || '',
-        data.whatsapp || '',
-        data.email || '',
-        data.struggle || '',
+        data.name?.trim() || existingRow?.[0] || '',
+        formattedWhatsapp,
+        data.email?.trim() || existingRow?.[2] || '',
+        data.struggle?.trim() || existingRow?.[3] || '',
         budgetCell,
         scheduledCell,
         timestamp,
       ];
 
       if (existingRowIndex !== -1) {
-        console.log(`Initial duplicate check: Found existing lead with email ${data.email} at row ${existingRowIndex + 1}. Updating...`);
-        // Update existing row
-        // Row index is 0-based from the array, but Sheets uses 1-based.
-        // Array index 0 is Row 1 (Header). Array index N is Row N+1.
-        // So existingRowIndex corresponds to Sheets Row (existingRowIndex + 1).
-
+        console.log(`📊 Duplicate detected: Found existing lead at row ${existingRowIndex + 1}. Updating existing row...`);
         await sheets.spreadsheets.values.update({
           spreadsheetId: SPREADSHEET_ID,
           range: `${activeTab}!A${existingRowIndex + 1}:G${existingRowIndex + 1}`,
@@ -214,6 +235,7 @@ export class GoogleSheetsService {
         return { updated: true, row: existingRowIndex + 1 };
       } else {
         // Append new row
+        console.log(`📊 Appending new lead row to "${activeTab}"...`);
         const response = await sheets.spreadsheets.values.append({
           spreadsheetId: SPREADSHEET_ID,
           range: `${activeTab}!A:G`,
